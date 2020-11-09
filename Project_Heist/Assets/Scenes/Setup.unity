@@ -371,8 +371,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0.1, y: 0.5, z: 1}
-  ShoulderOffset: {x: 0.5, y: -0.4, z: 0}
-  VerticalArmLength: 0.4
+  ShoulderOffset: {x: 0, y: 0, z: 0}
+  VerticalArmLength: 0.09
   CameraSide: 1
   CameraDistance: 2
   CameraCollisionFilter:
@@ -433,7 +433,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964472167}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13.049081, y: 5.81617, z: 4.500432}
+  m_LocalPosition: {x: -25.65, y: 5.81617, z: 12.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 897241956}
@@ -742,7 +742,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   CameraTarget: {fileID: 121340438}
-  cameraRotationSpeed: 10
+  cameraRotationSpeed: 50
+  playerRotatingWithCameraSpeed: 10
+  playerRotationSpeed: 50
 --- !u!1 &1134660600
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,7 +812,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134660600}
   m_LocalRotation: {x: 0.14380938, y: -0.004145964, z: 0.00060440146, w: 0.98959655}
-  m_LocalPosition: {x: 11.959103, y: 1.7559998, z: -20.2454}
+  m_LocalPosition: {x: 11.459103, y: 1.8459998, z: -20.2454}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 916922614}
@@ -1026,7 +1028,6 @@ GameObject:
   - component: {fileID: 1297650284}
   - component: {fileID: 1297650283}
   - component: {fileID: 1297650281}
-  - component: {fileID: 1297650287}
   - component: {fileID: 1297650282}
   - component: {fileID: 1297650285}
   m_Layer: 0
@@ -1200,7 +1201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1297650280}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.959103, y: 1.7559998, z: -20.2454}
+  m_LocalPosition: {x: 11.459103, y: 1.8459998, z: -20.2454}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1240,18 +1241,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1297650287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1297650280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8a636f62116c0a40bbfefdf876d4608, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1825753609
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1311,6 +1300,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 8e3207df963ccef46822ac486f15f22c, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 06bafcae151bc184c8efef66c41760dc, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06bafcae151bc184c8efef66c41760dc, type: 3}
 --- !u!1 &2035111233
@@ -1343,7 +1336,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 10000
+  m_Intensity: 5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.802082
@@ -1384,7 +1377,7 @@ Light:
   m_RenderingLayerMask: 1
   m_Lightmapping: 1
   m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
+  m_AreaSize: {x: 0.5, y: 0.5}
   m_BounceIntensity: 1
   m_ColorTemperature: 5500
   m_UseColorTemperature: 1
@@ -1426,7 +1419,7 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 10000
+  m_Intensity: 5
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 0
@@ -1561,4 +1554,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1053846395}
-  SetFPS: 120
+  SetFPS: 500
