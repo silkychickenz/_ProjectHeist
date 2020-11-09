@@ -18,11 +18,13 @@ public class InputManager : MonoBehaviour
     //store movement input
     private Vector2 move;
     private Vector2 lookAround;
+    private float TEMPcam;
 
     [SerializeField]
     private int SetFPS = 120;
 
-    // camera rotation effect on turning
+    //TEMP
+   
 
     private void Awake()
     {
@@ -34,15 +36,18 @@ public class InputManager : MonoBehaviour
         // get input
         Controls.Player.move.performed += moveDirection => move = (moveDirection.ReadValue<Vector2>());
         Controls.Player.LookAround.performed += LookAround => lookAround = (LookAround.ReadValue<Vector2>());
-       
-
         Application.targetFrameRate = SetFPS;
+
+        //TEMP
+        Controls.Player.TEMPcameratoggle.performed += TEMPCam => TEMPcam = (TEMPCam.ReadValue<float>());
+        
     }
 
     void Start()
     {
-        LockCursor();   // lock and hide the cursor
+        //LockCursor();   // lock and hide the cursor
 
+       
     }
 
 
@@ -50,7 +55,13 @@ public class InputManager : MonoBehaviour
     {
         // call methods
         playerControllerScript.Movement(move);
-        playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
+        playerControllerScript.PlayerRotation(lookAround, move);
+
+        if (TEMPcam >0)  //TEMP
+        {
+            playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
+        }
+        
 
 
 

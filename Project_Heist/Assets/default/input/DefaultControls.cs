@@ -31,7 +31,15 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""899fc690-572a-4d1a-947e-a4f2e9be3f6d"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": ""ScaleVector2(x=0.1,y=0.1)"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""TEMPcameratoggle"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""5bc9d66b-c5f2-4754-bc88-9e059ac489c8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
                     ""interactions"": """"
                 }
             ],
@@ -151,7 +159,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""id"": ""a28e4b2b-8559-4801-932c-916abbfe942a"",
                     ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""ScaleVector2(x=2,y=2),InvertVector2(invertX=false)"",
                     ""groups"": """",
                     ""action"": ""LookAround"",
                     ""isComposite"": true,
@@ -206,9 +214,31 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""id"": ""57ba64b6-87ff-45eb-804e-3d960dcbc553"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""InvertVector2(invertX=false)"",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=0.1,y=0.1)"",
                     ""groups"": ""keyboard&mouse"",
                     ""action"": ""LookAround"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""de93c3ba-0dad-4443-aade-e1afad549271"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xBoxController;keyboard&mouse"",
+                    ""action"": ""TEMPcameratoggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32882064-5632-453d-a641-4b84f04647bc"",
+                    ""path"": ""<XInputController>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xBoxController;keyboard&mouse"",
+                    ""action"": ""TEMPcameratoggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -249,6 +279,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_move = m_Player.FindAction("move", throwIfNotFound: true);
         m_Player_LookAround = m_Player.FindAction("LookAround", throwIfNotFound: true);
+        m_Player_TEMPcameratoggle = m_Player.FindAction("TEMPcameratoggle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -300,12 +331,14 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_move;
     private readonly InputAction m_Player_LookAround;
+    private readonly InputAction m_Player_TEMPcameratoggle;
     public struct PlayerActions
     {
         private @DefaultControls m_Wrapper;
         public PlayerActions(@DefaultControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @move => m_Wrapper.m_Player_move;
         public InputAction @LookAround => m_Wrapper.m_Player_LookAround;
+        public InputAction @TEMPcameratoggle => m_Wrapper.m_Player_TEMPcameratoggle;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -321,6 +354,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @LookAround.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookAround;
                 @LookAround.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookAround;
                 @LookAround.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookAround;
+                @TEMPcameratoggle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTEMPcameratoggle;
+                @TEMPcameratoggle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTEMPcameratoggle;
+                @TEMPcameratoggle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTEMPcameratoggle;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -331,6 +367,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @LookAround.started += instance.OnLookAround;
                 @LookAround.performed += instance.OnLookAround;
                 @LookAround.canceled += instance.OnLookAround;
+                @TEMPcameratoggle.started += instance.OnTEMPcameratoggle;
+                @TEMPcameratoggle.performed += instance.OnTEMPcameratoggle;
+                @TEMPcameratoggle.canceled += instance.OnTEMPcameratoggle;
             }
         }
     }
@@ -357,5 +396,6 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLookAround(InputAction.CallbackContext context);
+        void OnTEMPcameratoggle(InputAction.CallbackContext context);
     }
 }
