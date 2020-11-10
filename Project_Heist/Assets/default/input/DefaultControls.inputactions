@@ -28,6 +28,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "flipGravityPlayer",
+                    "type": "PassThrough",
+                    "id": "d6263a4d-f14e-45f1-ac5f-3152c6aae01a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -228,6 +236,116 @@
                     "action": "TEMPcameratoggle",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "xBox",
+                    "id": "a79c5777-b7b3-4df6-8b2e-45d9e4825c5d",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "flipGravityPlayer",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "21f0b501-5298-433a-9727-7c9b5a3baa12",
+                    "path": "<XInputController>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "flipGravityPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "ff6dc948-8332-418f-a92b-d7c3d9a3071a",
+                    "path": "<XInputController>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "flipGravityPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "62cf7d4a-bbf5-4f37-9754-805c3a454b52",
+                    "path": "<XInputController>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "flipGravityPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "d50d972f-7737-4684-aa92-35764178ec6e",
+                    "path": "<XInputController>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "flipGravityPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "keyboard",
+                    "id": "2ca76b9d-6f3f-45f5-ae43-f4f27185acdb",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "flipGravityPlayer",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "7d15b11d-d122-4608-ae5a-62a069baa293",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "flipGravityPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "3fe8fe8f-8837-4b57-927a-6f4d05619746",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "flipGravityPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "88c64fbc-16da-40fa-91cf-9b8831e5dca5",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "flipGravityPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "2bdcd988-4471-4526-980d-36db753579de",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "flipGravityPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
