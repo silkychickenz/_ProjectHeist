@@ -7,7 +7,8 @@ public class playerController : MonoBehaviour
     [Header("Get references")]
     [SerializeField]
     private Animator animator;
-  
+    private Rigidbody rb;
+
 
 
     [Header("Camera")]
@@ -22,7 +23,23 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private float playerRotationSpeed = 15;
 
-    
+    [Header("Gravity Flipping")]
+    [SerializeField]
+    private LayerMask Walkable; // what layer can the player walk on
+    [SerializeField]
+    private float RayCastLength = 10; // how far to cast the ray?
+    private Vector3 raycastDirection;
+
+    [Header("player gravity")]
+    [SerializeField]
+    private float gravity;
+    [SerializeField]
+    private bool isPlayerGrounded =  true;
+    [SerializeField]
+    private float groundCheckDist = 0.2f;
+
+
+
 
 
     // camera system
@@ -37,6 +54,7 @@ public class playerController : MonoBehaviour
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
+        rb = gameObject.GetComponent<Rigidbody>();
     }
 
     // player walk/run
@@ -114,7 +132,58 @@ public class playerController : MonoBehaviour
 
     }
 
+    public void GravityFlip(Vector2 direction)
+    {
+        raycastDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.up);
+       
+        RaycastHit hitinfo;
+        Debug.DrawRay(gameObject.transform.position, raycastDirection * RayCastLength, Color.red); // ground check ray visualized
+        if (Physics.Raycast(gameObject.transform.position, raycastDirection, out hitinfo, RayCastLength, Walkable))
+        {
+            Debug.Log("detected" + hitinfo.collider.gameObject.name);
+            
+        }
+        
+        if (direction != Vector2.zero)
+        {
+            animator.SetBool("gravityFlip", true);
+        }
+        else if (direction == Vector2.zero)
+        {
+            animator.SetBool("gravityFlip", false);
+        }
+    }
 
+    public void Gravity(float currentGravity = 0)
+    {
+        RaycastHit hitinfo;
+        if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
+        {
+
+            isPlayerGrounded = true;
+
+        }
+
+        else
+        {
+            isPlayerGrounded = false;
+        }
+
+
+
+        if (!isPlayerGrounded)
+        {
+            currentGravity += (gravity * Time.deltaTime);
+
+            rb.AddForce(currentGravity * -gameObject.transform.up, ForceMode.Force);
+        }
+
+        else if (isPlayerGrounded)
+        {
+            currentGravity = 0;
+        }
+        
+    }
 
 }
 

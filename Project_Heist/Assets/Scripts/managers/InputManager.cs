@@ -18,6 +18,7 @@ public class InputManager : MonoBehaviour
     //store movement input
     private Vector2 move;
     private Vector2 lookAround;
+    private Vector2 gravityFlipDirection;
     private float TEMPcam;
 
     [SerializeField]
@@ -36,6 +37,8 @@ public class InputManager : MonoBehaviour
         // get input
         Controls.Player.move.performed += moveDirection => move = (moveDirection.ReadValue<Vector2>());
         Controls.Player.LookAround.performed += LookAround => lookAround = (LookAround.ReadValue<Vector2>());
+        Controls.Player.flipGravityPlayer.performed += flipGravity => gravityFlipDirection = (flipGravity.ReadValue<Vector2>());
+
         Application.targetFrameRate = SetFPS;
 
         //TEMP
@@ -56,6 +59,9 @@ public class InputManager : MonoBehaviour
         // call methods
         playerControllerScript.Movement(move);
         playerControllerScript.PlayerRotation(lookAround, move);
+        playerControllerScript.GravityFlip(gravityFlipDirection);
+        playerControllerScript.Gravity();
+
 
         if (TEMPcam >0)  //TEMP
         {
