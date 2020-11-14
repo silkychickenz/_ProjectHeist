@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class StateMachine : MonoBehaviour
+public abstract class StateMachine: MonoBehaviour
 {
 
     protected State State;
@@ -10,6 +10,5 @@ public abstract class StateMachine : MonoBehaviour
     public void SetState(State state)
     {
         State = state;
-        StartCoroutine(State.Start());
     }
 }

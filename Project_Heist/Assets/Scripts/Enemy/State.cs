@@ -4,9 +4,10 @@ using UnityEngine;
 
 public abstract class State : MonoBehaviour
 {
-    public virtual IEnumerator Start()
+    protected readonly EnemyAI enemy;
+    public State(EnemyAI Enemy)
     {
-        yield break;
+        enemy = Enemy;
     }
 
     public virtual IEnumerator Patrol()
