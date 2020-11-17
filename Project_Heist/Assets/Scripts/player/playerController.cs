@@ -234,9 +234,13 @@ public class playerController : MonoBehaviour
                 }
                 if (Mathf.Abs(RotByDegrees) == 90)
                 {
-                   
 
-                    if (gameObject.transform.eulerAngles.z <= 100 && gameObject.transform.eulerAngles.z >= 80)
+                    if (gameObject.transform.eulerAngles.z <= 10 )
+                    {
+                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 0);
+                    }
+
+                    else if (gameObject.transform.eulerAngles.z <= 100 && gameObject.transform.eulerAngles.z >= 80)
                     {
                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
                     }
