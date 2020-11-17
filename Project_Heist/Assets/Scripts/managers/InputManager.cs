@@ -70,6 +70,7 @@ public class InputManager : MonoBehaviour
         playerControllerScript.PlayerRotation(lookAround, move);
         playerControllerScript.Gravity();
 
+        /*
         //GRAVITY FLIP
         playerControllerScript.GravityFlip(gravityFlipDirection, enableGravityFlip);
         if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
@@ -78,7 +79,7 @@ public class InputManager : MonoBehaviour
             StartCoroutine(GravityFlipCooldown());
         }
         
-            
+          */  
         
 
         if (TEMPcam >0)  //TEMP
@@ -90,6 +91,17 @@ public class InputManager : MonoBehaviour
 
 
 
+    }
+
+    private void FixedUpdate()
+    {
+        //GRAVITY FLIP
+        playerControllerScript.GravityFlip(gravityFlipDirection, enableGravityFlip);
+        if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
+        {
+            enableGravityFlip = false;
+            StartCoroutine(GravityFlipCooldown());
+        }
     }
 
 

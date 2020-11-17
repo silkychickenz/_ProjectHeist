@@ -178,6 +178,11 @@ public class playerController : MonoBehaviour
             RotByDegrees = 90;
         }
 
+        if (direction.x == -1)
+        {
+            RotByDegrees = -90;
+        }
+
         //ROTATION when gravity flipped
         // pressing up will alwasy have 180 rotation in players x axis
 
@@ -210,6 +215,11 @@ public class playerController : MonoBehaviour
             if (Mathf.Abs(RotByDegrees) == 90)
             {
                 transform.Rotate(new Vector3(0, 0, RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
+            }
+
+            if (Mathf.Abs(RotByDegrees) == -90)
+            {
+                transform.Rotate(new Vector3(0, 0, -RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
             }
 
             currentRotationTracker += (RotByDegrees * flipRotationSpeed * Time.deltaTime);
