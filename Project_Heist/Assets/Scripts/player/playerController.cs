@@ -237,27 +237,33 @@ public class playerController : MonoBehaviour
 
                     if (gameObject.transform.eulerAngles.z <= 10 )
                     {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 0);
+                        // gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 0);
+                        gameObject.transform.eulerAngles = Vector3.zero;
+
                     }
 
                     else if (gameObject.transform.eulerAngles.z <= 100 && gameObject.transform.eulerAngles.z >= 80)
                     {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
+                        // gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
+                        gameObject.transform.eulerAngles = new Vector3(0, 0, 90);
                     }
 
                     else if (gameObject.transform.eulerAngles.z <= 190 && gameObject.transform.eulerAngles.z >= 170)
                     {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
+                        // gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
+                        gameObject.transform.eulerAngles = new Vector3(0, 0, 180);
                     }
 
                     else if (gameObject.transform.eulerAngles.z <= 280 && gameObject.transform.eulerAngles.z >= 260)
                     {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 270);
+                        //gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 270);
+                        gameObject.transform.eulerAngles = new Vector3(0, 0, 270);
                     }
 
                     else if (gameObject.transform.eulerAngles.z <= 370 && gameObject.transform.eulerAngles.z >= 350)
                     {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 360);
+                        // gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 360);
+                        gameObject.transform.eulerAngles = new Vector3(0, 0, 360);
                     }
                 }
 
