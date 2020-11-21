@@ -211,7 +211,8 @@ public class playerController : MonoBehaviour
             //Debug.Log("currentRotationTracker : " + currentRotationTracker);
             if (Mathf.Abs(RotByDegrees) == 180)
             {
-                transform.Rotate(new Vector3(RotByDegrees * flipRotationSpeed * Time.deltaTime, 0, 0), Space.Self);
+                //transform.Rotate(new Vector3(RotByDegrees * flipRotationSpeed * Time.deltaTime, 0, 0), Space.Self);
+                transform.Rotate(new Vector3(0, 0, RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
             }
 
             if (Mathf.Abs(RotByDegrees) == 90)
@@ -230,7 +231,27 @@ public class playerController : MonoBehaviour
             {
                 if (Mathf.Abs(RotByDegrees) == 180)
                 {
-                    gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
+                    //gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
+                    if (Mathf.Abs(gameObject.transform.eulerAngles.z) <= 190 && Mathf.Abs(gameObject.transform.eulerAngles.z) >= 170)
+                    {
+                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
+                    }
+
+                    else if (Mathf.Abs(gameObject.transform.eulerAngles.z) <= 10)
+                    {
+                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y,0);
+                    }
+
+                    else if (Mathf.Abs(gameObject.transform.eulerAngles.z) <= 280 && Mathf.Abs(gameObject.transform.eulerAngles.z) >= 260)
+                    {
+                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 270);
+                    }
+
+                    else if (Mathf.Abs(gameObject.transform.eulerAngles.z) <= 100 && Mathf.Abs(gameObject.transform.eulerAngles.z) >= 80)
+                    {
+                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
+                    }
+
                 }
                 if (Mathf.Abs(RotByDegrees) == 90)
                 {
