@@ -69,6 +69,7 @@ public class InputManager : MonoBehaviour
         playerControllerScript.Movement(move);
         playerControllerScript.PlayerRotation(lookAround, move);
         playerControllerScript.Gravity();
+        playerControllerScript.PlayerAlwaysUpright();
 
         /*
         //GRAVITY FLIP
@@ -79,13 +80,13 @@ public class InputManager : MonoBehaviour
             StartCoroutine(GravityFlipCooldown());
         }
         
-          */  
-        
+          */
 
-        //if (TEMPcam >0)  //TEMP
-        //{
+
+        if (TEMPcam >0)  //TEMP
+        {
             playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
-        //}
+        }
         
 
 

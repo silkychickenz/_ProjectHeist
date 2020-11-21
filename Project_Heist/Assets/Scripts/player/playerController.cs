@@ -52,6 +52,12 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private float groundCheckDist = 0.2f;
     private float currentGravity = 0;
+    RaycastHit hitinfo;
+
+
+    [Header("player gravity")]
+    [SerializeField]
+    private float PlayerRecoverySpeed = 10;
 
 
 
@@ -258,39 +264,39 @@ public class playerController : MonoBehaviour
 
                     if (gameObject.transform.eulerAngles.z <= 10 )
                     {
-                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 0);
-                        //gameObject.transform.eulerAngles = Vector3.zero;
+                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 0);
+                       // gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y, 0);
 
                     }
 
-                    else if (gameObject.transform.eulerAngles.z <= 100 && gameObject.transform.eulerAngles.z >= 80)
+                    else if ((gameObject.transform.eulerAngles.z) <= 100 && (gameObject.transform.eulerAngles.z) >= 80)
                     {
-                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
-                       // gameObject.transform.eulerAngles = new Vector3(0, 0, 90);
+                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
+                        //gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, 0, 90);
                     }
 
-                    else if (gameObject.transform.eulerAngles.z <= 190 && gameObject.transform.eulerAngles.z >= 170)
+                    else if ((gameObject.transform.eulerAngles.z) <= 190 && (gameObject.transform.eulerAngles.z) >= 170)
                     {
-                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
-                       // gameObject.transform.eulerAngles = new Vector3(0, 0, 180);
+                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
+                        // gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y, 180);
                     }
 
-                    else if (gameObject.transform.eulerAngles.z <= 280 && gameObject.transform.eulerAngles.z >= 260)
+                    else if ((gameObject.transform.eulerAngles.z) <= 280 && (gameObject.transform.eulerAngles.z) >= 260)
                     {
                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 270);
-                        //gameObject.transform.eulerAngles = new Vector3(0, 0, 270);
+                       // gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, 0, 270);
                     }
 
-                    else if (gameObject.transform.eulerAngles.z <= 370 && gameObject.transform.eulerAngles.z >= 350)
+                    else if ((gameObject.transform.eulerAngles.z) <= 370 && (gameObject.transform.eulerAngles.z) >= 350)
                     {
                          gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 360);
-                       // gameObject.transform.eulerAngles = new Vector3(0, 0, 360);
+                         //gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y, 360);
                     }
                 }
 
                 //currentGravity = 0;
                 // Debug.Log(RotByDegrees);
-                Debug.Log((gameObject.transform.eulerAngles.z));
+                //Debug.Log((gameObject.transform.eulerAngles.z));
                 tempGravityDisabler = false;
                 Rotating = false;
                 currentRotationTracker = 0;
@@ -306,10 +312,27 @@ public class playerController : MonoBehaviour
 
     }
 
+    public void PlayerAlwaysUpright()
+    {
+        Debug.Log(Vector3.Angle(gameObject.transform.up, hitinfo.transform.up ));
+        //Debug.Log(Vector3.Dot(gameObject.transform.up, hitinfo.transform.forward));
+        if (Vector3.Angle(gameObject.transform.up, hitinfo.transform.up) >= 1 )
+        {
+            if (Vector3.Dot(gameObject.transform.up, hitinfo.transform.forward) < 0)
+            {
+                transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+            }
+            else if (Vector3.Dot(gameObject.transform.up, hitinfo.transform.forward) > 0)
+            {
+                transform.Rotate(new Vector3(-PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+            }
+        }
+    }
+
     // apply gravity
     public void Gravity()
     {
-        RaycastHit hitinfo;
+        
         if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
         {
 
