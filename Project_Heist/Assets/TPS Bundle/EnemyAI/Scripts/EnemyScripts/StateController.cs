@@ -163,7 +163,7 @@ namespace EnemyAI
 			if (nextState != remainState)
 			{
 				// DEBUG: show state transitions for NPC.
-				//Debug.Log(transform.name + " :" + decision.name + " : " + currentState.name + "->" + nextState.name);
+				Debug.Log(transform.name + " :" + decision.name + " : " + currentState.name + "->" + nextState.name);
 				currentState = nextState;
 			}
 		}

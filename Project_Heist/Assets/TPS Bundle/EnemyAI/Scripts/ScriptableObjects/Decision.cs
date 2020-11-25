@@ -15,7 +15,9 @@ namespace EnemyAI
 		{
 			// Target is dead, ignore sense triggers.
 			if (controller.aimTarget.root.GetComponent<HealthManager>().dead)
+			{				
 				return false;
+			}
 			// Target is alive.
 			else
 			{
