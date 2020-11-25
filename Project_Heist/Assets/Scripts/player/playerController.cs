@@ -85,8 +85,6 @@ public class playerController : MonoBehaviour
     {
         animator = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
-        raycastDirection = (gameObject.transform.right + gameObject.transform.up);
-        Physics.Raycast(gameObject.transform.position, raycastDirection, out hitinfo, RayCastLength, Walkable);
     }
 
     // player walk/run
@@ -142,7 +140,7 @@ public class playerController : MonoBehaviour
         // verticle rotation, in yz plane and around x axis
         CameraTarget.transform.rotation *= Quaternion.AngleAxis(lookDirection.y * cameraRotationSpeed * Time.deltaTime, Vector3.right);
         //camera rotation along x and y also causes some rotation in z axis
-        cameraRotation = CameraTarget.transform.localEulerAngles; // store current camera local rotation
+        cameraRotation = CameraTarget.transform.localEulerAngles; // store current camera local rotation 
         cameraRotation.z = 0; // eleminate the error in z rotation
 
         //Debug.Log(cameraRotation.x);
@@ -165,13 +163,13 @@ public class playerController : MonoBehaviour
     }
 
     //gravity flip mechanic
-    public void GravityFlip(Vector2 direction, bool CanFlipGravity) // direction gets the input and CanFlipGravity gets the cooldown,
+    public void GravityFlip(Vector2 direction, bool CanFlipGravity) // direction gets the input and CanFlipGravity gets the cooldown, 
     {
 
         raycastDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.up); // direction of raycast
 
-        RaycastHit hitinfo;
         // raycast in the direction player wants to flip
+        RaycastHit hitinfo;
         Debug.DrawRay(gameObject.transform.position, raycastDirection * RayCastLength, Color.red); // ground check ray visualized
         Physics.Raycast(gameObject.transform.position, raycastDirection, out hitinfo, RayCastLength, Walkable);
 
@@ -329,12 +327,12 @@ public class playerController : MonoBehaviour
 
 
         RaycastHit SphereCastInfo;
-        Physics.SphereCast(RotRecoveryCheckPos.transform.position, SphereCastRadius, -gameObject.transform.up,out SphereCastInfo, SphereCastDistance, sphereCastDetectable, QueryTriggerInteraction.UseGlobal );
+        Physics.SphereCast(RotRecoveryCheckPos.transform.position, SphereCastRadius, -gameObject.transform.up, out SphereCastInfo, SphereCastDistance, sphereCastDetectable, QueryTriggerInteraction.UseGlobal);
         Debug.DrawRay(RotRecoveryCheckPos.transform.position, -gameObject.transform.up * SphereCastDistance, Color.magenta);
         Debug.Log("DOT : " + Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal));
-       // Debug.Log((gameObject.transform.eulerAngles.x));
-       // Debug.Log(SphereCastInfo.collider.gameObject.name);
-        if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 1 )
+        // Debug.Log((gameObject.transform.eulerAngles.x));
+        // Debug.Log(SphereCastInfo.collider.gameObject.name);
+        if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 1)
         {
             if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) < -0.1)
             {
@@ -391,3 +389,4 @@ public class playerController : MonoBehaviour
     }
 
 }
+
