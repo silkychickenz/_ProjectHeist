@@ -52,12 +52,21 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private float groundCheckDist = 0.2f;
     private float currentGravity = 0;
-    RaycastHit hitinfo;
 
 
-    [Header("player gravity")]
+
+    [Header("player rotation recovery")]
     [SerializeField]
     private float PlayerRecoverySpeed = 10;
+    [SerializeField]
+    float SphereCastRadius = 2;
+    [SerializeField]
+    float SphereCastDistance = 2f;
+    [SerializeField]
+    private GameObject RotRecoveryCheckPos;
+    [SerializeField]
+    private LayerMask sphereCastDetectable;
+
 
 
 
@@ -133,7 +142,7 @@ public class playerController : MonoBehaviour
         // verticle rotation, in yz plane and around x axis
         CameraTarget.transform.rotation *= Quaternion.AngleAxis(lookDirection.y * cameraRotationSpeed * Time.deltaTime, Vector3.right);
         //camera rotation along x and y also causes some rotation in z axis
-        cameraRotation = CameraTarget.transform.localEulerAngles; // store current camera local rotation 
+        cameraRotation = CameraTarget.transform.localEulerAngles; // store current camera local rotation
         cameraRotation.z = 0; // eleminate the error in z rotation
 
         //Debug.Log(cameraRotation.x);
@@ -156,7 +165,7 @@ public class playerController : MonoBehaviour
     }
 
     //gravity flip mechanic
-    public void GravityFlip(Vector2 direction, bool CanFlipGravity) // direction gets the input and CanFlipGravity gets the cooldown, 
+    public void GravityFlip(Vector2 direction, bool CanFlipGravity) // direction gets the input and CanFlipGravity gets the cooldown,
     {
 
         raycastDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.up); // direction of raycast
@@ -316,21 +325,24 @@ public class playerController : MonoBehaviour
 
     public void PlayerAlwaysUpright()
     {
-        if (isPlayerGrounded)
-        {
-            Debug.Log(Vector3.Angle(gameObject.transform.up, hitinfo.transform.up));
+        //Debug.Log("NORMAL : " + Vector3.Angle(gameObject.transform.up, hitinfo.normal ));
 
-            //Debug.Log(Vector3.Dot(gameObject.transform.up, hitinfo.transform.forward));
-            if (Vector3.Angle(gameObject.transform.up, hitinfo.normal) >= 1)
+
+        RaycastHit SphereCastInfo;
+        Physics.SphereCast(RotRecoveryCheckPos.transform.position, SphereCastRadius, -gameObject.transform.up,out SphereCastInfo, SphereCastDistance, sphereCastDetectable, QueryTriggerInteraction.UseGlobal );
+        Debug.DrawRay(RotRecoveryCheckPos.transform.position, -gameObject.transform.up * SphereCastDistance, Color.magenta);
+        Debug.Log("DOT : " + Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal));
+       // Debug.Log((gameObject.transform.eulerAngles.x));
+       // Debug.Log(SphereCastInfo.collider.gameObject.name);
+        if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 1 )
+        {
+            if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) < -0.1)
             {
-                if (Vector3.Dot(gameObject.transform.up, hitinfo.normal) < 0)
-                {
-                    transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
-                }
-                else if (Vector3.Dot(gameObject.transform.up, hitinfo.normal) > 0)
-                {
-                    transform.Rotate(new Vector3(-PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
-                }
+                transform.Rotate(new Vector3(-PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+            }
+            else if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) > 0.1)
+            {
+                transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
             }
         }
     }
@@ -338,7 +350,7 @@ public class playerController : MonoBehaviour
     // apply gravity
     public void Gravity()
     {
-
+        RaycastHit hitinfo;
         if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
         {
 
@@ -372,5 +384,10 @@ public class playerController : MonoBehaviour
 
     }
 
-}
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(RotRecoveryCheckPos.transform.position + -gameObject.transform.up * SphereCastDistance, SphereCastRadius);
+    }
 
+}
