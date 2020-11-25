@@ -52,12 +52,21 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private float groundCheckDist = 0.2f;
     private float currentGravity = 0;
-    RaycastHit hitinfo;
+   
 
 
-    [Header("player gravity")]
+    [Header("player rotation recovery")]
     [SerializeField]
     private float PlayerRecoverySpeed = 10;
+    [SerializeField]
+    float SphereCastRadius = 2;
+    [SerializeField]
+    float SphereCastDistance = 2f;
+    [SerializeField]
+    private GameObject RotRecoveryCheckPos;
+    [SerializeField]
+    private LayerMask sphereCastDetectable;
+
 
 
 
@@ -314,17 +323,24 @@ public class playerController : MonoBehaviour
 
     public void PlayerAlwaysUpright()
     {
-        Debug.Log(Vector3.Angle(gameObject.transform.up, hitinfo.transform.up ));
-        //Debug.Log(Vector3.Dot(gameObject.transform.up, hitinfo.transform.forward));
-        if (Vector3.Angle(gameObject.transform.up, hitinfo.transform.up) >= 1 )
+        //Debug.Log("NORMAL : " + Vector3.Angle(gameObject.transform.up, hitinfo.normal ));
+     
+
+        RaycastHit SphereCastInfo;
+        Physics.SphereCast(RotRecoveryCheckPos.transform.position, SphereCastRadius, -gameObject.transform.up,out SphereCastInfo, SphereCastDistance, sphereCastDetectable, QueryTriggerInteraction.UseGlobal );
+        Debug.DrawRay(RotRecoveryCheckPos.transform.position, -gameObject.transform.up * SphereCastDistance, Color.magenta);
+        Debug.Log("DOT : " + Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal));
+       // Debug.Log((gameObject.transform.eulerAngles.x));
+       // Debug.Log(SphereCastInfo.collider.gameObject.name);
+        if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 1 )
         {
-            if (Vector3.Dot(gameObject.transform.up, hitinfo.transform.forward) < 0)
-            {
-                transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
-            }
-            else if (Vector3.Dot(gameObject.transform.up, hitinfo.transform.forward) > 0)
+            if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) < -0.1)
             {
                 transform.Rotate(new Vector3(-PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+            }
+            else if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) > 0.1)
+            {
+                transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
             }
         }
     }
@@ -332,7 +348,7 @@ public class playerController : MonoBehaviour
     // apply gravity
     public void Gravity()
     {
-        
+        RaycastHit hitinfo;
         if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
         {
 
@@ -364,6 +380,12 @@ public class playerController : MonoBehaviour
             currentGravity = gravity;
         }
         
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(RotRecoveryCheckPos.transform.position + -gameObject.transform.up * SphereCastDistance, SphereCastRadius);
     }
 
 }
