@@ -69,6 +69,18 @@ public class InputManager : MonoBehaviour
         playerControllerScript.Movement(move);
         playerControllerScript.PlayerRotation(lookAround, move);
         playerControllerScript.Gravity();
+        playerControllerScript.PlayerAlwaysUpright();
+
+        /*
+        //GRAVITY FLIP
+        playerControllerScript.GravityFlip(gravityFlipDirection, enableGravityFlip);
+        if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
+        {
+            enableGravityFlip = false;
+            StartCoroutine(GravityFlipCooldown());
+        }
+        
+          */
 
         //GRAVITY FLIP
         playerControllerScript.GravityFlip(gravityFlipDirection, enableGravityFlip);
@@ -90,6 +102,17 @@ public class InputManager : MonoBehaviour
 
 
 
+    }
+
+    private void FixedUpdate()
+    {
+        //GRAVITY FLIP
+        playerControllerScript.GravityFlip(gravityFlipDirection, enableGravityFlip);
+        if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
+        {
+            enableGravityFlip = false;
+            StartCoroutine(GravityFlipCooldown());
+        }
     }
 
 
