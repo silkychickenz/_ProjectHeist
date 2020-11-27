@@ -26,10 +26,10 @@ MonoBehaviour:
   aboveCoverHeight: 1.5
   coverMask:
     serializedVersion: 2
-    m_Bits: 1280
+    m_Bits: 2048
   shotMask:
     serializedVersion: 2
-    m_Bits: 10497
+    m_Bits: 3072
   targetMask:
     serializedVersion: 2
     m_Bits: 1024
