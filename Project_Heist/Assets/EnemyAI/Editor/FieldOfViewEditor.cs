@@ -15,19 +15,25 @@ namespace EnemyAI
 				Handles.color = Color.white;
 				// Draw perception area (circle)
 				Handles.DrawWireArc(fov.transform.position, Vector3.up, Vector3.forward, 360, fov.perceptionRadius);
+				Handles.DrawWireArc(fov.transform.position, Vector3.forward, Vector3.up, 360, fov.perceptionRadius);
 				// Draw near perception area (half of perception radius)
 				Handles.DrawWireArc(fov.transform.position, Vector3.up, Vector3.forward, 360, fov.nearRadius);
 				// Define FOV arc boundaries
 				Vector3 viewAngleA = DirFromAngle(fov.transform, -fov.viewAngle / 2, false);
-				Vector3 viewAngleB = DirFromAngle(fov.transform, fov.viewAngle / 2, false);
+				Vector3 viewAngleB = DirFromAngle(fov.transform, fov.viewAngle / 2, false);				
+				Vector3 viewAngleC = DirFromAngle(fov.transform, fov.viewAngle / 2, false);
 				// Draw FOV area (arc)
 				Handles.DrawWireArc(fov.transform.position, Vector3.up, viewAngleA, fov.viewAngle, fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleA * fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleB * fov.viewRadius);
+				Handles.DrawWireArc(fov.transform.position, Vector3.forward, (viewAngleA + viewAngleB)/2, fov.viewAngle/2, fov.viewRadius);
+				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleC * fov.viewRadius);
 				// Draw line from NPC to target, if target in FOV
 				Handles.color = Color.yellow;
 				if (fov.targetInSight && fov.personalTarget != Vector3.zero)
 					Handles.DrawLine(fov.enemyAnimation.gunMuzzle.position, fov.personalTarget);
+
+				
 			}
 		}
 		// Get rotated direction vector, relative to global or NPC forward direction.
