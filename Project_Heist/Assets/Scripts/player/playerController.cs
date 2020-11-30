@@ -332,17 +332,34 @@ public class playerController : MonoBehaviour
         Debug.Log("DOT : " + Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal));
        // Debug.Log((gameObject.transform.eulerAngles.x));
        // Debug.Log(SphereCastInfo.collider.gameObject.name);
-        if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 1 )
+
+        // recover if there is rotation in players X axis
+        if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1 )
         {
-            if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) < -0.1)
+            if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) < -0.01)
             {
                 transform.Rotate(new Vector3(-PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
             }
-            else if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) > 0.1)
+            else if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) > 0.01)
             {
                 transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
             }
         }
+        Debug.Log(Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal));
+
+        // recover if there is rotation in players Z axis
+        if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1)
+        {
+            if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) < -0.01)
+            {
+                transform.Rotate(new Vector3(0, 0, PlayerRecoverySpeed * Time.deltaTime), Space.Self);
+            }
+            else if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) > 0.01)
+            {
+                transform.Rotate(new Vector3(0, 0, -PlayerRecoverySpeed * Time.deltaTime), Space.Self);
+            }
+        }
+
     }
 
     // apply gravity
