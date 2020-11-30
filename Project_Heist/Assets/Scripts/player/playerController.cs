@@ -94,7 +94,7 @@ public class playerController : MonoBehaviour
         {
             animator.SetBool("startWalking" , true);
         }
-        else if (direction == Vector2.zero && !isPlayerGrounded)
+        else if (!isPlayerGrounded)
         {
             animator.SetBool("startWalking", false);
         }
