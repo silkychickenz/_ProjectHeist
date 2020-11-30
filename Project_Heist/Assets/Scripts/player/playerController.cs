@@ -94,7 +94,11 @@ public class playerController : MonoBehaviour
         {
             animator.SetBool("startWalking" , true);
         }
-        else if (direction == Vector2.zero)
+        else if (direction == Vector2.zero && !isPlayerGrounded)
+        {
+            animator.SetBool("startWalking", false);
+        }
+        else if (direction == Vector2.zero && isPlayerGrounded)
         {
             animator.SetBool("startWalking", false);
         }
@@ -112,7 +116,7 @@ public class playerController : MonoBehaviour
 
 
         //player roation when there is movement input
-        if ( direction != Vector2.zero)
+        if ( direction != Vector2.zero && isPlayerGrounded)
         {
             playerRotatingDirection = Mathf.Sign(Vector3.Dot(inputDirection.normalized, gameObject.transform.right));
            // Debug.Log(playerRotatingDirection);
@@ -167,13 +171,14 @@ public class playerController : MonoBehaviour
     {
         
         raycastDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.up); // direction of raycast
-       
-        // raycast in the direction player wants to flip
-        RaycastHit hitinfo;
-        Debug.DrawRay(gameObject.transform.position, raycastDirection * RayCastLength, Color.red); // ground check ray visualized
-        Physics.Raycast(gameObject.transform.position, raycastDirection, out hitinfo, RayCastLength, Walkable);
+
         
-        // only responsible for adding force and starting the grlip
+        //RaycastHit hitinfo;
+        //Physics.Raycast(gameObject.transform.position, raycastDirection, out hitinfo, RayCastLength, Walkable);
+
+        Debug.DrawRay(gameObject.transform.position, raycastDirection * RayCastLength, Color.red); // ground check ray visualized
+
+        // STAGE #1 :  add force and starting the gravity flip
         if (raycastDirection != Vector3.zero  && CanFlipGravity && !isEnoughDistFromGround) // if there is input and its not on cooldowm
         {
             
@@ -184,6 +189,7 @@ public class playerController : MonoBehaviour
             
         }
 
+        // STAGE #2 : determine flip rotation and its direction depending on input
         if (direction.y == 1)
         {
             RotByDegrees = -180;
@@ -199,10 +205,7 @@ public class playerController : MonoBehaviour
             RotByDegrees = -90;
         }
 
-        //ROTATION when gravity flipped
-        // pressing up will alwasy have 180 rotation in players x axis
-
-        //raycast to check if player is minimum distance from ground to begin flipping
+        // STAGE #3 : raycast to check if player is minimum distance from ground to begin flipping
         RaycastHit hitinfoDistance;
         Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfoDistance, Mathf.Infinity, Walkable);
         if (hitinfoDistance.distance > MinDistanceBeforeFlip)
@@ -215,38 +218,36 @@ public class playerController : MonoBehaviour
         }
 
 
-        
-       // Debug.Log("isEnoughDistFromGround : " + isEnoughDistFromGround);
-        
-       // Debug.Log("RotByDegrees : " + RotByDegrees);
-        //if (Mathf.Abs(currentRotationTracker) <= RotByDegrees && isEnoughDistFromGround)
-        if (Rotating  && isEnoughDistFromGround)
+       // STAGE #4 : Start Rotating
+        if (Rotating  && isEnoughDistFromGround) 
         {
             tempGravityDisabler = true;
-            //Debug.Log("currentRotationTracker : " + currentRotationTracker);
-            if (Mathf.Abs(RotByDegrees) == 180)
+
+            // STAGE #5 : apply rotation to player
+            if (Mathf.Abs(RotByDegrees) == 180) // rotate vertically
             {
-                //transform.Rotate(new Vector3(RotByDegrees * flipRotationSpeed * Time.deltaTime, 0, 0), Space.Self);
+                
                 transform.Rotate(new Vector3(0, 0, RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
             }
 
-            if (Mathf.Abs(RotByDegrees) == 90)
+            if (Mathf.Abs(RotByDegrees) == 90) // rotate right
             {
                 transform.Rotate(new Vector3(0, 0, RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
             }
 
-            if (Mathf.Abs(RotByDegrees) == -90)
+            if (Mathf.Abs(RotByDegrees) == -90) // rotate left
             {
                 transform.Rotate(new Vector3(0, 0, -RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
             }
 
-            currentRotationTracker += (RotByDegrees * flipRotationSpeed * Time.deltaTime);
+            currentRotationTracker += (RotByDegrees * flipRotationSpeed * Time.deltaTime); // keep track of how much player has rotated
 
+            // STAGE #6 : clean up the rotation 
             if (Mathf.Abs(currentRotationTracker) >= Mathf.Abs(RotByDegrees) -10 && currentRotationTracker <= Mathf.Abs(RotByDegrees) + 10)
             {
                 if (Mathf.Abs(RotByDegrees) == 180)
                 {
-                    //gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y, gameObject.transform.eulerAngles.z);
+                    
                     if (Mathf.Abs(gameObject.transform.eulerAngles.z) <= 190 && Mathf.Abs(gameObject.transform.eulerAngles.z) >= 170)
                     {
                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
@@ -274,38 +275,37 @@ public class playerController : MonoBehaviour
                     if (gameObject.transform.eulerAngles.z <= 10 )
                     {
                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 0);
-                       // gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y, 0);
+                       
 
                     }
 
                     else if ((gameObject.transform.eulerAngles.z) <= 100 && (gameObject.transform.eulerAngles.z) >= 80)
                     {
                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
-                        //gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, 0, 90);
+                       
                     }
 
                     else if ((gameObject.transform.eulerAngles.z) <= 190 && (gameObject.transform.eulerAngles.z) >= 170)
                     {
                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
-                        // gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y, 180);
+                        
                     }
 
                     else if ((gameObject.transform.eulerAngles.z) <= 280 && (gameObject.transform.eulerAngles.z) >= 260)
                     {
                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 270);
-                       // gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, 0, 270);
+                       
                     }
 
                     else if ((gameObject.transform.eulerAngles.z) <= 370 && (gameObject.transform.eulerAngles.z) >= 350)
                     {
                          gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 360);
-                         //gameObject.transform.eulerAngles = new Vector3(0, gameObject.transform.eulerAngles.y, 360);
+                         
                     }
                 }
 
-                //currentGravity = 0;
-                // Debug.Log(RotByDegrees);
-                //Debug.Log((gameObject.transform.eulerAngles.z));
+
+                // STAGE #7 : reset
                 tempGravityDisabler = false;
                 Rotating = false;
                 currentRotationTracker = 0;
@@ -315,23 +315,21 @@ public class playerController : MonoBehaviour
         }
 
 
-        //Debug.Log(currentRotationTracker);
-        //Debug.Log((gameObject.transform.eulerAngles.z));
-
 
     }
 
     public void PlayerAlwaysUpright()
     {
-        //Debug.Log("NORMAL : " + Vector3.Angle(gameObject.transform.up, hitinfo.normal ));
-     
-
+       
         RaycastHit SphereCastInfo;
         Physics.SphereCast(RotRecoveryCheckPos.transform.position, SphereCastRadius, -gameObject.transform.up,out SphereCastInfo, SphereCastDistance, sphereCastDetectable, QueryTriggerInteraction.UseGlobal );
         Debug.DrawRay(RotRecoveryCheckPos.transform.position, -gameObject.transform.up * SphereCastDistance, Color.magenta);
-        Debug.Log("DOT : " + Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal));
-       // Debug.Log((gameObject.transform.eulerAngles.x));
-       // Debug.Log(SphereCastInfo.collider.gameObject.name);
+
+        //Debug.Log("NORMAL : " + Vector3.Angle(gameObject.transform.up, hitinfo.normal ));
+        //Debug.Log("DOT : " + Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal));
+        // Debug.Log((gameObject.transform.eulerAngles.x));
+        // Debug.Log(SphereCastInfo.collider.gameObject.name);
+        // Debug.Log(Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal));
 
         // recover if there is rotation in players X axis
         if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1 )
@@ -345,7 +343,7 @@ public class playerController : MonoBehaviour
                 transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
             }
         }
-        Debug.Log(Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal));
+        
 
         // recover if there is rotation in players Z axis
         if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1)
