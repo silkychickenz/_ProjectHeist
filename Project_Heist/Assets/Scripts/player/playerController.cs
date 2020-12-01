@@ -170,7 +170,7 @@ public class playerController : MonoBehaviour
     public void GravityFlip(Vector2 direction, bool CanFlipGravity) // direction gets the input and CanFlipGravity gets the cooldown, 
     {
         
-        raycastDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.up); // direction of raycast
+        raycastDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.up); // direction of raycast, flip
 
         
         //RaycastHit hitinfo;
@@ -318,6 +318,7 @@ public class playerController : MonoBehaviour
 
     }
 
+    // corect the player if there is anyrotation when grounded, make player always upright
     public void PlayerAlwaysUpright()
     {
        

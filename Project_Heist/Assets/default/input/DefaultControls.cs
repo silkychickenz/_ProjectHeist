@@ -49,6 +49,14 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Shooting"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""02a12cc9-df22-4f43-bed7-6357907197ba"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -234,7 +242,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""xBoxController;keyboard&mouse"",
+                    ""groups"": ""keyboard&mouse"",
                     ""action"": ""TEMPcameratoggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -242,10 +250,10 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""32882064-5632-453d-a641-4b84f04647bc"",
-                    ""path"": ""<XInputController>/rightTrigger"",
+                    ""path"": ""<XInputController>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""xBoxController;keyboard&mouse"",
+                    ""groups"": ""xBoxController"",
                     ""action"": ""TEMPcameratoggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -359,6 +367,28 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""action"": ""flipGravityPlayer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65fb865a-2e5b-4465-a786-c0a7b2ec450c"",
+                    ""path"": ""<XInputController>/rightTrigger"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": ""xBoxController"",
+                    ""action"": ""Shooting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29c6c986-1bfd-4d27-923c-dc40568c6ea6"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": ""keyboard&mouse"",
+                    ""action"": ""Shooting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -399,6 +429,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         m_Player_LookAround = m_Player.FindAction("LookAround", throwIfNotFound: true);
         m_Player_TEMPcameratoggle = m_Player.FindAction("TEMPcameratoggle", throwIfNotFound: true);
         m_Player_flipGravityPlayer = m_Player.FindAction("flipGravityPlayer", throwIfNotFound: true);
+        m_Player_Shooting = m_Player.FindAction("Shooting", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -452,6 +483,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_LookAround;
     private readonly InputAction m_Player_TEMPcameratoggle;
     private readonly InputAction m_Player_flipGravityPlayer;
+    private readonly InputAction m_Player_Shooting;
     public struct PlayerActions
     {
         private @DefaultControls m_Wrapper;
@@ -460,6 +492,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         public InputAction @LookAround => m_Wrapper.m_Player_LookAround;
         public InputAction @TEMPcameratoggle => m_Wrapper.m_Player_TEMPcameratoggle;
         public InputAction @flipGravityPlayer => m_Wrapper.m_Player_flipGravityPlayer;
+        public InputAction @Shooting => m_Wrapper.m_Player_Shooting;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -481,6 +514,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @flipGravityPlayer.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFlipGravityPlayer;
                 @flipGravityPlayer.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFlipGravityPlayer;
                 @flipGravityPlayer.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFlipGravityPlayer;
+                @Shooting.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
+                @Shooting.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
+                @Shooting.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -497,6 +533,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @flipGravityPlayer.started += instance.OnFlipGravityPlayer;
                 @flipGravityPlayer.performed += instance.OnFlipGravityPlayer;
                 @flipGravityPlayer.canceled += instance.OnFlipGravityPlayer;
+                @Shooting.started += instance.OnShooting;
+                @Shooting.performed += instance.OnShooting;
+                @Shooting.canceled += instance.OnShooting;
             }
         }
     }
@@ -525,5 +564,6 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         void OnLookAround(InputAction.CallbackContext context);
         void OnTEMPcameratoggle(InputAction.CallbackContext context);
         void OnFlipGravityPlayer(InputAction.CallbackContext context);
+        void OnShooting(InputAction.CallbackContext context);
     }
 }

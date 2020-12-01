@@ -1227,6 +1227,7 @@ GameObject:
   - component: {fileID: 5025720061795449738}
   - component: {fileID: 5025720061795449717}
   - component: {fileID: 5025720061795449739}
+  - component: {fileID: 3464898359628293291}
   m_Layer: 10
   m_Name: player
   m_TagString: Untagged
@@ -1337,6 +1338,19 @@ MonoBehaviour:
   sphereCastDetectable:
     serializedVersion: 2
     m_Bits: 512
+--- !u!114 &3464898359628293291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5296118904816445357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185bfe19ed5d8514abbbdb4c516f4db0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TPScam: {fileID: 0}
 --- !u!1 &5385163140343350518
 GameObject:
   m_ObjectHideFlags: 0

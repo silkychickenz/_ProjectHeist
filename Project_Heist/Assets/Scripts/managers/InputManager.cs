@@ -13,13 +13,18 @@ public class InputManager : MonoBehaviour
 
     //movement
     private playerController playerControllerScript;
-    private PlayerShooting playerShootingScript;
 
-   
+    //shooting
+    private Shooting ShootingScript;
+
+
     //store movement input
     private Vector2 move;
     //store camera input
     private Vector2 lookAround;
+    // shooting input
+    private bool startShooting;
+
    
 
     [Header("Get references")]
@@ -42,13 +47,15 @@ public class InputManager : MonoBehaviour
         // get reference
         Controls = new DefaultControls();
         playerControllerScript = Player.GetComponent<playerController>();
-        playerShootingScript = Player.GetComponent<PlayerShooting>();
+        ShootingScript = Player.GetComponent<Shooting>();
         
 
         // get input
         Controls.Player.move.performed += moveDirection => move = (moveDirection.ReadValue<Vector2>());
         Controls.Player.LookAround.performed += LookAround => lookAround = (LookAround.ReadValue<Vector2>());
         Controls.Player.flipGravityPlayer.performed += flipGravity => gravityFlipDirection = (flipGravity.ReadValue<Vector2>());
+        Controls.Player.Shooting.performed += StartShooting => startShooting = true;
+        Controls.Player.Shooting.canceled += StartShooting => startShooting = false;
 
         Application.targetFrameRate = SetFPS;
 
@@ -73,6 +80,12 @@ public class InputManager : MonoBehaviour
         playerControllerScript.Gravity();
         playerControllerScript.PlayerAlwaysUpright();
 
+        if (startShooting)
+        {
+            ShootingScript.Hitscan();
+        }
+        
+        
         /*
         //GRAVITY FLIP
         playerControllerScript.GravityFlip(gravityFlipDirection, enableGravityFlip);
@@ -88,7 +101,7 @@ public class InputManager : MonoBehaviour
         if (TEMPcam >0)  //TEMP
         {
             playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
-            playerShootingScript.Shoot();
+           
         }
         
 
@@ -134,6 +147,6 @@ public class InputManager : MonoBehaviour
 
     private void OnDisable()
     {
-        Controls.Disable();
+        //Controls.Disable();
     }
 }

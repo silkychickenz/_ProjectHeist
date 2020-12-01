@@ -36,6 +36,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Shooting",
+                    "type": "PassThrough",
+                    "id": "02a12cc9-df22-4f43-bed7-6357907197ba",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -221,7 +229,7 @@
                     "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
-                    "groups": "xBoxController;keyboard&mouse",
+                    "groups": "keyboard&mouse",
                     "action": "TEMPcameratoggle",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -229,10 +237,10 @@
                 {
                     "name": "",
                     "id": "32882064-5632-453d-a641-4b84f04647bc",
-                    "path": "<XInputController>/rightTrigger",
+                    "path": "<XInputController>/rightShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "xBoxController;keyboard&mouse",
+                    "groups": "xBoxController",
                     "action": "TEMPcameratoggle",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -346,6 +354,28 @@
                     "action": "flipGravityPlayer",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "65fb865a-2e5b-4465-a786-c0a7b2ec450c",
+                    "path": "<XInputController>/rightTrigger",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "Shooting",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "29c6c986-1bfd-4d27-923c-dc40568c6ea6",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "Shooting",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
