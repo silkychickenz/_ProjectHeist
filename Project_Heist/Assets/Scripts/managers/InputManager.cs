@@ -80,10 +80,8 @@ public class InputManager : MonoBehaviour
         playerControllerScript.Gravity();
         playerControllerScript.PlayerAlwaysUpright();
 
-        if (startShooting)
-        {
-            ShootingScript.Hitscan();
-        }
+        ShootingScript.Hitscan(startShooting);
+        
         
         
         /*
