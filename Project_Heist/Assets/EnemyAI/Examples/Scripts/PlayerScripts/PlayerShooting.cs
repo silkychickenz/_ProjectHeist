@@ -37,17 +37,17 @@ public class PlayerShooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if(weaponMode == WeaponMode.SEMI && Input.GetButtonDown("Fire1") && canShot)
-		{
-			Shoot();
-		}
-		else if(weaponMode == WeaponMode.AUTO && Input.GetButton("Fire1") && canShot)
-		{
-			Shoot();
-		}
+		//if(weaponMode == WeaponMode.SEMI && Input.GetButtonDown("Fire1") && canShot)
+		//{
+		//	Shoot();
+		//}
+		//else if(weaponMode == WeaponMode.AUTO && Input.GetButton("Fire1") && canShot)
+		//{
+		//	Shoot();
+		//}
     }
 
-	void Shoot()
+	public void Shoot()
 	{
 		StartCoroutine(ShotEffect());
 		laserLine.SetPosition(0, drawShotOrigin.position);

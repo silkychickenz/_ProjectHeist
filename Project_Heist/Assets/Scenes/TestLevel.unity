@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2035111234}
-  m_IndirectSpecularColor: {r: 131.17673, g: 162.47339, b: 214.93546, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -913,6 +913,11 @@ Transform:
   m_Father: {fileID: 897241956}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+--- !u!4 &142890032 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6632497194512835892, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+  m_PrefabInstance: {fileID: 290070120}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &177311044
 GameObject:
   m_ObjectHideFlags: 0
@@ -4378,6 +4383,63 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1001 &1327724290
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 142890032}
+    m_Modifications:
+    - target: {fileID: 100002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_Name
+      value: rifle
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.054
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.032
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.062
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.03227803
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.71932256
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.6931171
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.033494484
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -87.874
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 185.324
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.008
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b50a52dbaf2b48040b163e08ef9cc783, type: 3}
 --- !u!1 &1331488361
 GameObject:
   m_ObjectHideFlags: 0

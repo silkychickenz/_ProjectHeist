@@ -13,6 +13,7 @@ public class InputManager : MonoBehaviour
 
     //movement
     private playerController playerControllerScript;
+    private PlayerShooting playerShootingScript;
 
    
     //store movement input
@@ -41,6 +42,7 @@ public class InputManager : MonoBehaviour
         // get reference
         Controls = new DefaultControls();
         playerControllerScript = Player.GetComponent<playerController>();
+        playerShootingScript = Player.GetComponent<PlayerShooting>();
         
 
         // get input
@@ -86,6 +88,7 @@ public class InputManager : MonoBehaviour
         if (TEMPcam >0)  //TEMP
         {
             playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
+            playerShootingScript.Shoot();
         }
         
 
