@@ -96,7 +96,7 @@ public class InputManager : MonoBehaviour
           */
 
 
-        if (TEMPcam >0)  //TEMP
+        if (TEMPcam <=0)  //TEMP
         {
             playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
            

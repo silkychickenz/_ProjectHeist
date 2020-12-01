@@ -33,7 +33,7 @@ public class Shooting : MonoBehaviour
             {
                 if (HitscanHitinfo.transform.gameObject.tag == "Enemy")
                 {
-                    // HitscanHitinfo.transform.gameObject.GetComponent<healthscript>().DamageFunction();   modify this line and make enemies take damage
+                    HitscanHitinfo.collider.SendMessageUpwards("HitCallback", new HealthManager.DamageInfo(HitscanHitinfo.point, transform.forward, 2, HitscanHitinfo.collider), SendMessageOptions.DontRequireReceiver);
 
                     print("I'm looking at " + HitscanHitinfo.transform.name);
                 }
