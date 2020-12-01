@@ -20,7 +20,7 @@ namespace EnemyAI
 				Handles.DrawWireArc(fov.transform.position, Vector3.up, Vector3.forward, 360, fov.nearRadius);
 				// Define FOV arc boundaries
 				Vector3 viewAngleA = DirFromAngle(fov.transform, -fov.viewAngle / 2, false);
-				Vector3 viewAngleB = DirFromAngle(fov.transform, fov.viewAngle / 2, false);				
+				Vector3 viewAngleB = DirFromAngle(fov.transform, fov.viewAngle / 2, false);
 				Vector3 viewAngleC = DirFromAngle(fov.transform, fov.viewAngle / 2, false);
 				// Draw FOV area (arc)
 				Handles.DrawWireArc(fov.transform.position, Vector3.up, viewAngleA, fov.viewAngle, fov.viewRadius);
