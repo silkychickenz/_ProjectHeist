@@ -66,7 +66,7 @@ public class InputManager : MonoBehaviour
 
     void Start()
     {
-        //LockCursor();   // lock and hide the cursor
+        LockCursor();   // lock and hide the cursor
 
        
     }

@@ -1177,7 +1177,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5025720062438593251}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.157, y: 1.556, z: -0.102}
+  m_LocalPosition: {x: 0.698, y: 1.556, z: -0.102}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4770517868513131799}
@@ -1327,7 +1327,7 @@ MonoBehaviour:
   raycastDirection: {x: 0, y: 0, z: 0}
   GravityFlipStartForce: 8
   flipRotationSpeed: 1.5
-  MinDistanceBeforeFlip: 3
+  MinDistanceBeforeFlip: 2.5
   gravity: 19
   isPlayerGrounded: 1
   groundCheckDist: 0.4
@@ -1351,6 +1351,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TPScam: {fileID: 0}
+  bullets: {fileID: 0}
+  cameraFollowTarget: {fileID: 5025720062438593251}
 --- !u!1 &5385163140343350518
 GameObject:
   m_ObjectHideFlags: 0
