@@ -17,7 +17,14 @@ public class playerController : MonoBehaviour
     float WalkToRunBlendLimit = 2;
     public float CurrentBlend , CurrentDirectionalBlend;
     float currentInPutDotProduct;
-    
+    [SerializeField]
+    private float playerRotationSpeed = 15;
+    [SerializeField]
+    private LayerMask Walkable; // what layer can the player walk on
+    [SerializeField]
+    private bool isPlayerGrounded = true;
+    [SerializeField]
+    private float groundCheckDist = 0.2f;
 
     [Header("Camera")]
     [SerializeField]
@@ -26,41 +33,6 @@ public class playerController : MonoBehaviour
     private float cameraRotationSpeed = 10;     // how fast does the camera rotate?
     [SerializeField]
     private float playerRotatingWithCameraSpeed = 10;     // how fast does the camera rotate?
-
-    [Header("player Rotation")]
-    [SerializeField]
-    private float playerRotationSpeed = 15;
-
-    [Header("Gravity Flipping")]
-    [SerializeField]
-    private LayerMask Walkable; // what layer can the player walk on
-    [SerializeField]
-    private float RayCastLength = 100; // how far to cast the ray?
-    [SerializeField]
-    private Vector3 raycastDirection;
-    [SerializeField]
-    private float GravityFlipStartForce = 8; // when player uses gracity flip, a jump for is applied that pushed the player off the ground?
-    [SerializeField]
-    private float flipRotationSpeed = 10; // how fast does the pl;ayer rotate when gravity is flipped
-    private float currentRotationTracker = 0;
-    [SerializeField]
-    private float MinDistanceBeforeFlip = 2; // how high should player jump before a backflip?
-    private bool isEnoughDistFromGround = false;
-    private bool tempGravityDisabler = false; // disable the gravity temporaroly?
-    private  float RotByDegrees = 0;
-    private bool Rotating = false;
-
-
-
-    [Header("player gravity")]
-    [SerializeField]
-    private float gravity = 19; 
-    [SerializeField]
-    private bool isPlayerGrounded =  true;
-    [SerializeField]
-    private float groundCheckDist = 0.2f;
-    private float currentGravity = 0;
-   
 
 
     [Header("player rotation recovery")]
@@ -93,16 +65,58 @@ public class playerController : MonoBehaviour
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
-        rb = gameObject.GetComponent<Rigidbody>();
+        
     }
 
     // player walk/run
-    public void Movement(Vector2 direction , bool startSprinting)
+    public void Movement(Vector2 lookDirection, Vector2 direction, bool startSprinting)
     {
-        Debug.DrawRay(transform.position, inputDirection * 5, Color.green); // input direction
-        Debug.Log(Vector3.Dot(gameObject.transform.forward, inputDirection));
+        #region raycast
+        RaycastHit hitinfo;
+        if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
+        {
+
+            isPlayerGrounded = true;
+
+        }
+
+        else
+        {
+            isPlayerGrounded = false;
+        }
+        #endregion
+
         currentInPutDotProduct = Vector3.Dot(gameObject.transform.forward, inputDirection);
-       
+        inputDirection = (direction.x * CameraTarget.transform.right + direction.y * CameraTarget.transform.forward);
+ 
+        #region debug
+        Debug.DrawRay(transform.position, inputDirection * 5, Color.green); // input direction
+        Debug.DrawRay(CameraTarget.transform.position, CameraTarget.transform.forward * 5, Color.yellow);
+        Debug.DrawRay(CameraTarget.transform.position, CameraTarget.transform.right * 5, Color.black);
+        #endregion
+
+        #region playerortation
+        //player roation when there is movement input
+        if (direction != Vector2.zero && isPlayerGrounded)
+        {
+            playerRotatingDirection = Mathf.Sign(Vector3.Dot(inputDirection.normalized, gameObject.transform.right));
+            
+            if (Vector3.Angle(gameObject.transform.forward, inputDirection) != 0 && Mathf.Abs(Vector3.Dot(inputDirection.normalized, gameObject.transform.right)) > 0.08)
+            {
+                gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
+                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
+            }
+            if (Vector3.Angle(gameObject.transform.forward, inputDirection) != 0  && !startSprinting && currentInPutDotProduct <= -0.9)
+            {
+                gameObject.transform.rotation *= Quaternion.AngleAxis(180 * playerRotationSpeed * Time.deltaTime, Vector3.up); 
+                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-180 * playerRotationSpeed * Time.deltaTime, Vector3.up); 
+            }
+
+
+
+        }
+        #endregion
+
         #region walk
         if (currentInPutDotProduct >= 0.95 && isPlayerGrounded) // go forward
         {
@@ -143,6 +157,7 @@ public class playerController : MonoBehaviour
         #region cleanup
         if (!isPlayerGrounded)
         {
+            animator.SetBool("startWalking", false);
             CurrentDirectionalBlend = -1;
             CurrentBlend = 0;
         }
@@ -170,40 +185,7 @@ public class playerController : MonoBehaviour
         animator.SetFloat("MovementDirection_Parameter_blend", CurrentDirectionalBlend);
         animator.SetFloat("Movement_Parameter_blend", CurrentBlend);
     }
-
-    // player turning / change direction
-    public void PlayerRotation(Vector2 lookDirection , Vector2 direction)
-    {
-        //Debug.DrawRay(transform.position, inputDirection  * 5, Color.green); // input direction
-        Debug.DrawRay(CameraTarget.transform.position, CameraTarget.transform.forward * 5, Color.yellow);
-        Debug.DrawRay(CameraTarget.transform.position, CameraTarget.transform.right * 5, Color.black);
-
-        inputDirection = (direction.x * CameraTarget.transform.right + direction.y * CameraTarget.transform.forward);
-        
-
-
-        //player roation when there is movement input
-        if ( direction != Vector2.zero && isPlayerGrounded )
-        {
-            playerRotatingDirection = Mathf.Sign(Vector3.Dot(inputDirection.normalized, gameObject.transform.right));
-            // Debug.Log(playerRotatingDirection);
-             if (Vector3.Angle(gameObject.transform.forward, inputDirection) !=0 && Mathf.Abs(Vector3.Dot(inputDirection.normalized, gameObject.transform.right)) > 0.08 )
-            {
-                gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
-                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
-            }
-            
-
-
-        }
-
-
-       
-
-
-    }
-
-
+  
     //rotate the thirdperson camera
     public void RotateCamera(Vector2 lookDirection)
     {
@@ -232,157 +214,6 @@ public class playerController : MonoBehaviour
         // end clamp
 
         CameraTarget.transform.localEulerAngles = cameraRotation;   // reassign the rotation
-
-
-    }
-
-    //gravity flip mechanic
-    public void GravityFlip(Vector2 direction, bool CanFlipGravity) // direction gets the input and CanFlipGravity gets the cooldown, 
-    {
-        
-        raycastDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.up); // direction of raycast, flip
-
-        RaycastHit hitSurfaceinfo;
-        Physics.Raycast(gameObject.transform.position, raycastDirection, out hitSurfaceinfo, RayCastLength, Walkable);
-
-        Debug.DrawRay(gameObject.transform.position, raycastDirection * RayCastLength, Color.red); // ground check ray visualized
-
-        // STAGE #1 :  add force and starting the gravity flip
-        if (raycastDirection != Vector3.zero  && CanFlipGravity && !isEnoughDistFromGround) // if there is input and its not on cooldowm
-        {
-            
-            // currentGravity = 0;
-            rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
-           // RecoverOnlyOn = hitSurfaceinfo.transform.gameObject;
-             Rotating = true;
-            //Debug.Log(RecoverOnlyOn.name);
-        }
-
-        // STAGE #2 : determine flip rotation and its direction depending on input
-        if (direction.y == 1)
-        {
-            RotByDegrees = -180;
-        }
-
-        if (direction.x == 1)
-        {
-            RotByDegrees = 90;
-        }
-
-        if (direction.x == -1)
-        {
-            RotByDegrees = -90;
-        }
-
-        // STAGE #3 : raycast to check if player is minimum distance from ground to begin flipping
-        RaycastHit hitinfoDistance;
-        Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfoDistance, Mathf.Infinity, Walkable);
-        if (hitinfoDistance.distance > MinDistanceBeforeFlip)
-        {
-            isEnoughDistFromGround = true;
-        }
-        if ( Mathf.Abs(currentRotationTracker) >= Mathf.Abs(RotByDegrees) && hitinfoDistance.distance <= MinDistanceBeforeFlip) // if the player is successfully completed a rotation and is withing minimum distance for flip
-        {
-            isEnoughDistFromGround = false;
-        }
-
-
-       // STAGE #4 : Start Rotating
-        if (Rotating  && isEnoughDistFromGround) 
-        {
-            tempGravityDisabler = true;
-
-            // STAGE #5 : apply rotation to player
-            if (Mathf.Abs(RotByDegrees) == 180) // rotate vertically
-            {
-                
-                transform.Rotate(new Vector3(0, 0, RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
-            }
-
-            if (Mathf.Abs(RotByDegrees) == 90) // rotate right
-            {
-                transform.Rotate(new Vector3(0, 0, RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
-            }
-
-            if (Mathf.Abs(RotByDegrees) == -90) // rotate left
-            {
-                transform.Rotate(new Vector3(0, 0, -RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
-            }
-
-            currentRotationTracker += (RotByDegrees * flipRotationSpeed * Time.deltaTime); // keep track of how much player has rotated
-
-            // STAGE #6 : clean up the rotation 
-            if (Mathf.Abs(currentRotationTracker) >= Mathf.Abs(RotByDegrees) -10 && currentRotationTracker <= Mathf.Abs(RotByDegrees) + 10)
-            {
-                if (Mathf.Abs(RotByDegrees) == 180)
-                {
-                    
-                    if (Mathf.Abs(gameObject.transform.eulerAngles.z) <= 190 && Mathf.Abs(gameObject.transform.eulerAngles.z) >= 170)
-                    {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
-                    }
-
-                    else if (Mathf.Abs(gameObject.transform.eulerAngles.z) <= 10)
-                    {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y,0);
-                    }
-
-                    else if (Mathf.Abs(gameObject.transform.eulerAngles.z) <= 280 && Mathf.Abs(gameObject.transform.eulerAngles.z) >= 260)
-                    {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 270);
-                    }
-
-                    else if (Mathf.Abs(gameObject.transform.eulerAngles.z) <= 100 && Mathf.Abs(gameObject.transform.eulerAngles.z) >= 80)
-                    {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
-                    }
-
-                }
-                if (Mathf.Abs(RotByDegrees) == 90)
-                {
-
-                    if (gameObject.transform.eulerAngles.z <= 10 )
-                    {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 0);
-                       
-
-                    }
-
-                    else if ((gameObject.transform.eulerAngles.z) <= 100 && (gameObject.transform.eulerAngles.z) >= 80)
-                    {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
-                       
-                    }
-
-                    else if ((gameObject.transform.eulerAngles.z) <= 190 && (gameObject.transform.eulerAngles.z) >= 170)
-                    {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
-                        
-                    }
-
-                    else if ((gameObject.transform.eulerAngles.z) <= 280 && (gameObject.transform.eulerAngles.z) >= 260)
-                    {
-                        gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 270);
-                       
-                    }
-
-                    else if ((gameObject.transform.eulerAngles.z) <= 370 && (gameObject.transform.eulerAngles.z) >= 350)
-                    {
-                         gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 360);
-                         
-                    }
-                }
-
-
-                // STAGE #7 : reset
-                tempGravityDisabler = false;
-                Rotating = false;
-                currentRotationTracker = 0;
-                RotByDegrees = 0;
-            }
-
-        }
-
 
 
     }
@@ -432,43 +263,6 @@ public class playerController : MonoBehaviour
        // }
         
 
-    }
-
-    // apply gravity
-    public void Gravity()
-    {
-        RaycastHit hitinfo;
-        if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
-        {
-
-            isPlayerGrounded = true;
-
-        }
-
-        else
-        {
-            isPlayerGrounded = false;
-        }
-
-        //Debug.Log(currentGravity);
-       
-        if (!isPlayerGrounded && !tempGravityDisabler && currentGravity <= gravity)
-        {
-            currentGravity += (gravity * Time.deltaTime);
-
-            rb.AddForce(currentGravity * -gameObject.transform.up, ForceMode.Force);
-        }
-
-        else if (isPlayerGrounded)
-        {
-            currentGravity = 0;
-        }
-
-        if (currentGravity > gravity)
-        {
-            currentGravity = gravity;
-        }
-        
     }
 
     public void OnDrawGizmos()
