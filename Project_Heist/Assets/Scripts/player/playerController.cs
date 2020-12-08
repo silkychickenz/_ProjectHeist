@@ -9,7 +9,15 @@ public class playerController : MonoBehaviour
     private Animator animator;
     private Rigidbody rb;
 
-
+    [Header("player movement")]
+    [SerializeField]
+    [Range(0.0f, 1.0f)]
+    float walkToRunTransationSpeed;
+    [SerializeField]
+    float WalkToRunBlendLimit = 2;
+    public float CurrentBlend , CurrentDirectionalBlend;
+    float currentInPutDotProduct;
+    
 
     [Header("Camera")]
     [SerializeField]
@@ -27,7 +35,7 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private LayerMask Walkable; // what layer can the player walk on
     [SerializeField]
-    private float RayCastLength = 10; // how far to cast the ray?
+    private float RayCastLength = 100; // how far to cast the ray?
     [SerializeField]
     private Vector3 raycastDirection;
     [SerializeField]
@@ -66,6 +74,7 @@ public class playerController : MonoBehaviour
     private GameObject RotRecoveryCheckPos;
     [SerializeField]
     private LayerMask sphereCastDetectable;
+    private GameObject RecoverOnlyOn;
 
 
 
@@ -88,26 +97,84 @@ public class playerController : MonoBehaviour
     }
 
     // player walk/run
-    public void Movement(Vector2 direction)
+    public void Movement(Vector2 direction , bool startSprinting)
     {
-        if (direction != Vector2.zero && isPlayerGrounded)
+        Debug.DrawRay(transform.position, inputDirection * 5, Color.green); // input direction
+        Debug.Log(Vector3.Dot(gameObject.transform.forward, inputDirection));
+        currentInPutDotProduct = Vector3.Dot(gameObject.transform.forward, inputDirection);
+       
+        #region walk
+        if (currentInPutDotProduct >= 0.95 && isPlayerGrounded) // go forward
         {
             animator.SetBool("startWalking" , true);
+            
+
         }
-        else if (!isPlayerGrounded)
+        
+        #endregion
+        #region sprinting
+        if (startSprinting)
         {
-            animator.SetBool("startWalking", false);
+            if (startSprinting && currentInPutDotProduct >= 0.95) // blend from walk to sprint
+            {
+                if (CurrentBlend <= 1)
+                {
+                    CurrentBlend += walkToRunTransationSpeed * Time.deltaTime;
+                }
+
+            }
+          
+            if (currentInPutDotProduct <= -0.92) // REVERSE DIRECTION
+            {
+                
+               CurrentDirectionalBlend = 0;
+
+            }
+            else // RESET REVERSE DIRECTION
+            {
+               
+                CurrentDirectionalBlend = -1;
+            }
+
         }
-        else if (direction == Vector2.zero && isPlayerGrounded)
+        
+        #endregion
+
+        #region cleanup
+        if (!isPlayerGrounded)
         {
-            animator.SetBool("startWalking", false);
+            CurrentDirectionalBlend = -1;
+            CurrentBlend = 0;
         }
+        else if (inputDirection == Vector3.zero && isPlayerGrounded)
+        {
+            CurrentDirectionalBlend = -1;
+            if (CurrentBlend > 0) // blend from sprint to walk
+            {
+                CurrentBlend -= walkToRunTransationSpeed * Time.deltaTime;
+                
+            }
+            else
+            {
+               animator.SetBool("startWalking", false);
+            }
+            
+        }
+
+        if (CurrentBlend > 0 && !startSprinting) // blend from sprint to walk
+        {
+            CurrentBlend -= walkToRunTransationSpeed * Time.deltaTime;
+        }
+
+        #endregion
+        animator.SetFloat("MovementDirection_Parameter_blend", CurrentDirectionalBlend);
+        animator.SetFloat("Movement_Parameter_blend", CurrentBlend);
     }
 
     // player turning / change direction
     public void PlayerRotation(Vector2 lookDirection , Vector2 direction)
     {
-        Debug.DrawRay(transform.position, inputDirection  * 5, Color.green); // input direction
+        //Debug.DrawRay(transform.position, inputDirection  * 5, Color.green); // input direction
         Debug.DrawRay(CameraTarget.transform.position, CameraTarget.transform.forward * 5, Color.yellow);
         Debug.DrawRay(CameraTarget.transform.position, CameraTarget.transform.right * 5, Color.black);
 
@@ -116,15 +183,18 @@ public class playerController : MonoBehaviour
 
 
         //player roation when there is movement input
-        if ( direction != Vector2.zero && isPlayerGrounded)
+        if ( direction != Vector2.zero && isPlayerGrounded )
         {
             playerRotatingDirection = Mathf.Sign(Vector3.Dot(inputDirection.normalized, gameObject.transform.right));
-           // Debug.Log(playerRotatingDirection);
-            if (Vector3.Angle(gameObject.transform.forward, inputDirection) !=0 && Mathf.Abs(Vector3.Dot(inputDirection.normalized, gameObject.transform.right)) > 0.08)
+            // Debug.Log(playerRotatingDirection);
+             if (Vector3.Angle(gameObject.transform.forward, inputDirection) !=0 && Mathf.Abs(Vector3.Dot(inputDirection.normalized, gameObject.transform.right)) > 0.08 )
             {
                 gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
                 CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
             }
+            
+
+
         }
 
 
@@ -172,9 +242,8 @@ public class playerController : MonoBehaviour
         
         raycastDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.up); // direction of raycast, flip
 
-        
-        //RaycastHit hitinfo;
-        //Physics.Raycast(gameObject.transform.position, raycastDirection, out hitinfo, RayCastLength, Walkable);
+        RaycastHit hitSurfaceinfo;
+        Physics.Raycast(gameObject.transform.position, raycastDirection, out hitSurfaceinfo, RayCastLength, Walkable);
 
         Debug.DrawRay(gameObject.transform.position, raycastDirection * RayCastLength, Color.red); // ground check ray visualized
 
@@ -184,9 +253,9 @@ public class playerController : MonoBehaviour
             
             // currentGravity = 0;
             rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
-           
-            Rotating = true;
-            
+           // RecoverOnlyOn = hitSurfaceinfo.transform.gameObject;
+             Rotating = true;
+            //Debug.Log(RecoverOnlyOn.name);
         }
 
         // STAGE #2 : determine flip rotation and its direction depending on input
@@ -331,33 +400,37 @@ public class playerController : MonoBehaviour
         // Debug.Log((gameObject.transform.eulerAngles.x));
         // Debug.Log(SphereCastInfo.collider.gameObject.name);
         // Debug.Log(Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal));
+       // if(SphereCastInfo.transform.gameObject == RecoverOnlyOn)
+       // {
 
-        // recover if there is rotation in players X axis
-        if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1 )
+            // recover if there is rotation in players X axis
+            if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1)
+            {
+                if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) < -0.01) //-0.01
+            {
+                    transform.Rotate(new Vector3(-PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+                }
+                else if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) > 0.01) //0.01
+            {
+                    transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+                }
+            }
+
+
+            // recover if there is rotation in players Z axis
+            if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1) //0.1
         {
-            if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) < -0.01)
+                if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) < -0.01) //-0.01
             {
-                transform.Rotate(new Vector3(-PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
-            }
-            else if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) > 0.01)
+                    transform.Rotate(new Vector3(0, 0, PlayerRecoverySpeed * Time.deltaTime), Space.Self);
+                }
+                else if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) > 0.01) //0.01
             {
-                transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+                    transform.Rotate(new Vector3(0, 0, -PlayerRecoverySpeed * Time.deltaTime), Space.Self);
+                }
             }
-        }
+       // }
         
-
-        // recover if there is rotation in players Z axis
-        if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1)
-        {
-            if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) < -0.01)
-            {
-                transform.Rotate(new Vector3(0, 0, PlayerRecoverySpeed * Time.deltaTime), Space.Self);
-            }
-            else if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) > 0.01)
-            {
-                transform.Rotate(new Vector3(0, 0, -PlayerRecoverySpeed * Time.deltaTime), Space.Self);
-            }
-        }
 
     }
 

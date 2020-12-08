@@ -57,6 +57,14 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""d89ddab0-aecd-4e34-aea2-74b3f79d2117"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -65,7 +73,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""id"": ""dd2e5475-3901-4b74-89fe-093a048e9875"",
                     ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""move"",
                     ""isComposite"": true,
@@ -389,6 +397,28 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""action"": ""Shooting"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f5d8b704-f296-469c-ab7b-41e023ef7bb9"",
+                    ""path"": ""<XInputController>/leftStickPress"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""xBoxController"",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d025d71-8379-4ff4-ace9-5962a5e7d39b"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": ""keyboard&mouse"",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -430,6 +460,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         m_Player_TEMPcameratoggle = m_Player.FindAction("TEMPcameratoggle", throwIfNotFound: true);
         m_Player_flipGravityPlayer = m_Player.FindAction("flipGravityPlayer", throwIfNotFound: true);
         m_Player_Shooting = m_Player.FindAction("Shooting", throwIfNotFound: true);
+        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -484,6 +515,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_TEMPcameratoggle;
     private readonly InputAction m_Player_flipGravityPlayer;
     private readonly InputAction m_Player_Shooting;
+    private readonly InputAction m_Player_Sprint;
     public struct PlayerActions
     {
         private @DefaultControls m_Wrapper;
@@ -493,6 +525,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         public InputAction @TEMPcameratoggle => m_Wrapper.m_Player_TEMPcameratoggle;
         public InputAction @flipGravityPlayer => m_Wrapper.m_Player_flipGravityPlayer;
         public InputAction @Shooting => m_Wrapper.m_Player_Shooting;
+        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -517,6 +550,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Shooting.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
                 @Shooting.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
                 @Shooting.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
+                @Sprint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
+                @Sprint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
+                @Sprint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -536,6 +572,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Shooting.started += instance.OnShooting;
                 @Shooting.performed += instance.OnShooting;
                 @Shooting.canceled += instance.OnShooting;
+                @Sprint.started += instance.OnSprint;
+                @Sprint.performed += instance.OnSprint;
+                @Sprint.canceled += instance.OnSprint;
             }
         }
     }
@@ -565,5 +604,6 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         void OnTEMPcameratoggle(InputAction.CallbackContext context);
         void OnFlipGravityPlayer(InputAction.CallbackContext context);
         void OnShooting(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
     }
 }

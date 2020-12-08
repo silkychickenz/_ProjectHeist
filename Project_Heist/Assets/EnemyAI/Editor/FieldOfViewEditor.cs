@@ -21,13 +21,16 @@ namespace EnemyAI
 				// Define FOV arc boundaries
 				Vector3 viewAngleA = DirFromAngle(fov.transform, -fov.viewAngle / 2, false);
 				Vector3 viewAngleB = DirFromAngle(fov.transform, fov.viewAngle / 2, false);
-				Vector3 viewAngleC = DirFromAngle(fov.transform, fov.viewAngle / 2, false);
-				// Draw FOV area (arc)
+				Vector3 viewAngleC = Quaternion.Euler(90, 0, 0) * viewAngleB;
+				Vector3 viewAngleD = Quaternion.Euler(90, 0, 0) * viewAngleA;
+				// Draw FOV area (arc x-z)
 				Handles.DrawWireArc(fov.transform.position, Vector3.up, viewAngleA, fov.viewAngle, fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleA * fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleB * fov.viewRadius);
-				Handles.DrawWireArc(fov.transform.position, Vector3.forward, (viewAngleA + viewAngleB)/2, fov.viewAngle/2, fov.viewRadius);
+				//(arc x-y)
+				Handles.DrawWireArc(fov.transform.position, Vector3.forward, viewAngleD, fov.viewAngle, fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleC * fov.viewRadius);
+				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleD * fov.viewRadius);
 				// Draw line from NPC to target, if target in FOV
 				Handles.color = Color.yellow;
 				if (fov.targetInSight && fov.personalTarget != Vector3.zero)

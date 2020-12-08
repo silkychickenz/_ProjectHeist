@@ -20,6 +20,7 @@ public class InputManager : MonoBehaviour
 
     //store movement input
     private Vector2 move;
+    private bool startSprinting = false;
     //store camera input
     private Vector2 lookAround;
     // shooting input
@@ -50,8 +51,11 @@ public class InputManager : MonoBehaviour
         ShootingScript = Player.GetComponent<Shooting>();
         
 
-        // get input
+        // get Movement input
         Controls.Player.move.performed += moveDirection => move = (moveDirection.ReadValue<Vector2>());
+        Controls.Player.Sprint.performed += sprintToggle => startSprinting = !startSprinting;
+       
+
         Controls.Player.LookAround.performed += LookAround => lookAround = (LookAround.ReadValue<Vector2>());
         Controls.Player.flipGravityPlayer.performed += flipGravity => gravityFlipDirection = (flipGravity.ReadValue<Vector2>());
         Controls.Player.Shooting.performed += StartShooting => startShooting = true;
@@ -66,24 +70,23 @@ public class InputManager : MonoBehaviour
 
     void Start()
     {
-        LockCursor();   // lock and hide the cursor
-
-       
+        // LockCursor();   // lock and hide the cursor
+        
     }
 
 
     void Update()
     {
         // call methods
-        playerControllerScript.Movement(move);
+        playerControllerScript.Movement(move , startSprinting);
         playerControllerScript.PlayerRotation(lookAround, move);
         playerControllerScript.Gravity();
         playerControllerScript.PlayerAlwaysUpright();
 
         ShootingScript.Hitscan(startShooting);
-        
-        
-        
+
+        // Debug.Log(startSprinting);
+
         /*
         //GRAVITY FLIP
         playerControllerScript.GravityFlip(gravityFlipDirection, enableGravityFlip);
@@ -95,8 +98,8 @@ public class InputManager : MonoBehaviour
         
           */
 
-
-        if (TEMPcam <=0)  //TEMP
+        if (TEMPcam <= 0) //hold C to lock the camera
+        //if (TEMPcam >0)  //hold C to unlock the camera
         {
             playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
            
