@@ -56,6 +56,7 @@ public class Gravity : MonoBehaviour
 
             // currentGravity = 0;
            // rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
+            animator.SetBool("startJump", true);
             animator.SetBool("startGravityFlip", true);
             Rotating = true;
             //Debug.Log(RecoverOnlyOn.name);
@@ -183,6 +184,7 @@ public class Gravity : MonoBehaviour
                 currentRotationTracker = 0;
                 RotByDegrees = 0;
                 animator.SetBool("startGravityFlip", false);
+                animator.SetBool("startJump", false);
             }
 
         }
@@ -200,7 +202,7 @@ public class Gravity : MonoBehaviour
         {
 
             isPlayerGrounded = true;
-
+         
         }
 
         else

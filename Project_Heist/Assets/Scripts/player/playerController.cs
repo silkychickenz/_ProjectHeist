@@ -24,6 +24,9 @@ public class playerController : MonoBehaviour
     private bool isPlayerGrounded = true;
     [SerializeField]
     private float groundCheckDist = 0.2f;
+    [SerializeField]
+    private float runningGroundCheckDist = 5f;
+
 
     [Header("Camera")]
     [SerializeField]
@@ -63,23 +66,35 @@ public class playerController : MonoBehaviour
     }
 
     // player walk/run
-    public void Movement(Vector2 lookDirection, Vector2 direction, bool startSprinting)
+    public void Movement(Vector2 lookDirection, Vector2 direction, bool startSprinting , bool startJump)
     {
         #region raycast
         RaycastHit hitinfo;
-        if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
+        if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, 10, Walkable))
         {
-
-            isPlayerGrounded = true;
+            if (hitinfo.distance <= groundCheckDist)
+            {
+                isPlayerGrounded = true;
+            }
+            if (hitinfo.distance <= runningGroundCheckDist && startSprinting)
+            {
+                animator.SetBool("preventFalling", true);
+            }
+            else
+            {
+                animator.SetBool("preventFalling", false);
+            }
+              
 
         }
 
         else
         {
             isPlayerGrounded = false;
+            animator.SetBool("preventFalling", false);
         }
         #endregion
-
+        Debug.Log(hitinfo.distance);
         currentInPutDotProduct = Vector3.Dot(gameObject.transform.forward, inputDirection);
         inputDirection = (direction.x * CameraTarget.transform.right + direction.y * CameraTarget.transform.forward);
  
@@ -145,7 +160,16 @@ public class playerController : MonoBehaviour
             }
 
         }
+
+        #endregion
+
+        #region jump
+        if (isPlayerGrounded &&  startJump)
+        {
+            animator.SetBool("startJump", true);
+        }
         
+
         #endregion
 
         #region cleanup
@@ -153,7 +177,11 @@ public class playerController : MonoBehaviour
         {
             animator.SetBool("startWalking", false);
             CurrentDirectionalBlend = 0;
-            CurrentBlend = 0;
+            if (!startSprinting && !startJump)
+            {
+                CurrentBlend = 0;
+            }
+            
         }
         else if (inputDirection == Vector3.zero && isPlayerGrounded)
         {
@@ -173,6 +201,11 @@ public class playerController : MonoBehaviour
         if (CurrentBlend > 0 && !startSprinting) // blend from sprint to walk
         {
             CurrentBlend -= walkToRunTransationSpeed * Time.deltaTime;
+        }
+
+        if (!startJump)
+        {
+            animator.SetBool("startJump", false);
         }
 
         #endregion

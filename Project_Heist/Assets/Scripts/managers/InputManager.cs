@@ -28,6 +28,8 @@ public class InputManager : MonoBehaviour
     //gravity flip input
     private Vector2 gravityFlipDirection;
     private bool enableGravityFlip = true; // can you flip gravity?
+    // jump input
+    private bool Jump;
 
     [Header("Gravity")]
     [SerializeField]
@@ -63,6 +65,9 @@ public class InputManager : MonoBehaviour
         Controls.Player.Shooting.performed += StartShooting => startShooting = true;
         Controls.Player.Shooting.canceled += StartShooting => startShooting = false;
 
+        // get jump input
+        Controls.Player.Jump.performed += StartJumping => Jump = true;
+        
         Application.targetFrameRate = SetFPS;
 
         //TEMP
@@ -80,11 +85,13 @@ public class InputManager : MonoBehaviour
     void Update()
     {
         // call methods
-        playerControllerScript.Movement(lookAround, move, startSprinting);
+        playerControllerScript.Movement(lookAround, move, startSprinting , Jump);
+        Jump = false;
         playerControllerScript.PlayerAlwaysUpright();
-        // playerControllerScript.Gravity();
+      
         gravityScipt.ApplyGravity();
-       
+        
+
 
         ShootingScript.Hitscan(startShooting);
 
@@ -117,7 +124,7 @@ public class InputManager : MonoBehaviour
 
 
 
-    // lock and hide the cursor in game 
+    
 
 
 

@@ -52,6 +52,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Jump",
+                    "type": "PassThrough",
+                    "id": "22b2bfc2-d3a2-44ae-837b-805d3dbaf006",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -276,17 +284,6 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "down",
-                    "id": "ff6dc948-8332-418f-a92b-d7c3d9a3071a",
-                    "path": "<XInputController>/dpad/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "xBoxController",
-                    "action": "flipGravityPlayer",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "left",
                     "id": "62cf7d4a-bbf5-4f37-9754-805c3a454b52",
                     "path": "<XInputController>/dpad/left",
@@ -323,17 +320,6 @@
                     "name": "up",
                     "id": "7d15b11d-d122-4608-ae5a-62a069baa293",
                     "path": "<Keyboard>/upArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "keyboard&mouse",
-                    "action": "flipGravityPlayer",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "3fe8fe8f-8837-4b57-927a-6f4d05619746",
-                    "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "keyboard&mouse",
@@ -404,6 +390,28 @@
                     "processors": "",
                     "groups": "keyboard&mouse",
                     "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "484e952e-0fef-4e16-a72d-9f18b8db066a",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7e2fc161-108e-4283-b146-7bffdf693003",
+                    "path": "<XInputController>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
