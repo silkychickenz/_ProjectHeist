@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 813a4c03a65d3364c90ad03462913bfe
+guid: 650a2359ecacb6149a56ddcd0e43e47e
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: gravityFlip_end
+    second: falling
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -35,19 +35,19 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: gravityFlip_end
+      name: falling
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 64
+      lastFrame: 41
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1

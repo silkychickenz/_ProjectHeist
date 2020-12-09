@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
-    [Header("Get references")]
-    [SerializeField]
+    
     private Animator animator;
     private Rigidbody rb;
 
@@ -47,11 +46,6 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private LayerMask sphereCastDetectable;
     private GameObject RecoverOnlyOn;
-
-
-
-
-
 
     // camera system
     private Vector3 cameraRotation; // store camera rotation
@@ -141,13 +135,13 @@ public class playerController : MonoBehaviour
             if (currentInPutDotProduct <= -0.92) // REVERSE DIRECTION
             {
                 
-               CurrentDirectionalBlend = 0;
+               CurrentDirectionalBlend = 1;
 
             }
             else // RESET REVERSE DIRECTION
             {
                
-                CurrentDirectionalBlend = -1;
+                CurrentDirectionalBlend = 0;
             }
 
         }
@@ -158,12 +152,12 @@ public class playerController : MonoBehaviour
         if (!isPlayerGrounded)
         {
             animator.SetBool("startWalking", false);
-            CurrentDirectionalBlend = -1;
+            CurrentDirectionalBlend = 0;
             CurrentBlend = 0;
         }
         else if (inputDirection == Vector3.zero && isPlayerGrounded)
         {
-            CurrentDirectionalBlend = -1;
+            CurrentDirectionalBlend = 0;
             if (CurrentBlend > 0) // blend from sprint to walk
             {
                 CurrentBlend -= walkToRunTransationSpeed * Time.deltaTime;

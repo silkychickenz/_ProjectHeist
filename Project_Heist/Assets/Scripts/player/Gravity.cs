@@ -14,6 +14,7 @@ public class Gravity : MonoBehaviour
     private float groundCheckDist = 0.2f;
     private float currentGravity = 0;
     private Rigidbody rb;
+    private Animator animator;
 
     [Header("Gravity Flipping")]
     [SerializeField]
@@ -36,7 +37,7 @@ public class Gravity : MonoBehaviour
 
     void Start()
     {
-        
+        animator = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
     }
     public void GravityFlip(Vector2 direction, bool CanFlipGravity) // direction gets the input and CanFlipGravity gets the cooldown, 
@@ -54,12 +55,12 @@ public class Gravity : MonoBehaviour
         {
 
             // currentGravity = 0;
-            rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
-                                                                                             // RecoverOnlyOn = hitSurfaceinfo.transform.gameObject;
+           // rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
+            animator.SetBool("startGravityFlip", true);
             Rotating = true;
             //Debug.Log(RecoverOnlyOn.name);
         }
-
+        
         // STAGE #2 : determine flip rotation and its direction depending on input
         if (direction.y == 1)
         {
@@ -181,6 +182,7 @@ public class Gravity : MonoBehaviour
                 Rotating = false;
                 currentRotationTracker = 0;
                 RotByDegrees = 0;
+                animator.SetBool("startGravityFlip", false);
             }
 
         }
@@ -205,8 +207,6 @@ public class Gravity : MonoBehaviour
             isPlayerGrounded = false;
         }
 
-        //Debug.Log(currentGravity);
-
         if (!isPlayerGrounded && !tempGravityDisabler && currentGravity <= gravity)
         {
             currentGravity += (gravity * Time.deltaTime);
@@ -217,14 +217,16 @@ public class Gravity : MonoBehaviour
         else if (isPlayerGrounded)
         {
             currentGravity = 0;
+            
         }
 
         if (currentGravity > gravity)
         {
             currentGravity = gravity;
         }
-
+        animator.SetBool("isPlayergrounded", isPlayerGrounded);
     }
+
 
 
    
