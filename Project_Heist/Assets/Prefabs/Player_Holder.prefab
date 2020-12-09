@@ -601,7 +601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: 19
   isPlayerGrounded: 1
-  groundCheckDist: 0.8
+  groundCheckDist: 0.2
   Walkable:
     serializedVersion: 2
     m_Bits: 512

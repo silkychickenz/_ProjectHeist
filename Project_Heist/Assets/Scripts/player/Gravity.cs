@@ -195,6 +195,7 @@ public class Gravity : MonoBehaviour
     public void ApplyGravity()
     {
         RaycastHit hitinfo;
+        Debug.DrawRay(gameObject.transform.position, -gameObject.transform.up * groundCheckDist, Color.white);
         if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
         {
 

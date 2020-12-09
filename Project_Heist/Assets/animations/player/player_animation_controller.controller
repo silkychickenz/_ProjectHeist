@@ -117,6 +117,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: isPlayergrounded
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: startGravityFlip
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6491795901648895590}
   m_Solo: 0
