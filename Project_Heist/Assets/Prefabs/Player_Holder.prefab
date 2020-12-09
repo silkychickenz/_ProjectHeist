@@ -601,7 +601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: 19
   isPlayerGrounded: 1
-  groundCheckDist: 0.2
+  groundCheckDist: 0.8
   Walkable:
     serializedVersion: 2
     m_Bits: 512
@@ -609,7 +609,7 @@ MonoBehaviour:
   raycastDirection: {x: 0, y: 0, z: 0}
   GravityFlipStartForce: 8
   flipRotationSpeed: 1.5
-  MinDistanceBeforeFlip: 2.5
+  MinDistanceBeforeFlip: 0.8
 --- !u!1 &1024173831063573042
 GameObject:
   m_ObjectHideFlags: 0

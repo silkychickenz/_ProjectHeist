@@ -28,9 +28,9 @@ namespace EnemyAI
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleA * fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleB * fov.viewRadius);
 				//(arc x-y)
-				Handles.DrawWireArc(fov.transform.position, Vector3.forward, viewAngleD, fov.viewAngle, fov.viewRadius);
-				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleC * fov.viewRadius);
-				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleD * fov.viewRadius);
+				//Handles.DrawWireArc(fov.transform.position, Vector3.forward, viewAngleD, fov.viewAngle, fov.viewRadius);
+				//Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleC * fov.viewRadius);
+				//Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleD * fov.viewRadius);
 				// Draw line from NPC to target, if target in FOV
 				Handles.color = Color.yellow;
 				if (fov.targetInSight && fov.personalTarget != Vector3.zero)
