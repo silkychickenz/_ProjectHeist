@@ -94,7 +94,7 @@ public class playerController : MonoBehaviour
             animator.SetBool("preventFalling", false);
         }
         #endregion
-        Debug.Log(hitinfo.distance);
+        
         currentInPutDotProduct = Vector3.Dot(gameObject.transform.forward, inputDirection);
         inputDirection = (direction.x * CameraTarget.transform.right + direction.y * CameraTarget.transform.forward);
  
@@ -102,6 +102,7 @@ public class playerController : MonoBehaviour
         Debug.DrawRay(transform.position, inputDirection * 5, Color.green); // input direction
         Debug.DrawRay(CameraTarget.transform.position, CameraTarget.transform.forward * 5, Color.yellow);
         Debug.DrawRay(CameraTarget.transform.position, CameraTarget.transform.right * 5, Color.black);
+        //Debug.Log(hitinfo.distance);
         #endregion
 
         #region playerortation
@@ -127,7 +128,7 @@ public class playerController : MonoBehaviour
         #endregion
 
         #region walk
-        if (currentInPutDotProduct >= 0.95 && isPlayerGrounded) // go forward
+        if (currentInPutDotProduct >= 0.2 && isPlayerGrounded) // go forward
         {
             animator.SetBool("startWalking" , true);
             
@@ -138,7 +139,7 @@ public class playerController : MonoBehaviour
         #region sprinting
         if (startSprinting)
         {
-            if (startSprinting && currentInPutDotProduct >= 0.95) // blend from walk to sprint
+            if (startSprinting && currentInPutDotProduct >= 0.2) // blend from walk to sprint
             {
                 if (CurrentBlend <= 1)
                 {
@@ -147,7 +148,7 @@ public class playerController : MonoBehaviour
 
             }
           
-            if (currentInPutDotProduct <= -0.92) // REVERSE DIRECTION
+            if (currentInPutDotProduct <= -0.90) // REVERSE DIRECTION
             {
                 
                CurrentDirectionalBlend = 1;
@@ -233,13 +234,13 @@ public class playerController : MonoBehaviour
             cameraRotation.x = 50;
         }
 
-        if (cameraRotation.x < 330 && cameraRotation.x > 55)
+        if (cameraRotation.x < 290 && cameraRotation.x > 55) //cameraRotation.x < 330 && cameraRotation.x > 55
         {
-            cameraRotation.x = 330;
+            cameraRotation.x = 290;
         }
 
         // end clamp
-
+        Debug.Log(cameraRotation.x);
         CameraTarget.transform.localEulerAngles = cameraRotation;   // reassign the rotation
 
 
