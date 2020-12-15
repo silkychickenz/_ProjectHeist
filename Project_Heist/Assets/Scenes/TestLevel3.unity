@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2035111234}
-  m_IndirectSpecularColor: {r: 131.15268, g: 162.57007, b: 215.2687, a: 1}
+  m_IndirectSpecularColor: {r: 131.18076, g: 162.51416, b: 215.03311, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -33817,6 +33817,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 204310312, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
+      propertyPath: MinDistanceBeforeFlip
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 1024173829893073632, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 219.834
@@ -41336,6 +41340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 635012777}
+  enableGravityFlip: 1
   GravityFlipCooldownTimer: 1
   SetFPS: 500
 --- !u!114 &2136991715
