@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
     private bool startShooting;
     //gravity flip input
     private Vector2 gravityFlipDirection;
-    private bool enableGravityFlip = true; // can you flip gravity?
+    public bool enableGravityFlip = true; // can you flip gravity?
     // jump input
     private bool Jump;
 
@@ -77,7 +77,7 @@ public class InputManager : MonoBehaviour
 
     void Start()
     {
-        LockCursor();   // lock and hide the cursor
+        //LockCursor();   // lock and hide the cursor
         
     }
 

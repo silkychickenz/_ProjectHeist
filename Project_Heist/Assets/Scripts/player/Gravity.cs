@@ -30,7 +30,7 @@ public class Gravity : MonoBehaviour
     private float currentRotationTracker = 0;
     [SerializeField]
     private float MinDistanceBeforeFlip = 2; // how high should player jump before a backflip?
-    private bool isEnoughDistFromGround = false;
+    public bool isEnoughDistFromGround = false;
     private bool tempGravityDisabler = false; // disable the gravity temporaroly?
     private float RotByDegrees = 0;
     private bool Rotating = false;
@@ -42,7 +42,7 @@ public class Gravity : MonoBehaviour
     }
     public void GravityFlip(Vector2 direction, bool CanFlipGravity) // direction gets the input and CanFlipGravity gets the cooldown, 
     {
-
+        
         raycastDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.up); // direction of raycast, flip
 
         RaycastHit hitSurfaceinfo;
@@ -53,9 +53,9 @@ public class Gravity : MonoBehaviour
         // STAGE #1 :  add force and starting the gravity flip
         if (raycastDirection != Vector3.zero && CanFlipGravity && !isEnoughDistFromGround) // if there is input and its not on cooldowm
         {
-
+            Debug.Log("HERE");
             // currentGravity = 0;
-           // rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
+            // rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
             animator.SetBool("startJump", true);
             animator.SetBool("startGravityFlip", true);
             Rotating = true;
@@ -85,9 +85,16 @@ public class Gravity : MonoBehaviour
         {
             isEnoughDistFromGround = true;
         }
+       
         if (Mathf.Abs(currentRotationTracker) >= Mathf.Abs(RotByDegrees) && hitinfoDistance.distance <= MinDistanceBeforeFlip) // if the player is successfully completed a rotation and is withing minimum distance for flip
         {
             isEnoughDistFromGround = false;
+        }
+        //new
+        if (hitinfoDistance.distance <= MinDistanceBeforeFlip && isPlayerGrounded) // if the player is successfully completed a rotation and is withing minimum distance for flip
+        {
+            isEnoughDistFromGround = false;
+            animator.SetBool("startGravityFlip", false);
         }
 
 
@@ -196,13 +203,15 @@ public class Gravity : MonoBehaviour
     // apply gravity
     public void ApplyGravity()
     {
+        
         RaycastHit hitinfo;
         Debug.DrawRay(gameObject.transform.position, -gameObject.transform.up * groundCheckDist, Color.white);
         if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
         {
-
+            
             isPlayerGrounded = true;
-         
+           
+
         }
 
         else

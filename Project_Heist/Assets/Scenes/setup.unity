@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.3371, g: 325.05005, b: 430.21954, a: 1}
+  m_IndirectSpecularColor: {r: 262.33734, g: 325.08594, b: 430.3294, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1711,6 +1711,10 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 204310310}
+    - target: {fileID: 2942368305726888434, guid: 40f53ef287be57c4c867f7ed639d7953, type: 3}
+      propertyPath: GravityFlipCooldownTimer
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40f53ef287be57c4c867f7ed639d7953, type: 3}
 --- !u!1001 &817489306

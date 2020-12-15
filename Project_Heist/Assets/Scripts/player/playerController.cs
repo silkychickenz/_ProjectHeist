@@ -240,7 +240,7 @@ public class playerController : MonoBehaviour
         }
 
         // end clamp
-        Debug.Log(cameraRotation.x);
+       // Debug.Log(cameraRotation.x);
         CameraTarget.transform.localEulerAngles = cameraRotation;   // reassign the rotation
 
 
