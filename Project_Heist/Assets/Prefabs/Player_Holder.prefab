@@ -340,9 +340,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: {x: 0.1, y: 0.5, z: 1}
-  ShoulderOffset: {x: 0.31, y: 0, z: 0}
-  VerticalArmLength: 0.09
+  Damping: {x: 0, y: 0, z: 0}
+  ShoulderOffset: {x: 0, y: 0, z: 0}
+  VerticalArmLength: 0.3
   CameraSide: 1
   CameraDistance: 2
   CameraCollisionFilter:
@@ -391,7 +391,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1024173830885772194}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.30999947, y: 1.646, z: -2}
+  m_LocalPosition: {x: 0, y: 1.8560001, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1024173829893073632}
@@ -608,7 +608,7 @@ MonoBehaviour:
   RayCastLength: 100
   raycastDirection: {x: 0, y: 0, z: 0}
   GravityFlipStartForce: 8
-  flipRotationSpeed: 1.5
+  flipRotationSpeed: 3
   MinDistanceBeforeFlip: 0.8
 --- !u!1 &1024173831063573042
 GameObject:
@@ -635,7 +635,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1024173831063573042}
   m_LocalRotation: {x: 0.14380938, y: -0.004145964, z: 0.00060440146, w: 0.98959655}
-  m_LocalPosition: {x: 0.30999947, y: 1.646, z: -2}
+  m_LocalPosition: {x: 0, y: 1.8560001, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1024173830744914236}
@@ -691,6 +691,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1024173829893073632}
     m_Modifications:
+    - target: {fileID: 6883334936347893088, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 73fc32ee8907a9d4eb54f1a89512d490, type: 2}
+    - target: {fileID: 6883334936347893088, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: m_Height
+      value: 1.583191
+      objectReference: {fileID: 0}
+    - target: {fileID: 6883334936347893088, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: m_Center.y
+      value: 0.74659544
+      objectReference: {fileID: 0}
     - target: {fileID: 6883334936347893092, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
       propertyPath: shotOrigin
       value: 
@@ -699,6 +711,18 @@ PrefabInstance:
       propertyPath: TPScam
       value: 
       objectReference: {fileID: 1024173830885772193}
+    - target: {fileID: 6883334936347893095, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: runningGroundCheckDist
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6883334936347893100, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6883334936347893100, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6883334936347893113, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
