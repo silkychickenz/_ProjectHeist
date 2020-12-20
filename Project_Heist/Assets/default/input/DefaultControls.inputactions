@@ -46,6 +46,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Aiming",
+                    "type": "PassThrough",
+                    "id": "2dd10dfc-2560-406b-9162-787d05b52435",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Sprint",
                     "type": "PassThrough",
                     "id": "d89ddab0-aecd-4e34-aea2-74b3f79d2117",
@@ -412,6 +420,28 @@
                     "processors": "",
                     "groups": "xBoxController",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec6f55c2-1881-4297-b423-2c5e4efc0bf2",
+                    "path": "<XInputController>/leftTrigger",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "Aiming",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f0e07e84-afa1-4b03-a797-89b57a25a35e",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "Aiming",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

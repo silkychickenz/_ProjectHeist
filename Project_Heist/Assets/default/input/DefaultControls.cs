@@ -59,6 +59,14 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""Aiming"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""2dd10dfc-2560-406b-9162-787d05b52435"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Sprint"",
                     ""type"": ""PassThrough"",
                     ""id"": ""d89ddab0-aecd-4e34-aea2-74b3f79d2117"",
@@ -427,6 +435,28 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec6f55c2-1881-4297-b423-2c5e4efc0bf2"",
+                    ""path"": ""<XInputController>/leftTrigger"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": ""xBoxController"",
+                    ""action"": ""Aiming"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f0e07e84-afa1-4b03-a797-89b57a25a35e"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": ""keyboard&mouse"",
+                    ""action"": ""Aiming"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -468,6 +498,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         m_Player_TEMPcameratoggle = m_Player.FindAction("TEMPcameratoggle", throwIfNotFound: true);
         m_Player_flipGravityPlayer = m_Player.FindAction("flipGravityPlayer", throwIfNotFound: true);
         m_Player_Shooting = m_Player.FindAction("Shooting", throwIfNotFound: true);
+        m_Player_Aiming = m_Player.FindAction("Aiming", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
     }
@@ -524,6 +555,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_TEMPcameratoggle;
     private readonly InputAction m_Player_flipGravityPlayer;
     private readonly InputAction m_Player_Shooting;
+    private readonly InputAction m_Player_Aiming;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Jump;
     public struct PlayerActions
@@ -535,6 +567,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         public InputAction @TEMPcameratoggle => m_Wrapper.m_Player_TEMPcameratoggle;
         public InputAction @flipGravityPlayer => m_Wrapper.m_Player_flipGravityPlayer;
         public InputAction @Shooting => m_Wrapper.m_Player_Shooting;
+        public InputAction @Aiming => m_Wrapper.m_Player_Aiming;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -561,6 +594,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Shooting.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
                 @Shooting.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
                 @Shooting.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShooting;
+                @Aiming.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAiming;
+                @Aiming.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAiming;
+                @Aiming.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAiming;
                 @Sprint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                 @Sprint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                 @Sprint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
@@ -586,6 +622,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Shooting.started += instance.OnShooting;
                 @Shooting.performed += instance.OnShooting;
                 @Shooting.canceled += instance.OnShooting;
+                @Aiming.started += instance.OnAiming;
+                @Aiming.performed += instance.OnAiming;
+                @Aiming.canceled += instance.OnAiming;
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
@@ -621,6 +660,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         void OnTEMPcameratoggle(InputAction.CallbackContext context);
         void OnFlipGravityPlayer(InputAction.CallbackContext context);
         void OnShooting(InputAction.CallbackContext context);
+        void OnAiming(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
     }

@@ -24,6 +24,7 @@ public class InputManager : MonoBehaviour
     //store camera input
     private Vector2 lookAround;
     // shooting input
+    private bool startAiming;
     private bool startShooting;
     //gravity flip input
     private Vector2 gravityFlipDirection;
@@ -62,6 +63,8 @@ public class InputManager : MonoBehaviour
         Controls.Player.flipGravityPlayer.performed += flipGravity => gravityFlipDirection = (flipGravity.ReadValue<Vector2>());
 
         // get shooting input
+        Controls.Player.Aiming.performed += StartShooting => startAiming = true;
+        Controls.Player.Aiming.canceled += StartShooting => startAiming = false;
         Controls.Player.Shooting.performed += StartShooting => startShooting = true;
         Controls.Player.Shooting.canceled += StartShooting => startShooting = false;
 
@@ -85,17 +88,21 @@ public class InputManager : MonoBehaviour
     void Update()
     {
         // call methods
-        playerControllerScript.Movement(lookAround, move, startSprinting , Jump);
+      //  playerControllerScript.Movement(lookAround, move, startSprinting , Jump);
         Jump = false;
         playerControllerScript.PlayerAlwaysUpright();
       
         gravityScipt.ApplyGravity();
-        
 
 
-        ShootingScript.Hitscan(startShooting);
+        if (startAiming)
+        {
+            ShootingScript.Hitscan(startShooting);
+           
+        }
+        ShootingScript.ShootingMovement(move);
 
-        
+
 
         if (TEMPcam <= 0) //hold C to lock the camera
         //if (TEMPcam >0)  //hold C to unlock the camera
@@ -103,9 +110,9 @@ public class InputManager : MonoBehaviour
             playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
            
         }
-        
 
 
+       
 
 
     }
