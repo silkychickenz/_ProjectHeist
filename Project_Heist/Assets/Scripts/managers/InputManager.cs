@@ -80,16 +80,22 @@ public class InputManager : MonoBehaviour
 
     void Start()
     {
-        //LockCursor();   // lock and hide the cursor
+        LockCursor();   // lock and hide the cursor
         
     }
 
 
     void Update()
     {
-        // call methods
-      //  playerControllerScript.Movement(lookAround, move, startSprinting , Jump);
-        Jump = false;
+        if (!startAiming) //if player is not aiming
+        {
+            playerControllerScript.Movement(lookAround, move, startSprinting, Jump);
+            Jump = false;
+            ShootingScript.animator.SetBool("startShooting", false); // get out of shooting mode
+            ShootingScript.animator.SetLayerWeight(1, 0); // dopnt player firing animation
+            ShootingScript.Hitscan(false); // stop firing bullets
+        }
+        
         playerControllerScript.PlayerAlwaysUpright();
       
         gravityScipt.ApplyGravity();
@@ -97,17 +103,26 @@ public class InputManager : MonoBehaviour
 
         if (startAiming)
         {
-            ShootingScript.Hitscan(startShooting);
-           
-        }
-        ShootingScript.ShootingMovement(move);
+            ShootingScript.Hitscan(startShooting); // start firing
+            ShootingScript.ShootingMovement(move, startAiming); // enter shooting movement mode
+            if (startShooting)
+            {
+                ShootingScript.animator.SetLayerWeight(1, 1); // play shooting animation
+            }
+            else
+            {
+                ShootingScript.animator.SetLayerWeight(1, 0); // stop shooting anmation
+            }
 
+        }
+        
+       
 
 
         if (TEMPcam <= 0) //hold C to lock the camera
         //if (TEMPcam >0)  //hold C to unlock the camera
         {
-            playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
+           playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
            
         }
 

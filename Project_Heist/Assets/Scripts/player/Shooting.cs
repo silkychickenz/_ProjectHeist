@@ -14,10 +14,11 @@ public class Shooting : MonoBehaviour
     GameObject cameraFollowTarget;
 
     //movement
-    Animator animator;
+   public Animator animator;
     private Vector3 movementDirection;
-    [SerializeField]
-    private GameObject CameraTarget;
+
+    
+    
     private float playerRotatingDirection;
     [SerializeField]
     private float playerRotatingSpeed = 50;
@@ -28,38 +29,32 @@ public class Shooting : MonoBehaviour
         animator = gameObject.GetComponent<Animator>();
     }
 
-    public void ShootingMovement(Vector2 movementInput)
+    public void ShootingMovement(Vector2 movementInput, bool startAiming)
     {
-        Debug.DrawRay(transform.position, movementDirection * 5, Color.green); // input direction
-        movementDirection = (movementInput.x * CameraTarget.transform.right + movementInput.y * CameraTarget.transform.forward);
-        Debug.Log(movementDirection);
-        animator.SetBool("startShooting", true);
-       // animator.SetFloat("shootingX", movementDirection.x);
-       // animator.SetFloat("shootingY", movementDirection.z);
+        animator.SetBool("startShooting", startAiming);
+
+
+        // animator.SetFloat("shootingX", movementDirection.x);
+        // animator.SetFloat("shootingY", movementDirection.z);
 
         animator.SetFloat("shootingX", movementInput.x);
-        animator.SetFloat("shootingY", movementInput.y);
+            animator.SetFloat("shootingY", movementInput.y);
 
 
-       
-            playerRotatingDirection = Mathf.Sign(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right));
 
-            if (Vector3.Angle(gameObject.transform.forward, CameraTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right)) > 0.08)
+            playerRotatingDirection = Mathf.Sign(Vector3.Dot(cameraFollowTarget.transform.forward, gameObject.transform.right));
+
+            if (Vector3.Angle(gameObject.transform.forward, cameraFollowTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(cameraFollowTarget.transform.forward, gameObject.transform.right)) > 0.08)
             {
                 gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotatingSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
-                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotatingSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
+                cameraFollowTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotatingSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
             }
-            
 
 
-
+          
         
 
-
-
-
-
-
+        
     }
     public void Hitscan(bool StartShootingParticle)
     {
@@ -68,7 +63,7 @@ public class Shooting : MonoBehaviour
         if (StartShootingParticle)
         {
             bullets.enableEmission = true;
-
+            
             bullets.transform.rotation = cameraFollowTarget.transform.rotation;
 
             Ray HitscanRay = TPScam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
@@ -88,9 +83,12 @@ public class Shooting : MonoBehaviour
         if (!StartShootingParticle)
         {
             bullets.enableEmission = false;
+          
         }
 
 
 
     }
+
+   
 }
