@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.3371, g: 325.05005, b: 430.21954, a: 1}
+  m_IndirectSpecularColor: {r: 262.33734, g: 325.08594, b: 430.3294, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -267,7 +267,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1712
+  m_Name: pb_Mesh-1714
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -579,7 +579,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1682
+  m_Name: pb_Mesh-1684
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1081,7 +1081,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1692
+  m_Name: pb_Mesh-1694
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1314,7 +1314,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1702
+  m_Name: pb_Mesh-1704
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1680,6 +1680,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 204310312, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
+      propertyPath: gravity
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1024173829893073632, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 19.10481
@@ -1728,21 +1732,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_Holder
       objectReference: {fileID: 0}
-    - target: {fileID: 1024173831058365720, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: CameraTarget
-      value: 
-      objectReference: {fileID: 2071368799}
-    - target: {fileID: 1024173831058365720, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: playerRotatingSpeed
-      value: 150
+    - target: {fileID: 1024173831058365721, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
+      propertyPath: airSpeed
+      value: 10000
       objectReference: {fileID: 0}
-    - target: {fileID: 1024173831058365720, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: upperbodyAimTarget
-      value: 
+    - target: {fileID: 1024173831058365721, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
+      propertyPath: groundCheckDist
+      value: 0.4
       objectReference: {fileID: 0}
-    - target: {fileID: 1024173831058365720, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: upperbodyAimConstrain
-      value: 
+    - target: {fileID: 1024173831058365721, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
+      propertyPath: runningGroundCheckDist
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
@@ -2228,7 +2228,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1672
+  m_Name: pb_Mesh-1674
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2847,11 +2847,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8378725524209536780, guid: d027c06e23525c548ba70e72ba2e5685, type: 3}
   m_PrefabInstance: {fileID: 817489306}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2071368799 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1024173831058365723, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-  m_PrefabInstance: {fileID: 1058356782}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &463990813719560796
 PrefabInstance:

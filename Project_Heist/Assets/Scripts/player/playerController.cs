@@ -21,7 +21,7 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private LayerMask Walkable; // what layer can the player walk on
     [SerializeField]
-    private bool isPlayerGrounded = true;
+    public bool isPlayerGrounded = true;
     [SerializeField]
     private float groundCheckDist = 0.2f;
     [SerializeField]
@@ -50,6 +50,13 @@ public class playerController : MonoBehaviour
     private LayerMask sphereCastDetectable;
     private GameObject RecoverOnlyOn;
 
+    [Header("player air movement")]
+    [SerializeField]
+    float airSpeed = 5;
+    private Vector3 airInputDirection;
+    
+
+
     // camera system
     private Vector3 cameraRotation; // store camera rotation
 
@@ -62,6 +69,7 @@ public class playerController : MonoBehaviour
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
+        rb = gameObject.GetComponent<Rigidbody>();
         
     }
 
@@ -107,7 +115,7 @@ public class playerController : MonoBehaviour
 
         #region playerortation
         //player roation when there is movement input
-        if (direction != Vector2.zero && isPlayerGrounded)
+        if (direction != Vector2.zero && isPlayerGrounded) //
         {
             playerRotatingDirection = Mathf.Sign(Vector3.Dot(inputDirection.normalized, gameObject.transform.right));
             
@@ -121,9 +129,7 @@ public class playerController : MonoBehaviour
                 gameObject.transform.rotation *= Quaternion.AngleAxis(180 * playerRotationSpeed * Time.deltaTime, Vector3.up); 
                 CameraTarget.transform.rotation *= Quaternion.AngleAxis(-180 * playerRotationSpeed * Time.deltaTime, Vector3.up); 
             }
-
-
-
+       
         }
         #endregion
 
@@ -169,9 +175,11 @@ public class playerController : MonoBehaviour
         {
             animator.SetBool("startJump", true);
         }
-        
+
 
         #endregion
+
+        
 
         #region cleanup
         if (!isPlayerGrounded)
@@ -212,6 +220,29 @@ public class playerController : MonoBehaviour
         #endregion
         animator.SetFloat("MovementDirection_Parameter_blend", CurrentDirectionalBlend);
         animator.SetFloat("Movement_Parameter_blend", CurrentBlend);
+    }
+
+    public void AirMovemet(Vector2 direction)
+    {
+        if (!isPlayerGrounded)
+        {
+            //airInputDirection = (direction.x * CameraTarget.transform.right + direction.y * CameraTarget.transform.forward);
+            airInputDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward);
+            Debug.Log(airInputDirection);
+            airInputDirection.y = 0;
+            rb.AddForce(airInputDirection * airSpeed * Time.deltaTime);
+            Debug.DrawRay(transform.position, airInputDirection * 5, Color.red); // input direction
+
+            playerRotatingDirection = Mathf.Sign(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right));
+
+            if (Vector3.Angle(gameObject.transform.forward, CameraTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right)) > 0.1 )   
+            {
+                gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
+                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
+            }
+        }
+        
+
     }
   
     //rotate the thirdperson camera

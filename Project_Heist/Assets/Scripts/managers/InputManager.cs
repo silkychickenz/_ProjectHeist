@@ -87,12 +87,16 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
+        
+        
+
         if (!startAiming) //if player is not aiming
         {
             playerControllerScript.Movement(lookAround, move, startSprinting, Jump);
             Jump = false;
             ShootingScript.animator.SetBool("startShooting", false); // get out of shooting mode
             ShootingScript.animator.SetLayerWeight(1, 0); // dopnt player firing animation
+            ShootingScript.animator.SetLayerWeight(2, 0);
             ShootingScript.Hitscan(false); // stop firing bullets
         }
         
@@ -105,14 +109,27 @@ public class InputManager : MonoBehaviour
         {
             ShootingScript.Hitscan(startShooting); // start firing
             ShootingScript.ShootingMovement(move, startAiming); // enter shooting movement mode
-            if (startShooting)
+            if (startShooting && move == Vector2.zero)
             {
                 ShootingScript.animator.SetLayerWeight(1, 1); // play shooting animation
+               
             }
             else
             {
                 ShootingScript.animator.SetLayerWeight(1, 0); // stop shooting anmation
+                
             }
+            if (!gravityScipt.isPlayerGrounded)
+            {
+                ShootingScript.animator.SetLayerWeight(2, 1);
+            }
+            if (gravityScipt.isPlayerGrounded)
+            {
+                ShootingScript.animator.SetLayerWeight(2, 0);
+                playerControllerScript.isPlayerGrounded = true;
+            }
+
+
 
         }
         
@@ -141,6 +158,11 @@ public class InputManager : MonoBehaviour
         {
             enableGravityFlip = false;
             StartCoroutine(GravityFlipCooldown());
+        }
+
+        if (move != Vector2.zero)
+        {
+            playerControllerScript.AirMovemet(move);
         }
     }
 

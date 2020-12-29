@@ -599,7 +599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0cb852f98f52b47ade38a75ff5a224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 19
+  gravity: 18
   isPlayerGrounded: 1
   groundCheckDist: 0.2
   Walkable:
@@ -712,6 +712,10 @@ PrefabInstance:
       propertyPath: TPScam
       value: 
       objectReference: {fileID: 1024173830885772193}
+    - target: {fileID: 6883334936347893094, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: playerRotatingSpeed
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 6883334936347893095, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
       propertyPath: runningGroundCheckDist
       value: 3

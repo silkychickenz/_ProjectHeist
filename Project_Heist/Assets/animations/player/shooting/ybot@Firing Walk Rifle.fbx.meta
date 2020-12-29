@@ -1,17 +1,11 @@
 fileFormatVersion: 2
-guid: d46c400947af0c14e9cded56ce19ea7c
+guid: 4a75d6dcc8828134cb5ef92c5a146736
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Firing Rifle
-  - first:
-      74: -6591016593791855146
-    second: Firing Rifle rotated
-  - first:
-      74: 7680873416803343705
-    second: Firing Rifle in air
+    second: Firing Walk Rifle
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -41,42 +35,13 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Firing Rifle
+      name: Firing Walk Rifle
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 15
+      lastFrame: 33
       wrapMode: 0
       orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 1
-      loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
-      keepOriginalOrientation: 1
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Firing Rifle in air
-      takeName: mixamo.com
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 15
-      wrapMode: 0
-      orientationOffsetY: -44.66
       level: 0
       cycleOffset: 0
       loop: 0

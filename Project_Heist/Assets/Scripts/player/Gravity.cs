@@ -9,7 +9,7 @@ public class Gravity : MonoBehaviour
     [SerializeField]
     private float gravity = 19;
     [SerializeField]
-    private bool isPlayerGrounded = true;
+    public bool isPlayerGrounded = true;
     [SerializeField]
     private float groundCheckDist = 0.2f;
     private float currentGravity = 0;
