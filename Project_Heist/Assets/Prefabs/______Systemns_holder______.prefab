@@ -379,8 +379,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
-  GravityFlipCooldownTimer: 2
   enableGravityFlip: 1
+  GravityFlipCooldownTimer: 0.2
   SetFPS: 500
 --- !u!114 &2942368305726888435
 MonoBehaviour:
