@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 262.3371, g: 325.05005, b: 430.21954, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1660,14 +1660,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 204310312, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: gravity
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 204310312, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: MinDistanceBeforeFlip
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 1024173829893073632, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 19.10481
@@ -1715,26 +1707,6 @@ PrefabInstance:
     - target: {fileID: 1024173829893073635, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
       propertyPath: m_Name
       value: Player_Holder
-      objectReference: {fileID: 0}
-    - target: {fileID: 1024173830885772198, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.8560001
-      objectReference: {fileID: 0}
-    - target: {fileID: 1024173830885772198, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1024173831058365721, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: airSpeed
-      value: 10000
-      objectReference: {fileID: 0}
-    - target: {fileID: 1024173831058365721, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: groundCheckDist
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1024173831058365721, guid: c4b0c94ea385264439da42582b994fbf, type: 3}
-      propertyPath: runningGroundCheckDist
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4b0c94ea385264439da42582b994fbf, type: 3}

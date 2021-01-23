@@ -599,7 +599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0cb852f98f52b47ade38a75ff5a224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 18
+  gravity: 10
   isPlayerGrounded: 1
   groundCheckDist: 0.2
   Walkable:
@@ -609,7 +609,7 @@ MonoBehaviour:
   raycastDirection: {x: 0, y: 0, z: 0}
   GravityFlipStartForce: 8
   flipRotationSpeed: 3
-  MinDistanceBeforeFlip: 0.8
+  MinDistanceBeforeFlip: 0.5
   isEnoughDistFromGround: 0
 --- !u!1 &1024173831063573042
 GameObject:
@@ -718,7 +718,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6883334936347893095, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
       propertyPath: runningGroundCheckDist
-      value: 3
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6883334936347893095, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: airSpeed
+      value: 10000
       objectReference: {fileID: 0}
     - target: {fileID: 6883334936347893100, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
       propertyPath: m_CullingMode
