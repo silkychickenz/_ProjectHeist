@@ -90,7 +90,7 @@ public class AttackAction : Action
 		if (Physics.Raycast(ray, out RaycastHit hit, controller.viewRadius, controller.generalStats.shotMask.value))
 		{
 			// Hit something organic? Consider all layers in target mask as organic.
-			bool isOrganic = ((1 << hit.transform.root.gameObject.layer) & controller.generalStats.targetMask) != 0;
+			bool isOrganic = ((1 << hit.transform.gameObject.layer) & controller.generalStats.targetMask) != 0;
 			DoShot(controller, ray.direction, hit.point, hit.normal, isOrganic, hit.transform);
 		}
 		else
