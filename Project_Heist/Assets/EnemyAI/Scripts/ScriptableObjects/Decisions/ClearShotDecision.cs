@@ -30,7 +30,7 @@ public class ClearShotDecision : Decision
 				controller.generalStats.coverMask | controller.generalStats.obstacleMask);
 			// Hit something, is it the target? If true, shot is clear.
 			if(obscuredShot)
-				obscuredShot = !(hit.transform.root == controller.aimTarget.root);
+				obscuredShot = !(hit.transform == controller.aimTarget);
 		}
 		return !obscuredShot;
 	}

@@ -11,7 +11,7 @@ public class TargetDeadDecision : Decision
 		try
 		{
 			// Check dead condition on target health manager.
-			return controller.aimTarget.root.GetComponent<HealthManager>().dead;
+			return controller.aimTarget.GetComponent<HealthManager>().dead;
 		}
 		catch (UnassignedReferenceException)
 		{
