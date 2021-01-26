@@ -16,8 +16,15 @@ public class Door : MonoBehaviour
     {
        if(col.gameObject.tag == "Player"|| col.gameObject.tag == "Enemy")
         {
-            doorOpen = true;
-            DoorControl("Open");
+            if(Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.x)<1 && Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.x) > 360)
+            {
+                if (Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.z) < 1 && Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.z) > 360)
+                {
+                    doorOpen = true;
+                    DoorControl("Open");
+                }
+            }
+            
         }
     }
     private void OnTriggerExit(Collider col)
