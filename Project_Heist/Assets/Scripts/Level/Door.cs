@@ -16,9 +16,9 @@ public class Door : MonoBehaviour
     {
        if(col.gameObject.tag == "Player"|| col.gameObject.tag == "Enemy")
         {
-            if(Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.x)<1 && Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.x) > 360)
+            if(Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.x)<1 && Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.x) > 359)
             {
-                if (Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.z) < 1 && Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.z) > 360)
+                if (Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.z) < 1 && Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.z) > 359)
                 {
                     doorOpen = true;
                     DoorControl("Open");
