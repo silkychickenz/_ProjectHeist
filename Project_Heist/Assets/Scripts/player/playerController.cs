@@ -20,13 +20,14 @@ public class playerController : MonoBehaviour
     private float playerRotationSpeed = 15;
     [SerializeField]
     private LayerMask Walkable; // what layer can the player walk on
-    [SerializeField]
-    public bool isPlayerGrounded = true;
+    //[SerializeField]
+    //public bool isPlayerGrounded = true;
     [SerializeField]
     private float groundCheckDist = 0.2f;
     [SerializeField]
     private float runningGroundCheckDist = 5f;
 
+    
 
     [Header("Camera")]
     [SerializeField]
@@ -65,6 +66,12 @@ public class playerController : MonoBehaviour
     private Vector3 inputDirection; // vector 3 version of the directional input
     private float playerRotatingDirection;
 
+    [Header(" new player movement")]
+    [SerializeField]
+    public bool isPlayerGrounded = true;
+    [SerializeField]
+    private float MaxPlayerWalkSpeed = 5, MaxPlayerRunSpeed = 10, jumpForce = 10;
+    private float MovementForce = 0;
 
     void Start()
     {
@@ -74,152 +81,71 @@ public class playerController : MonoBehaviour
     }
 
     // player walk/run
-    public void Movement(Vector2 lookDirection, Vector2 direction, bool startSprinting , bool startJump)
+    public void newMovement(Vector2 direction, bool jump, bool startSprint)
     {
-        #region raycast
-        RaycastHit hitinfo;
-        if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, 10, Walkable))
-        {
-            if (hitinfo.distance <= groundCheckDist)
-            {
-                isPlayerGrounded = true;
-            }
-            if (hitinfo.distance <= runningGroundCheckDist && startSprinting)
-            {
-                animator.SetBool("preventFalling", true);
-            }
-            else
-            {
-                animator.SetBool("preventFalling", false);
-            }
-              
 
-        }
-
-        else
-        {
-            isPlayerGrounded = false;
-            animator.SetBool("preventFalling", false);
-        }
-        #endregion
-        
-        currentInPutDotProduct = Vector3.Dot(gameObject.transform.forward, inputDirection);
-        inputDirection = (direction.x * CameraTarget.transform.right + direction.y * CameraTarget.transform.forward);
- 
-        #region debug
-        Debug.DrawRay(transform.position, inputDirection * 5, Color.green); // input direction
-        Debug.DrawRay(CameraTarget.transform.position, CameraTarget.transform.forward * 5, Color.yellow);
-        Debug.DrawRay(CameraTarget.transform.position, CameraTarget.transform.right * 5, Color.black);
-        //Debug.Log(hitinfo.distance);
-        #endregion
+            
+        isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, 0.2f, Walkable);
+   
 
         #region playerortation
         //player roation when there is movement input
-        if (direction != Vector2.zero && isPlayerGrounded) //
+
+        inputDirection = (direction.x * CameraTarget.transform.right + direction.y * CameraTarget.transform.forward);
+        currentInPutDotProduct = Vector3.Dot(gameObject.transform.forward, inputDirection);
+       
+        if (direction != Vector2.zero && isPlayerGrounded)
         {
             playerRotatingDirection = Mathf.Sign(Vector3.Dot(inputDirection.normalized, gameObject.transform.right));
-            
+
             if (Vector3.Angle(gameObject.transform.forward, inputDirection) != 0 && Mathf.Abs(Vector3.Dot(inputDirection.normalized, gameObject.transform.right)) > 0.08)
             {
                 gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
                 CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
             }
-            if (Vector3.Angle(gameObject.transform.forward, inputDirection) != 0  && !startSprinting && currentInPutDotProduct <= -0.9)
+            if (Vector3.Angle(gameObject.transform.forward, inputDirection) != 0 && currentInPutDotProduct <= -0.9)
             {
-                gameObject.transform.rotation *= Quaternion.AngleAxis(180 * playerRotationSpeed * Time.deltaTime, Vector3.up); 
-                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-180 * playerRotationSpeed * Time.deltaTime, Vector3.up); 
+                gameObject.transform.rotation *= Quaternion.AngleAxis(180 * playerRotationSpeed * Time.deltaTime, Vector3.up);
+                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-180 * playerRotationSpeed * Time.deltaTime, Vector3.up);
             }
-       
+
         }
         #endregion
 
-        #region walk
-        if (currentInPutDotProduct >= 0.2 && isPlayerGrounded) // go forward
+        if (isPlayerGrounded)
         {
-            animator.SetBool("startWalking" , true);
-            
-
-        }
-        
-        #endregion
-        #region sprinting
-        if (startSprinting)
-        {
-            if (startSprinting && currentInPutDotProduct >= 0.2) // blend from walk to sprint
+            if (inputDirection != Vector3.zero)
             {
-                if (CurrentBlend <= 1)
+                animator.SetBool("StartRunning", true);
+                if (startSprint)
                 {
-                    CurrentBlend += walkToRunTransationSpeed * Time.deltaTime;
+                    MovementForce = MaxPlayerRunSpeed;
+                    animator.SetFloat("Movement", 1f);
                 }
-
-            }
-          
-            if (currentInPutDotProduct <= -0.90) // REVERSE DIRECTION
-            {
-                
-               CurrentDirectionalBlend = 1;
-
-            }
-            else // RESET REVERSE DIRECTION
-            {
-               
-                CurrentDirectionalBlend = 0;
-            }
-
-        }
-
-        #endregion
-
-        #region jump
-        if (isPlayerGrounded &&  startJump)
-        {
-            animator.SetBool("startJump", true);
-        }
-
-
-        #endregion
-
-        
-
-        #region cleanup
-        if (!isPlayerGrounded)
-        {
-            animator.SetBool("startWalking", false);
-            CurrentDirectionalBlend = 0;
-            if (!startSprinting && !startJump)
-            {
-                CurrentBlend = 0;
-            }
-            
-        }
-        else if (inputDirection == Vector3.zero && isPlayerGrounded)
-        {
-            CurrentDirectionalBlend = 0;
-            if (CurrentBlend > 0) // blend from sprint to walk
-            {
-                CurrentBlend -= walkToRunTransationSpeed * Time.deltaTime;
-                
+                else
+                {
+                    MovementForce = MaxPlayerWalkSpeed;
+                    animator.SetFloat("Movement", 0f);
+                }
+                rb.AddForce(gameObject.transform.forward * MovementForce * Time.deltaTime);
             }
             else
             {
-               animator.SetBool("startWalking", false);
+                animator.SetBool("StartRunning", false);
+            }
+
+            if (jump == true)
+            {
+                animator.SetTrigger("Jump");
+                rb.AddForce(gameObject.transform.up * jumpForce * Time.deltaTime, ForceMode.Impulse);
+
             }
             
+            
         }
+        
 
-        if (CurrentBlend > 0 && !startSprinting) // blend from sprint to walk
-        {
-            CurrentBlend -= walkToRunTransationSpeed * Time.deltaTime;
-        }
 
-        if (!startJump)
-        {
-            animator.SetBool("startJump", false);
-        }
-
-        #endregion
-        animator.SetFloat("MovementDirection_Parameter_blend", CurrentDirectionalBlend);
-        animator.SetFloat("Movement_Parameter_blend", CurrentBlend);
     }
 
     public void AirMovemet(Vector2 direction)
@@ -228,7 +154,7 @@ public class playerController : MonoBehaviour
         {
             //airInputDirection = (direction.x * CameraTarget.transform.right + direction.y * CameraTarget.transform.forward);
             airInputDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward);
-            Debug.Log(airInputDirection);
+           // Debug.Log(airInputDirection);
             airInputDirection.y = 0;
             rb.AddForce(airInputDirection * airSpeed * Time.deltaTime);
             Debug.DrawRay(transform.position, airInputDirection * 5, Color.red); // input direction
@@ -327,7 +253,8 @@ public class playerController : MonoBehaviour
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(RotRecoveryCheckPos.transform.position + -gameObject.transform.up * SphereCastDistance, SphereCastRadius);
+        //Gizmos.DrawWireSphere(RotRecoveryCheckPos.transform.position + -gameObject.transform.up * SphereCastDistance, SphereCastRadius);
+        Gizmos.DrawWireSphere(gameObject.transform.position , 0.2f);
     }
 
 }

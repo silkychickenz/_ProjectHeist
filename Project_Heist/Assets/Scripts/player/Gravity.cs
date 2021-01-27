@@ -53,13 +53,11 @@ public class Gravity : MonoBehaviour
         // STAGE #1 :  add force and starting the gravity flip
         if (raycastDirection != Vector3.zero && CanFlipGravity && !isEnoughDistFromGround) // if there is input and its not on cooldowm
         {
-            Debug.Log("HERE");
-            // currentGravity = 0;
-            // rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
-            animator.SetBool("startJump", true);
-            animator.SetBool("startGravityFlip", true);
+           
+           rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
+           animator.SetTrigger("Jump");
             Rotating = true;
-            //Debug.Log(RecoverOnlyOn.name);
+            
         }
         
         // STAGE #2 : determine flip rotation and its direction depending on input
@@ -94,7 +92,7 @@ public class Gravity : MonoBehaviour
         if (hitinfoDistance.distance <= MinDistanceBeforeFlip && isPlayerGrounded) // if the player is successfully completed a rotation and is withing minimum distance for flip
         {
             isEnoughDistFromGround = false;
-            animator.SetBool("startGravityFlip", false);
+           
         }
 
 
@@ -190,8 +188,7 @@ public class Gravity : MonoBehaviour
                 Rotating = false;
                 currentRotationTracker = 0;
                 RotByDegrees = 0;
-                animator.SetBool("startGravityFlip", false);
-                animator.SetBool("startJump", false);
+              
             }
 
         }

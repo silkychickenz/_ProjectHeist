@@ -14,37 +14,38 @@ public class Shooting : MonoBehaviour
     GameObject cameraFollowTarget;
 
     //movement
-   public Animator animator;
+    public Animator animator;
+    Rigidbody rb;
     private Vector3 movementDirection;
+    [SerializeField]
+    float MovementForce = 10000;
 
-    
-    
     private float playerRotatingDirection;
     [SerializeField]
     private float playerRotatingSpeed = 50;
-
+    private Vector3 inputDirection;
     void Start()
     {
         bullets.enableEmission = false;
         animator = gameObject.GetComponent<Animator>();
+        rb = gameObject.GetComponent<Rigidbody>();
     }
 
     public void ShootingMovement(Vector2 movementInput, bool startAiming)
     {
-        animator.SetBool("startShooting", startAiming);
+        animator.SetBool("StartShooting", startAiming);
+        animator.SetFloat("ShootX", movementInput.x);
+        animator.SetFloat("ShootY", movementInput.y);
+
+        inputDirection = (movementInput.x * gameObject.transform.right + movementInput.y * gameObject.transform.forward);
+        rb.AddForce(inputDirection * MovementForce * Time.deltaTime);
+        
 
 
-        // animator.SetFloat("shootingX", movementDirection.x);
-        // animator.SetFloat("shootingY", movementDirection.z);
 
-        animator.SetFloat("shootingX", movementInput.x);
-            animator.SetFloat("shootingY", movementInput.y);
+        playerRotatingDirection = Mathf.Sign(Vector3.Dot(cameraFollowTarget.transform.forward, gameObject.transform.right));
 
-
-
-            playerRotatingDirection = Mathf.Sign(Vector3.Dot(cameraFollowTarget.transform.forward, gameObject.transform.right));
-
-            if (Vector3.Angle(gameObject.transform.forward, cameraFollowTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(cameraFollowTarget.transform.forward, gameObject.transform.right)) > 0.08)
+           if (Vector3.Angle(gameObject.transform.forward, cameraFollowTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(cameraFollowTarget.transform.forward, gameObject.transform.right)) > 0.08)
             {
                 gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotatingSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
                 cameraFollowTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotatingSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation

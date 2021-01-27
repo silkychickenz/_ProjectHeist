@@ -92,11 +92,11 @@ public class InputManager : MonoBehaviour
 
         if (!startAiming) //if player is not aiming
         {
-            playerControllerScript.Movement(lookAround, move, startSprinting, Jump);
+            
+            playerControllerScript.newMovement(move, Jump, startSprinting);
             Jump = false;
-            ShootingScript.animator.SetBool("startShooting", false); // get out of shooting mode
-            ShootingScript.animator.SetLayerWeight(1, 0); // dopnt player firing animation
-            ShootingScript.animator.SetLayerWeight(2, 0);
+            ShootingScript.animator.SetBool("StartShooting", false); // get out of shooting mode
+          
             ShootingScript.Hitscan(false); // stop firing bullets
         }
         
