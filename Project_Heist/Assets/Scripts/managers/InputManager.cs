@@ -72,7 +72,8 @@ public class InputManager : MonoBehaviour
 
         // get jump input
         Controls.Player.Jump.performed += StartJumping => Jump = true;
-        
+       
+
         Application.targetFrameRate = SetFPS;
 
         //TEMP

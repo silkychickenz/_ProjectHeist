@@ -15,6 +15,8 @@ public class Gravity : MonoBehaviour
     private float currentGravity = 0;
     private Rigidbody rb;
     private Animator animator;
+    [SerializeField]
+    private GameObject playerAvatar;
 
     [Header("Gravity Flipping")]
     [SerializeField]
@@ -39,7 +41,7 @@ public class Gravity : MonoBehaviour
     public bool flipForward;
     void Start()
     {
-        animator = gameObject.GetComponent<Animator>();
+        animator = playerAvatar.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
     }
     public void GravityFlip(Vector2 direction, bool CanFlipGravity, bool gravityFlipWheel) // direction gets the input and CanFlipGravity gets the cooldown, 
@@ -206,6 +208,7 @@ public class Gravity : MonoBehaviour
                 RotByDegrees = 0;
                 justFlippedGravity = true;
                 flipForward = false;
+                rb.velocity = Vector3.zero;
 
             }
 

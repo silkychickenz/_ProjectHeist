@@ -7,6 +7,8 @@ public class playerController : MonoBehaviour
     
     private Animator animator;
     private Rigidbody rb;
+    [SerializeField]
+    private GameObject playerAvatar;
 
     [Header("Camera")]
     [SerializeField]
@@ -29,6 +31,7 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private LayerMask sphereCastDetectable;
     Gravity gravityScript;
+    RaycastHit SphereCastInfo;
 
     // camera system
     private Vector3 cameraRotation; // store camera rotation
@@ -52,6 +55,7 @@ public class playerController : MonoBehaviour
     private float MovementForce = 0;
     private Vector3 moveForceDirection;
     float currentInPutDotProduct;
+    Vector3 groundPlayerCross;
 
     [Header(" PLAYER FALLING")]
     [SerializeField]
@@ -62,7 +66,7 @@ public class playerController : MonoBehaviour
 
     void Start()
     {
-        animator = gameObject.GetComponent<Animator>();
+        animator = playerAvatar.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
         gravityScript = gameObject.GetComponent<Gravity>();
         moveForceDirection = gameObject.transform.forward;
@@ -71,10 +75,11 @@ public class playerController : MonoBehaviour
     // player walk/run
     public void newMovement(Vector2 direction, bool jump, bool startSprint)
     {
+        playerAvatar.transform.localPosition = Vector3.zero;
 
-            
+        Debug.DrawRay(gameObject.transform.position, Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * 4, Color.green);
         isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, 0.2f, Walkable);
-   
+       
         #region playerortation
         //player roation when there is movement input
 
@@ -114,19 +119,30 @@ public class playerController : MonoBehaviour
                     MovementForce = MaxPlayerWalkSpeed;
                     animator.SetFloat("Movement", 0f);
                 }
-                rb.AddForce(gameObject.transform.forward * MovementForce * Time.deltaTime);
-                Debug.DrawRay(gameObject.transform.position, moveForceDirection * SphereCastDistance, Color.green);
+
+
+                //rb.velocity = groundPlayerCross;
+
+                groundPlayerCross = Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * MovementForce * Time.deltaTime;
+                transform.Translate(groundPlayerCross, Space.World);
+
+                //rb.AddForce( Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * MovementForce * Time.deltaTime);
+                //rb.AddForce(groundPlayerCross);
+                Debug.DrawRay(gameObject.transform.position, Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * 4, Color.green);
             }
             else
             {
+               // rb.velocity = new Vector3(0,rb.velocity.y,0);
                 animator.SetBool("StartRunning", false);
             }
 
             if (jump == true)
             {
                 animator.SetTrigger("Jump");
+                Debug.Log(jump);
                 rb.AddForce(gameObject.transform.up * jumpForce * Time.deltaTime, ForceMode.Impulse);
                
+
 
             }
             
@@ -175,7 +191,7 @@ public class playerController : MonoBehaviour
     public void PlayerAlwaysUpright()
     {
        
-        RaycastHit SphereCastInfo;
+        
         Physics.SphereCast(playerMidPoint.transform.position, SphereCastRadius, -gameObject.transform.up,out SphereCastInfo, SphereCastDistance, sphereCastDetectable, QueryTriggerInteraction.UseGlobal );
         Debug.DrawRay(playerMidPoint.transform.position, -gameObject.transform.up * SphereCastDistance, Color.magenta);
 
@@ -245,7 +261,8 @@ public class playerController : MonoBehaviour
         if (!isPlayerGrounded)
         {
             inputDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward);
-            rb.AddForce(inputDirection * airSpeed * Time.deltaTime);
+            //rb.AddForce(inputDirection * airSpeed * Time.deltaTime);
+            transform.Translate(inputDirection * airSpeed * Time.deltaTime, Space.World);
             Debug.DrawRay(transform.position, airInputDirection * 5, Color.red); // input direction
 
             playerRotatingDirection = Mathf.Sign(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right));

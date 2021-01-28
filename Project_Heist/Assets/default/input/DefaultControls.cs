@@ -448,7 +448,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""484e952e-0fef-4e16-a72d-9f18b8db066a"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.01,pressPoint=0.1)"",
                     ""processors"": """",
                     ""groups"": ""keyboard&mouse"",
                     ""action"": ""Jump"",

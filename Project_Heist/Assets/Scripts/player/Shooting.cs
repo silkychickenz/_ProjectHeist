@@ -14,6 +14,8 @@ public class Shooting : MonoBehaviour
     GameObject cameraFollowTarget;
 
     //movement
+    [SerializeField]
+    private GameObject playerAvatar;
     public Animator animator;
     Rigidbody rb;
     private Vector3 movementDirection;
@@ -27,7 +29,7 @@ public class Shooting : MonoBehaviour
     void Start()
     {
         bullets.enableEmission = false;
-        animator = gameObject.GetComponent<Animator>();
+        animator = playerAvatar.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
     }
 
@@ -38,7 +40,8 @@ public class Shooting : MonoBehaviour
         animator.SetFloat("ShootY", movementInput.y);
 
         inputDirection = (movementInput.x * gameObject.transform.right + movementInput.y * gameObject.transform.forward);
-        rb.AddForce(inputDirection * MovementForce * Time.deltaTime);
+        //rb.AddForce(inputDirection * MovementForce * Time.deltaTime);
+        transform.Translate(inputDirection * MovementForce * Time.deltaTime,Space.World);
         
 
 
