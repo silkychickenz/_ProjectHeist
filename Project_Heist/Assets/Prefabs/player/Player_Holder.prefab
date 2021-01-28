@@ -611,6 +611,8 @@ MonoBehaviour:
   flipRotationSpeed: 3
   MinDistanceBeforeFlip: 0.5
   isEnoughDistFromGround: 0
+  justFlippedGravity: 0
+  flipForward: 0
 --- !u!114 &1045772739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -739,7 +741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6883334936347893095, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
       propertyPath: airSpeed
-      value: 10000
+      value: 25000
       objectReference: {fileID: 0}
     - target: {fileID: 6883334936347893095, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
       propertyPath: MaxPlayerWalkSpeed
@@ -752,6 +754,14 @@ PrefabInstance:
     - target: {fileID: 6883334936347893095, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
       propertyPath: jumpForce
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 6883334936347893095, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: playerMidPoint
+      value: 
+      objectReference: {fileID: 1024173829932171646}
+    - target: {fileID: 6883334936347893095, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: fallCheckDistance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6883334936347893100, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
       propertyPath: m_CullingMode
@@ -825,12 +835,21 @@ PrefabInstance:
       propertyPath: hurtPrefab
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6883334937339658496, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+      propertyPath: m_Name
+      value: PlayerMidPoint
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6883334936347893089, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
     - {fileID: 6883334936347893090, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
     - {fileID: 6883334936347893092, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
     - {fileID: 6883334936347893115, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+--- !u!1 &1024173829932171646 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6883334937339658496, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
+  m_PrefabInstance: {fileID: 5886235550761959550}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1024173831058365702 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6883334936347893112, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}

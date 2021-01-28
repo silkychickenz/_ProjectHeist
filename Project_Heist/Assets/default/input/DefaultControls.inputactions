@@ -62,6 +62,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "GravityFlipWheel",
+                    "type": "PassThrough",
+                    "id": "23385399-78b5-44a6-ae17-2fe771c29ebc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Jump",
                     "type": "PassThrough",
                     "id": "22b2bfc2-d3a2-44ae-837b-805d3dbaf006",
@@ -282,8 +290,19 @@
                 },
                 {
                     "name": "up",
+                    "id": "196e2ede-8496-4091-9a8f-f00c2d893f1b",
+                    "path": "<XInputController>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "flipGravityPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
                     "id": "21f0b501-5298-433a-9727-7c9b5a3baa12",
-                    "path": "<XInputController>/dpad/up",
+                    "path": "<XInputController>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "xBoxController",
@@ -294,7 +313,7 @@
                 {
                     "name": "left",
                     "id": "62cf7d4a-bbf5-4f37-9754-805c3a454b52",
-                    "path": "<XInputController>/dpad/left",
+                    "path": "<XInputController>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "xBoxController",
@@ -305,7 +324,7 @@
                 {
                     "name": "right",
                     "id": "d50d972f-7737-4684-aa92-35764178ec6e",
-                    "path": "<XInputController>/dpad/right",
+                    "path": "<XInputController>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "xBoxController",
@@ -326,8 +345,19 @@
                 },
                 {
                     "name": "up",
+                    "id": "8474795c-3928-4798-b280-cba5e19341c3",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "flipGravityPlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
                     "id": "7d15b11d-d122-4608-ae5a-62a069baa293",
-                    "path": "<Keyboard>/upArrow",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "keyboard&mouse",
@@ -338,7 +368,7 @@
                 {
                     "name": "left",
                     "id": "88c64fbc-16da-40fa-91cf-9b8831e5dca5",
-                    "path": "<Keyboard>/leftArrow",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "keyboard&mouse",
@@ -349,7 +379,7 @@
                 {
                     "name": "right",
                     "id": "2bdcd988-4471-4526-980d-36db753579de",
-                    "path": "<Keyboard>/rightArrow",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "keyboard&mouse",
@@ -394,7 +424,7 @@
                     "name": "",
                     "id": "6d025d71-8379-4ff4-ace9-5962a5e7d39b",
                     "path": "<Keyboard>/leftShift",
-                    "interactions": "Press(behavior=2)",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "keyboard&mouse",
                     "action": "Sprint",
@@ -442,6 +472,28 @@
                     "processors": "",
                     "groups": "keyboard&mouse",
                     "action": "Aiming",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c9db718-1d9f-44e0-96f2-94f9f5c5a335",
+                    "path": "<XInputController>/leftShoulder",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "GravityFlipWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b4a847bf-abfe-4955-9820-f27ccaf114c2",
+                    "path": "<Keyboard>/q",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "GravityFlipWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

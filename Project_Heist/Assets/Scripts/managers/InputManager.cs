@@ -29,6 +29,7 @@ public class InputManager : MonoBehaviour
     //gravity flip input
     private Vector2 gravityFlipDirection;
     public bool enableGravityFlip = true; // can you flip gravity?
+    private bool gravityFlipWheel = false;
     // jump input
     private bool Jump;
 
@@ -60,6 +61,7 @@ public class InputManager : MonoBehaviour
         Controls.Player.LookAround.performed += LookAround => lookAround = (LookAround.ReadValue<Vector2>());
 
         // get gravity input
+        Controls.Player.GravityFlipWheel.performed += GravityFlipWheelToggle => gravityFlipWheel = !gravityFlipWheel;
         Controls.Player.flipGravityPlayer.performed += flipGravity => gravityFlipDirection = (flipGravity.ReadValue<Vector2>());
 
         // get shooting input
@@ -87,8 +89,9 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        
-        
+
+
+       playerControllerScript.playerFalling(move);
 
         if (!startAiming) //if player is not aiming
         {
@@ -109,23 +112,12 @@ public class InputManager : MonoBehaviour
         {
             ShootingScript.Hitscan(startShooting); // start firing
             ShootingScript.ShootingMovement(move, startAiming); // enter shooting movement mode
-            if (startShooting && move == Vector2.zero)
-            {
-                ShootingScript.animator.SetLayerWeight(1, 1); // play shooting animation
-               
-            }
-            else
-            {
-                ShootingScript.animator.SetLayerWeight(1, 0); // stop shooting anmation
-                
-            }
-            if (!gravityScipt.isPlayerGrounded)
-            {
-                ShootingScript.animator.SetLayerWeight(2, 1);
-            }
+            
+            
+           
             if (gravityScipt.isPlayerGrounded)
             {
-                ShootingScript.animator.SetLayerWeight(2, 0);
+                
                 playerControllerScript.isPlayerGrounded = true;
             }
 
@@ -153,17 +145,16 @@ public class InputManager : MonoBehaviour
     {
         //GRAVITY FLIP
         //playerControllerScript.GravityFlip(gravityFlipDirection, enableGravityFlip);
-        gravityScipt.GravityFlip(gravityFlipDirection, enableGravityFlip);
-        if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
-        {
-            enableGravityFlip = false;
-            StartCoroutine(GravityFlipCooldown());
-        }
+        
+            gravityScipt.GravityFlip(gravityFlipDirection, enableGravityFlip, gravityFlipWheel);
+            if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
+            {
+                enableGravityFlip = false;
+                StartCoroutine(GravityFlipCooldown());
+            }
+        
+        
 
-        if (move != Vector2.zero)
-        {
-            playerControllerScript.AirMovemet(move);
-        }
     }
 
 

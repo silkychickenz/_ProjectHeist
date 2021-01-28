@@ -75,6 +75,14 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""GravityFlipWheel"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""23385399-78b5-44a6-ae17-2fe771c29ebc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Jump"",
                     ""type"": ""PassThrough"",
                     ""id"": ""22b2bfc2-d3a2-44ae-837b-805d3dbaf006"",
@@ -295,8 +303,19 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""up"",
+                    ""id"": ""196e2ede-8496-4091-9a8f-f00c2d893f1b"",
+                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""xBoxController"",
+                    ""action"": ""flipGravityPlayer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
                     ""id"": ""21f0b501-5298-433a-9727-7c9b5a3baa12"",
-                    ""path"": ""<XInputController>/dpad/up"",
+                    ""path"": ""<XInputController>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""xBoxController"",
@@ -307,7 +326,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""62cf7d4a-bbf5-4f37-9754-805c3a454b52"",
-                    ""path"": ""<XInputController>/dpad/left"",
+                    ""path"": ""<XInputController>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""xBoxController"",
@@ -318,7 +337,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""d50d972f-7737-4684-aa92-35764178ec6e"",
-                    ""path"": ""<XInputController>/dpad/right"",
+                    ""path"": ""<XInputController>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""xBoxController"",
@@ -339,8 +358,19 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""up"",
+                    ""id"": ""8474795c-3928-4798-b280-cba5e19341c3"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""keyboard&mouse"",
+                    ""action"": ""flipGravityPlayer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
                     ""id"": ""7d15b11d-d122-4608-ae5a-62a069baa293"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""keyboard&mouse"",
@@ -351,7 +381,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""88c64fbc-16da-40fa-91cf-9b8831e5dca5"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""keyboard&mouse"",
@@ -362,7 +392,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""2bdcd988-4471-4526-980d-36db753579de"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""keyboard&mouse"",
@@ -407,7 +437,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""6d025d71-8379-4ff4-ace9-5962a5e7d39b"",
                     ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": ""Press(behavior=2)"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""keyboard&mouse"",
                     ""action"": ""Sprint"",
@@ -457,6 +487,28 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""action"": ""Aiming"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2c9db718-1d9f-44e0-96f2-94f9f5c5a335"",
+                    ""path"": ""<XInputController>/leftShoulder"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": ""xBoxController"",
+                    ""action"": ""GravityFlipWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4a847bf-abfe-4955-9820-f27ccaf114c2"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": ""keyboard&mouse"",
+                    ""action"": ""GravityFlipWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -500,6 +552,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         m_Player_Shooting = m_Player.FindAction("Shooting", throwIfNotFound: true);
         m_Player_Aiming = m_Player.FindAction("Aiming", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_GravityFlipWheel = m_Player.FindAction("GravityFlipWheel", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
     }
 
@@ -557,6 +610,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Shooting;
     private readonly InputAction m_Player_Aiming;
     private readonly InputAction m_Player_Sprint;
+    private readonly InputAction m_Player_GravityFlipWheel;
     private readonly InputAction m_Player_Jump;
     public struct PlayerActions
     {
@@ -569,6 +623,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         public InputAction @Shooting => m_Wrapper.m_Player_Shooting;
         public InputAction @Aiming => m_Wrapper.m_Player_Aiming;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+        public InputAction @GravityFlipWheel => m_Wrapper.m_Player_GravityFlipWheel;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -600,6 +655,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Sprint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                 @Sprint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                 @Sprint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
+                @GravityFlipWheel.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGravityFlipWheel;
+                @GravityFlipWheel.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGravityFlipWheel;
+                @GravityFlipWheel.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGravityFlipWheel;
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
@@ -628,6 +686,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
+                @GravityFlipWheel.started += instance.OnGravityFlipWheel;
+                @GravityFlipWheel.performed += instance.OnGravityFlipWheel;
+                @GravityFlipWheel.canceled += instance.OnGravityFlipWheel;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
@@ -662,6 +723,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         void OnShooting(InputAction.CallbackContext context);
         void OnAiming(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnGravityFlipWheel(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
     }
 }

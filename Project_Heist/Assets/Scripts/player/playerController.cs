@@ -8,27 +8,6 @@ public class playerController : MonoBehaviour
     private Animator animator;
     private Rigidbody rb;
 
-    [Header("player movement")]
-    [SerializeField]
-    [Range(0.0f, 1.0f)]
-    float walkToRunTransationSpeed;
-    [SerializeField]
-    float WalkToRunBlendLimit = 2;
-    public float CurrentBlend , CurrentDirectionalBlend;
-    float currentInPutDotProduct;
-    [SerializeField]
-    private float playerRotationSpeed = 15;
-    [SerializeField]
-    private LayerMask Walkable; // what layer can the player walk on
-    //[SerializeField]
-    //public bool isPlayerGrounded = true;
-    [SerializeField]
-    private float groundCheckDist = 0.2f;
-    [SerializeField]
-    private float runningGroundCheckDist = 5f;
-
-    
-
     [Header("Camera")]
     [SerializeField]
     private GameObject CameraTarget;
@@ -46,17 +25,10 @@ public class playerController : MonoBehaviour
     [SerializeField]
     float SphereCastDistance = 2f;
     [SerializeField]
-    private GameObject RotRecoveryCheckPos;
+    private GameObject playerMidPoint;
     [SerializeField]
     private LayerMask sphereCastDetectable;
-    private GameObject RecoverOnlyOn;
-
-    [Header("player air movement")]
-    [SerializeField]
-    float airSpeed = 5;
-    private Vector3 airInputDirection;
-    
-
+    Gravity gravityScript;
 
     // camera system
     private Vector3 cameraRotation; // store camera rotation
@@ -68,16 +40,32 @@ public class playerController : MonoBehaviour
 
     [Header(" new player movement")]
     [SerializeField]
+    private float playerRotationSpeed = 15;
+    [SerializeField]
+    private LayerMask Walkable; // what layer can the player walk on
+    [SerializeField]
     public bool isPlayerGrounded = true;
+    [SerializeField]
+    private float groundCheckDist = 0.2f;
     [SerializeField]
     private float MaxPlayerWalkSpeed = 5, MaxPlayerRunSpeed = 10, jumpForce = 10;
     private float MovementForce = 0;
+    private Vector3 moveForceDirection;
+    float currentInPutDotProduct;
+
+    [Header(" PLAYER FALLING")]
+    [SerializeField]
+    private float fallCheckDistance = 15;
+    [SerializeField]
+    float airSpeed = 5;
+    private Vector3 airInputDirection;
 
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
-        
+        gravityScript = gameObject.GetComponent<Gravity>();
+        moveForceDirection = gameObject.transform.forward;
     }
 
     // player walk/run
@@ -87,7 +75,6 @@ public class playerController : MonoBehaviour
             
         isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, 0.2f, Walkable);
    
-
         #region playerortation
         //player roation when there is movement input
 
@@ -128,6 +115,7 @@ public class playerController : MonoBehaviour
                     animator.SetFloat("Movement", 0f);
                 }
                 rb.AddForce(gameObject.transform.forward * MovementForce * Time.deltaTime);
+                Debug.DrawRay(gameObject.transform.position, moveForceDirection * SphereCastDistance, Color.green);
             }
             else
             {
@@ -138,6 +126,7 @@ public class playerController : MonoBehaviour
             {
                 animator.SetTrigger("Jump");
                 rb.AddForce(gameObject.transform.up * jumpForce * Time.deltaTime, ForceMode.Impulse);
+               
 
             }
             
@@ -148,28 +137,7 @@ public class playerController : MonoBehaviour
 
     }
 
-    public void AirMovemet(Vector2 direction)
-    {
-        if (!isPlayerGrounded)
-        {
-            //airInputDirection = (direction.x * CameraTarget.transform.right + direction.y * CameraTarget.transform.forward);
-            airInputDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward);
-           // Debug.Log(airInputDirection);
-            airInputDirection.y = 0;
-            rb.AddForce(airInputDirection * airSpeed * Time.deltaTime);
-            Debug.DrawRay(transform.position, airInputDirection * 5, Color.red); // input direction
-
-            playerRotatingDirection = Mathf.Sign(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right));
-
-            if (Vector3.Angle(gameObject.transform.forward, CameraTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right)) > 0.1 )   
-            {
-                gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
-                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
-            }
-        }
-        
-
-    }
+    
   
     //rotate the thirdperson camera
     public void RotateCamera(Vector2 lookDirection)
@@ -208,46 +176,86 @@ public class playerController : MonoBehaviour
     {
        
         RaycastHit SphereCastInfo;
-        Physics.SphereCast(RotRecoveryCheckPos.transform.position, SphereCastRadius, -gameObject.transform.up,out SphereCastInfo, SphereCastDistance, sphereCastDetectable, QueryTriggerInteraction.UseGlobal );
-        Debug.DrawRay(RotRecoveryCheckPos.transform.position, -gameObject.transform.up * SphereCastDistance, Color.magenta);
+        Physics.SphereCast(playerMidPoint.transform.position, SphereCastRadius, -gameObject.transform.up,out SphereCastInfo, SphereCastDistance, sphereCastDetectable, QueryTriggerInteraction.UseGlobal );
+        Debug.DrawRay(playerMidPoint.transform.position, -gameObject.transform.up * SphereCastDistance, Color.magenta);
 
-        //Debug.Log("NORMAL : " + Vector3.Angle(gameObject.transform.up, hitinfo.normal ));
-        //Debug.Log("DOT : " + Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal));
-        // Debug.Log((gameObject.transform.eulerAngles.x));
-        // Debug.Log(SphereCastInfo.collider.gameObject.name);
-        // Debug.Log(Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal));
-       // if(SphereCastInfo.transform.gameObject == RecoverOnlyOn)
-       // {
+        
+
+         if(gravityScript.justFlippedGravity)
+        {
 
             // recover if there is rotation in players X axis
             if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1)
             {
                 if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) < -0.01) //-0.01
-            {
+                {
                     transform.Rotate(new Vector3(-PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+                  //  moveForceDirection = Quaternion.AngleAxis(30 * Time.deltaTime, Vector3.right) * moveForceDirection;
                 }
                 else if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) > 0.01) //0.01
-            {
+                {
                     transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+                }
+                if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) < 0.6) //0.1
+                {
+                    gravityScript.justFlippedGravity = false;
                 }
             }
 
 
             // recover if there is rotation in players Z axis
             if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1) //0.1
-        {
-                if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) < -0.01) //-0.01
             {
+                if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) < -0.01) //-0.01
+                {
                     transform.Rotate(new Vector3(0, 0, PlayerRecoverySpeed * Time.deltaTime), Space.Self);
                 }
                 else if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) > 0.01) //0.01
-            {
+                {
                     transform.Rotate(new Vector3(0, 0, -PlayerRecoverySpeed * Time.deltaTime), Space.Self);
                 }
+
+                if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) < 0.6) //0.1
+                {
+                    gravityScript.justFlippedGravity = false;
+                }
             }
-       // }
+
+
+
+        }
         
 
+    }
+
+    public void playerFalling(Vector2 direction)
+    {
+        RaycastHit hitinfo;
+        Debug.DrawRay(playerMidPoint.transform.position, -gameObject.transform.up * fallCheckDistance, Color.white);
+        if (Physics.SphereCast(playerMidPoint.transform.position, 0.2f,-gameObject.transform.up, out hitinfo, fallCheckDistance, Walkable))
+        // if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, fallCheckDistance, Walkable))
+        {
+            animator.SetBool("falling", false);
+        }
+        else
+        {
+            animator.SetBool("falling", true);
+        }
+
+        if (!isPlayerGrounded)
+        {
+            inputDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward);
+            rb.AddForce(inputDirection * airSpeed * Time.deltaTime);
+            Debug.DrawRay(transform.position, airInputDirection * 5, Color.red); // input direction
+
+            playerRotatingDirection = Mathf.Sign(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right));
+
+            if (Vector3.Angle(gameObject.transform.forward, CameraTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right)) > 0.1)
+            {
+                gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
+                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
+            }
+        }
     }
 
     public void OnDrawGizmos()

@@ -34,13 +34,15 @@ public class Gravity : MonoBehaviour
     private bool tempGravityDisabler = false; // disable the gravity temporaroly?
     private float RotByDegrees = 0;
     private bool Rotating = false;
+    public bool justFlippedGravity;
 
+    public bool flipForward;
     void Start()
     {
         animator = gameObject.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
     }
-    public void GravityFlip(Vector2 direction, bool CanFlipGravity) // direction gets the input and CanFlipGravity gets the cooldown, 
+    public void GravityFlip(Vector2 direction, bool CanFlipGravity, bool gravityFlipWheel) // direction gets the input and CanFlipGravity gets the cooldown, 
     {
         
         raycastDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.up); // direction of raycast, flip
@@ -51,19 +53,26 @@ public class Gravity : MonoBehaviour
         Debug.DrawRay(gameObject.transform.position, raycastDirection * RayCastLength, Color.red); // ground check ray visualized
 
         // STAGE #1 :  add force and starting the gravity flip
-        if (raycastDirection != Vector3.zero && CanFlipGravity && !isEnoughDistFromGround) // if there is input and its not on cooldowm
+        if (raycastDirection != Vector3.zero && CanFlipGravity && !isEnoughDistFromGround && gravityFlipWheel) // if there is input and its not on cooldowm
         {
            
            rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
+           
            animator.SetTrigger("Jump");
             Rotating = true;
             
         }
-        
+       
         // STAGE #2 : determine flip rotation and its direction depending on input
         if (direction.y == 1)
         {
             RotByDegrees = -180;
+        }
+
+        if (direction.y == -1)
+        {
+            RotByDegrees = -90; // forward rotation
+            flipForward = true;
         }
 
         if (direction.x == 1)
@@ -102,20 +111,27 @@ public class Gravity : MonoBehaviour
             tempGravityDisabler = true;
 
             // STAGE #5 : apply rotation to player
-            if (Mathf.Abs(RotByDegrees) == 180) // rotate vertically
+            if (Mathf.Abs(RotByDegrees) == 180 && !flipForward) // rotate vertically
             {
 
                 transform.Rotate(new Vector3(0, 0, RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
             }
 
-            if (Mathf.Abs(RotByDegrees) == 90) // rotate right
+            if (Mathf.Abs(RotByDegrees) == 90 && !flipForward) // rotate right
             {
                 transform.Rotate(new Vector3(0, 0, RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
             }
 
-            if (Mathf.Abs(RotByDegrees) == -90) // rotate left
+            if (Mathf.Abs(RotByDegrees) == -90 && !flipForward) // rotate left
             {
                 transform.Rotate(new Vector3(0, 0, -RotByDegrees * flipRotationSpeed * Time.deltaTime), Space.Self);
+            }
+
+            if (Mathf.Abs(RotByDegrees) == 90 && flipForward) // rotate Forward
+            {
+                Debug.Log(RotByDegrees);
+                transform.Rotate(new Vector3(RotByDegrees * flipRotationSpeed * Time.deltaTime, 0, 0), Space.Self);
+                
             }
 
             currentRotationTracker += (RotByDegrees * flipRotationSpeed * Time.deltaTime); // keep track of how much player has rotated
@@ -188,7 +204,9 @@ public class Gravity : MonoBehaviour
                 Rotating = false;
                 currentRotationTracker = 0;
                 RotByDegrees = 0;
-              
+                justFlippedGravity = true;
+                flipForward = false;
+
             }
 
         }
@@ -201,20 +219,14 @@ public class Gravity : MonoBehaviour
     public void ApplyGravity()
     {
         
-        RaycastHit hitinfo;
-        Debug.DrawRay(gameObject.transform.position, -gameObject.transform.up * groundCheckDist, Color.white);
-        if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
-        {
-            
-            isPlayerGrounded = true;
-           
-
-        }
-
-        else
-        {
-            isPlayerGrounded = false;
-        }
+       // RaycastHit hitinfo;
+        //Debug.DrawRay(gameObject.transform.position, -gameObject.transform.up * groundCheckDist, Color.white);
+       // if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
+       
+        
+            isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, groundCheckDist, Walkable);
+       
+        
 
         if (!isPlayerGrounded && !tempGravityDisabler && currentGravity <= gravity)
         {
