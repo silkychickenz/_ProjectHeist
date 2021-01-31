@@ -62,6 +62,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "crouch",
+                    "type": "PassThrough",
+                    "id": "f6b923af-fa35-4cf7-9151-240bee2abf3b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "GravityFlipWheel",
                     "type": "PassThrough",
                     "id": "23385399-78b5-44a6-ae17-2fe771c29ebc",
@@ -494,6 +502,28 @@
                     "processors": "",
                     "groups": "keyboard&mouse",
                     "action": "GravityFlipWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "42744df7-2950-463d-b581-c8327252c071",
+                    "path": "<Keyboard>/leftCtrl",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4a1577e9-3480-4c09-b1cf-b70b8f5f399b",
+                    "path": "<XInputController>/buttonEast",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "crouch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
