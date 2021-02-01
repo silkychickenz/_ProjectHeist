@@ -1955,6 +1955,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ______Systemns_holder______
       objectReference: {fileID: 0}
+    - target: {fileID: 2942368304853870771, guid: 40f53ef287be57c4c867f7ed639d7953, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 2942368304853870772, guid: 40f53ef287be57c4c867f7ed639d7953, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.8045642
@@ -2126,25 +2130,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8795989786645378336, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
   m_PrefabInstance: {fileID: 8795989786834826999}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1018610655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018610647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73cd5e3dec415d240aae636642ceb75a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TPScam: {fileID: 1527120507}
-  cameraFollowTarget: {fileID: 1389818005}
-  playerAvatar: {fileID: 2141696619}
-  animator: {fileID: 0}
-  MovementForce: 2
-  runToCroushSlideForce: 30
-  playerRotatingSpeed: 300
 --- !u!4 &1030548487 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8378725524209536780, guid: d027c06e23525c548ba70e72ba2e5685, type: 3}
@@ -2616,11 +2601,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1389818005 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8795989787168312062, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
-  m_PrefabInstance: {fileID: 8795989786834826999}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1395021212 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4860040255661083622, guid: 7a72832c2fe9dec47b66ef00d4b240e3, type: 3}
@@ -2630,11 +2610,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7412928852380916615, guid: 21b7b6ea925e0024c99dd962b2c0d19a, type: 3}
   m_PrefabInstance: {fileID: 236208918}
-  m_PrefabAsset: {fileID: 0}
---- !u!20 &1527120507 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 3529490583373069886, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
-  m_PrefabInstance: {fileID: 8795989786834826999}
   m_PrefabAsset: {fileID: 0}
 --- !u!43 &1709320952
 Mesh:
@@ -3262,11 +3237,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8378725524209536780, guid: d027c06e23525c548ba70e72ba2e5685, type: 3}
   m_PrefabInstance: {fileID: 817489306}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2141696619 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8561566961119785352, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
-  m_PrefabInstance: {fileID: 8795989786834826999}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &463990813719560796
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3459,10 +3429,6 @@ PrefabInstance:
     - target: {fileID: 8795989786645378347, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8795989786645378349, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
-      propertyPath: m_Material
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3681ef71dfcfa4a4484fbd4b4d8f2bef, type: 3}
