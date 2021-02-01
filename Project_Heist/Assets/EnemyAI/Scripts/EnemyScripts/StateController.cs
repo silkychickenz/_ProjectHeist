@@ -108,6 +108,8 @@ namespace EnemyAI
 		void Awake()
 		{
 			// Setup the references.
+			if (aimTarget == null)
+				aimTarget = GameObject.FindObjectOfType<playerController>().gameObject.transform;
 			if (coverSpot == null)
 				coverSpot = new Dictionary<int, Vector3>();
 			coverSpot[this.GetHashCode()] = Vector3.positiveInfinity;
