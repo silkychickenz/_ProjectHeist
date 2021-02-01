@@ -16,15 +16,12 @@ public class Door : MonoBehaviour
     {
        if(col.gameObject.tag == "Player"|| col.gameObject.tag == "Enemy")
         {
-            if(Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.x)<1 && Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.x) > 360)
+            Debug.Log(Vector3.Dot(col.gameObject.transform.up, this.gameObject.transform.up));
+            if (Vector3.Dot(col.gameObject.transform.up, this.gameObject.transform.up) > 0.5)
             {
-                if (Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.z) < 1 && Mathf.Abs(col.gameObject.transform.rotation.eulerAngles.z) > 360)
-                {
-                    doorOpen = true;
-                    DoorControl("Open");
-                }
+                doorOpen = true;
+                DoorControl("Open");
             }
-            
         }
     }
     private void OnTriggerExit(Collider col)
