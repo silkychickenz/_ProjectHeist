@@ -40,7 +40,7 @@ public class Shooting : MonoBehaviour
         animator.SetFloat("ShootY", movementInput.y);
 
         inputDirection = (movementInput.x * gameObject.transform.right + movementInput.y * gameObject.transform.forward);
-        //rb.AddForce(inputDirection * MovementForce * Time.deltaTime);
+        
         transform.Translate(inputDirection * MovementForce * Time.deltaTime,Space.World);
         
 

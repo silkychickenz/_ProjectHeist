@@ -13,6 +13,9 @@ public class InputManager : MonoBehaviour
 
     //movement
     private playerController playerControllerScript;
+    private crouchMovement crouchMovementScript;
+    private bool crouchBoost = true;
+
     //shooting
     private Shooting ShootingScript;
     //gravity
@@ -21,6 +24,7 @@ public class InputManager : MonoBehaviour
     //store movement input
     private Vector2 move;
     private bool startSprinting = false;
+    private bool startCrouching = false;
     //store camera input
     private Vector2 lookAround;
     // shooting input
@@ -51,6 +55,9 @@ public class InputManager : MonoBehaviour
         // get reference
         Controls = new DefaultControls();
         playerControllerScript = Player.GetComponent<playerController>();
+        crouchMovementScript = Player.GetComponent<crouchMovement>();
+
+
         ShootingScript = Player.GetComponent<Shooting>();
         gravityScipt = Player.GetComponent<Gravity>();
 
@@ -59,6 +66,7 @@ public class InputManager : MonoBehaviour
         Controls.Player.move.performed += moveDirection => move = (moveDirection.ReadValue<Vector2>());
         Controls.Player.Sprint.performed += sprintToggle => startSprinting = !startSprinting;
         Controls.Player.LookAround.performed += LookAround => lookAround = (LookAround.ReadValue<Vector2>());
+        Controls.Player.crouch.performed += crouchToggle => startCrouching = !startCrouching;
 
         // get gravity input
         Controls.Player.GravityFlipWheel.performed += GravityFlipWheelToggle => gravityFlipWheel = !gravityFlipWheel;
@@ -96,9 +104,20 @@ public class InputManager : MonoBehaviour
 
         if (!startAiming) //if player is not aiming
         {
-            
-            playerControllerScript.newMovement(move, Jump, startSprinting);
-            Jump = false;
+            if (!startCrouching)
+            {
+                playerControllerScript.Movement(move, Jump, startSprinting);
+                Jump = false;
+                crouchBoost = true;
+                
+            }
+            if (startCrouching)
+            {
+                crouchMovementScript.CrouchMovement(move,startCrouching, crouchBoost);
+                crouchBoost = false;
+            }
+           
+
             ShootingScript.animator.SetBool("StartShooting", false); // get out of shooting mode
           
             ShootingScript.Hitscan(false); // stop firing bullets

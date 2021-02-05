@@ -75,6 +75,14 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""crouch"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""f6b923af-fa35-4cf7-9151-240bee2abf3b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""GravityFlipWheel"",
                     ""type"": ""PassThrough"",
                     ""id"": ""23385399-78b5-44a6-ae17-2fe771c29ebc"",
@@ -448,7 +456,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""484e952e-0fef-4e16-a72d-9f18b8db066a"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": ""Hold(duration=0.01,pressPoint=0.1)"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""keyboard&mouse"",
                     ""action"": ""Jump"",
@@ -509,6 +517,28 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""action"": ""GravityFlipWheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42744df7-2950-463d-b581-c8327252c071"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""xBoxController"",
+                    ""action"": ""crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a1577e9-3480-4c09-b1cf-b70b8f5f399b"",
+                    ""path"": ""<XInputController>/buttonEast"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""keyboard&mouse"",
+                    ""action"": ""crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -552,6 +582,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         m_Player_Shooting = m_Player.FindAction("Shooting", throwIfNotFound: true);
         m_Player_Aiming = m_Player.FindAction("Aiming", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_crouch = m_Player.FindAction("crouch", throwIfNotFound: true);
         m_Player_GravityFlipWheel = m_Player.FindAction("GravityFlipWheel", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
     }
@@ -610,6 +641,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Shooting;
     private readonly InputAction m_Player_Aiming;
     private readonly InputAction m_Player_Sprint;
+    private readonly InputAction m_Player_crouch;
     private readonly InputAction m_Player_GravityFlipWheel;
     private readonly InputAction m_Player_Jump;
     public struct PlayerActions
@@ -623,6 +655,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         public InputAction @Shooting => m_Wrapper.m_Player_Shooting;
         public InputAction @Aiming => m_Wrapper.m_Player_Aiming;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+        public InputAction @crouch => m_Wrapper.m_Player_crouch;
         public InputAction @GravityFlipWheel => m_Wrapper.m_Player_GravityFlipWheel;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -655,6 +688,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Sprint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                 @Sprint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                 @Sprint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
+                @crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @GravityFlipWheel.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGravityFlipWheel;
                 @GravityFlipWheel.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGravityFlipWheel;
                 @GravityFlipWheel.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGravityFlipWheel;
@@ -686,6 +722,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
+                @crouch.started += instance.OnCrouch;
+                @crouch.performed += instance.OnCrouch;
+                @crouch.canceled += instance.OnCrouch;
                 @GravityFlipWheel.started += instance.OnGravityFlipWheel;
                 @GravityFlipWheel.performed += instance.OnGravityFlipWheel;
                 @GravityFlipWheel.canceled += instance.OnGravityFlipWheel;
@@ -723,6 +762,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         void OnShooting(InputAction.CallbackContext context);
         void OnAiming(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
         void OnGravityFlipWheel(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
     }

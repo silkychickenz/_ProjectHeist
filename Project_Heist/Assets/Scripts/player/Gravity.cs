@@ -248,7 +248,7 @@ public class Gravity : MonoBehaviour
         {
             currentGravity = gravity;
         }
-        animator.SetBool("isPlayergrounded", isPlayerGrounded);
+        
     }
 
 

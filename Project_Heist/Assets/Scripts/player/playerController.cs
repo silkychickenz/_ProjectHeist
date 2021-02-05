@@ -73,10 +73,10 @@ public class playerController : MonoBehaviour
     }
 
     // player walk/run
-    public void newMovement(Vector2 direction, bool jump, bool startSprint)
+    public void Movement(Vector2 direction, bool jump, bool startSprint)
     {
         playerAvatar.transform.localPosition = Vector3.zero;
-
+        animator.SetBool("startCrouching", false);
         Debug.DrawRay(gameObject.transform.position, Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * 4, Color.green);
         isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, 0.2f, Walkable);
        
@@ -119,16 +119,15 @@ public class playerController : MonoBehaviour
                     MovementForce = MaxPlayerWalkSpeed;
                     animator.SetFloat("Movement", 0f);
                 }
-
-
-                //rb.velocity = groundPlayerCross;
-
-                groundPlayerCross = Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * MovementForce * Time.deltaTime;
-                transform.Translate(groundPlayerCross, Space.World);
-
-                //rb.AddForce( Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * MovementForce * Time.deltaTime);
-                //rb.AddForce(groundPlayerCross);
+                
+                    groundPlayerCross = Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * MovementForce * Time.deltaTime;
+                    transform.Translate(groundPlayerCross, Space.World);
+                
+                
                 Debug.DrawRay(gameObject.transform.position, Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * 4, Color.green);
+
+                
+                
             }
             else
             {
@@ -153,8 +152,6 @@ public class playerController : MonoBehaviour
 
     }
 
-    
-  
     //rotate the thirdperson camera
     public void RotateCamera(Vector2 lookDirection)
     {
