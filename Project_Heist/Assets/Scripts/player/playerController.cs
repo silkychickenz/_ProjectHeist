@@ -5,14 +5,18 @@ using UnityEngine;
 public class playerController : MonoBehaviour
 {
     
-    private Animator animator;
+    public Animator animator;
     private Rigidbody rb;
     [SerializeField]
     private GameObject playerAvatar;
+    [SerializeField]
+    ParticleSystem bullets;
 
     [Header("Camera")]
     [SerializeField]
     private GameObject CameraTarget;
+    [SerializeField]
+    private Camera mainCamera;
     [SerializeField]
     private float cameraRotationSpeed = 10;     // how fast does the camera rotate?
     [SerializeField]
@@ -51,7 +55,7 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private float groundCheckDist = 0.2f;
     [SerializeField]
-    private float MaxPlayerWalkSpeed = 5, MaxPlayerRunSpeed = 10, jumpForce = 10;
+    private float MaxPlayerWalkSpeed = 5, MaxPlayerRunSpeed = 10, MaxPlayerCrouchSpeed = 2, jumpForce = 10, runToCroushSlideForce = 30;
     private float MovementForce = 0;
     private Vector3 moveForceDirection;
     float currentInPutDotProduct;
@@ -73,81 +77,102 @@ public class playerController : MonoBehaviour
     }
 
     // player walk/run
-    public void Movement(Vector2 direction, bool jump, bool startSprint)
+    public void MovementAnimation(Vector2 direction, bool jump, bool startSprint)
     {
-        playerAvatar.transform.localPosition = Vector3.zero;
+      
         animator.SetBool("startCrouching", false);
-        Debug.DrawRay(gameObject.transform.position, Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * 4, Color.green);
-        isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, 0.2f, Walkable);
-       
-        #region playerortation
-        //player roation when there is movement input
-
-        inputDirection = (direction.x * CameraTarget.transform.right + direction.y * CameraTarget.transform.forward);
-        currentInPutDotProduct = Vector3.Dot(gameObject.transform.forward, inputDirection);
-       
-        if (direction != Vector2.zero && isPlayerGrounded)
-        {
-            playerRotatingDirection = Mathf.Sign(Vector3.Dot(inputDirection.normalized, gameObject.transform.right));
-
-            if (Vector3.Angle(gameObject.transform.forward, inputDirection) != 0 && Mathf.Abs(Vector3.Dot(inputDirection.normalized, gameObject.transform.right)) > 0.08)
-            {
-                gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
-                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
-            }
-            if (Vector3.Angle(gameObject.transform.forward, inputDirection) != 0 && currentInPutDotProduct <= -0.9)
-            {
-                gameObject.transform.rotation *= Quaternion.AngleAxis(180 * playerRotationSpeed * Time.deltaTime, Vector3.up);
-                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-180 * playerRotationSpeed * Time.deltaTime, Vector3.up);
-            }
-
-        }
-        #endregion
-
         if (isPlayerGrounded)
         {
-            if (inputDirection != Vector3.zero)
-            {
-                animator.SetBool("StartRunning", true);
-                if (startSprint)
-                {
-                    MovementForce = MaxPlayerRunSpeed;
-                    animator.SetFloat("Movement", 1f);
-                }
-                else
-                {
-                    MovementForce = MaxPlayerWalkSpeed;
-                    animator.SetFloat("Movement", 0f);
-                }
-                
-                    groundPlayerCross = Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * MovementForce * Time.deltaTime;
-                    transform.Translate(groundPlayerCross, Space.World);
-                
-                
-                Debug.DrawRay(gameObject.transform.position, Vector3.Cross(gameObject.transform.right, SphereCastInfo.normal) * 4, Color.green);
-
-                
-                
-            }
-            else
-            {
-               // rb.velocity = new Vector3(0,rb.velocity.y,0);
-                animator.SetBool("StartRunning", false);
-            }
-
             if (jump == true)
             {
                 animator.SetTrigger("Jump");
-                Debug.Log(jump);
-                rb.AddForce(gameObject.transform.up * jumpForce * Time.deltaTime, ForceMode.Impulse);
-               
+                
+            }
+           
+            animator.SetFloat("moveX", direction.x);
+            if (direction == Vector2.zero)
+            {
+                animator.SetFloat("moveX", 0);
+                animator.SetFloat("moveY", 0);
+                direction = Vector2.zero;
+            }
+            if (direction != Vector2.zero)
+            {
+                if (startSprint)
+                {
 
+                    animator.SetFloat("moveY", direction.y + 1);
+                }
+                else
+                {
+
+                    animator.SetFloat("moveY", direction.y);
+                }
 
             }
-            
-            
         }
+        if (!isPlayerGrounded)
+        {
+            animator.ResetTrigger("Jump");
+        }
+
+
+    }
+
+    public void ShootingMovementAnimation(Vector2 movementInput, bool startAiming)
+    {
+        animator.SetBool("StartShooting", startAiming);
+        animator.SetFloat("ShootX", movementInput.x);
+        animator.SetFloat("ShootY", movementInput.y);
+
+
+    }
+
+    public void CrouchMovementAnimation(Vector2 movementInput, bool startCrouching, bool boost)
+    {
+        if (boost)
+        {
+            //  rb.AddForce(transform.forward * runToCroushSlideForce, ForceMode.Impulse);
+        }
+
         
+        animator.SetBool("StartRunning", false);
+        animator.SetBool("startCrouching", startCrouching);
+        animator.SetFloat("crouchX", movementInput.x);
+        animator.SetFloat("crouchY", movementInput.y);
+
+    }
+
+    public void Hitscan(bool StartShootingParticle)
+    {
+
+
+        if (StartShootingParticle)
+        {
+            bullets.enableEmission = true;
+
+            bullets.transform.rotation = CameraTarget.transform.rotation;
+
+            Ray HitscanRay = mainCamera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
+            RaycastHit HitscanHitinfo;
+
+            if (Physics.Raycast(HitscanRay, out HitscanHitinfo))
+            {
+                if (HitscanHitinfo.transform.gameObject.tag == "Enemy")
+                {
+                    HitscanHitinfo.collider.SendMessageUpwards("HitCallback", new HealthManager.DamageInfo(HitscanHitinfo.point, transform.forward, 2, HitscanHitinfo.collider), SendMessageOptions.DontRequireReceiver);
+
+                    print("I'm looking at " + HitscanHitinfo.transform.name);
+                }
+
+            }
+        }
+        if (!StartShootingParticle)
+        {
+            bullets.enableEmission = false;
+
+        }
+
 
 
     }
@@ -182,6 +207,59 @@ public class playerController : MonoBehaviour
         CameraTarget.transform.localEulerAngles = cameraRotation;   // reassign the rotation
 
 
+    }
+
+    public void Movement(Vector2 direction, bool jump, bool startSprint, bool startCrouching, bool startAiming, bool crouchBoost)
+    {
+        Debug.DrawRay(gameObject.transform.position, Vector3.Cross(inputDirection, SphereCastInfo.normal) * 4, Color.red);
+        isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, 0.2f, Walkable);
+        inputDirection = (direction.y * gameObject.transform.right + direction.x * -gameObject.transform.forward);
+        playerAvatar.transform.localPosition = Vector3.zero;
+        if (isPlayerGrounded)
+        {
+            // if (crouchBoost)
+            // {
+            //rb.AddForce(transform.forward * runToCroushSlideForce, ForceMode.Impulse);
+            //}
+            
+            Debug.Log(startAiming);
+            if (startSprint && !startCrouching && !startAiming )
+            {
+                
+                MovementForce = MaxPlayerRunSpeed;
+            }
+            if(startCrouching)
+            {
+                
+                MovementForce = MaxPlayerCrouchSpeed;
+            }
+            
+            if(!startSprint && !startCrouching)
+            {
+                MovementForce = MaxPlayerWalkSpeed;
+                
+            }
+
+            groundPlayerCross = Vector3.Cross(inputDirection, SphereCastInfo.normal) * MovementForce * Time.deltaTime;
+            transform.Translate(groundPlayerCross, Space.World);
+
+            if (jump == true)
+            {
+                
+                rb.AddForce(gameObject.transform.up * jumpForce * Time.deltaTime, ForceMode.Impulse);
+
+            }
+
+
+        }
+        
+        playerRotatingDirection = Mathf.Sign(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right));
+
+        if (Vector3.Angle(gameObject.transform.forward, CameraTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right)) > 0.08)
+        {
+            gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
+            CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
+        }
     }
 
     // corect the player if there is anyrotation when grounded, make player always upright

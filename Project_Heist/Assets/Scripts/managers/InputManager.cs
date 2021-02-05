@@ -13,11 +13,10 @@ public class InputManager : MonoBehaviour
 
     //movement
     private playerController playerControllerScript;
-    private crouchMovement crouchMovementScript;
+    
     private bool crouchBoost = true;
 
-    //shooting
-    private Shooting ShootingScript;
+    
     //gravity
     private Gravity gravityScipt;
 
@@ -35,7 +34,7 @@ public class InputManager : MonoBehaviour
     public bool enableGravityFlip = true; // can you flip gravity?
     private bool gravityFlipWheel = false;
     // jump input
-    private bool Jump;
+    private bool Jump = false;
 
     [Header("Gravity")]
     [SerializeField]
@@ -55,10 +54,10 @@ public class InputManager : MonoBehaviour
         // get reference
         Controls = new DefaultControls();
         playerControllerScript = Player.GetComponent<playerController>();
-        crouchMovementScript = Player.GetComponent<crouchMovement>();
+        
 
 
-        ShootingScript = Player.GetComponent<Shooting>();
+       
         gravityScipt = Player.GetComponent<Gravity>();
 
 
@@ -79,7 +78,7 @@ public class InputManager : MonoBehaviour
         Controls.Player.Shooting.canceled += StartShooting => startShooting = false;
 
         // get jump input
-        Controls.Player.Jump.performed += StartJumping => Jump = true;
+        Controls.Player.Jump.performed += StartJumping => Jump = !Jump;
        
 
         Application.targetFrameRate = SetFPS;
@@ -99,42 +98,29 @@ public class InputManager : MonoBehaviour
     void Update()
     {
 
-
-       playerControllerScript.playerFalling(move);
-
         if (!startAiming) //if player is not aiming
         {
             if (!startCrouching)
             {
-                playerControllerScript.Movement(move, Jump, startSprinting);
-                Jump = false;
-                crouchBoost = true;
+                playerControllerScript.MovementAnimation(move, Jump, startSprinting);
+              
+                crouchBoost = false;
                 
             }
             if (startCrouching)
             {
-                crouchMovementScript.CrouchMovement(move,startCrouching, crouchBoost);
-                crouchBoost = false;
+                playerControllerScript.CrouchMovementAnimation(move,startCrouching, crouchBoost);
+                crouchBoost = true;
             }
-           
 
-            ShootingScript.animator.SetBool("StartShooting", false); // get out of shooting mode
-          
-            ShootingScript.Hitscan(false); // stop firing bullets
+            playerControllerScript.animator.SetBool("StartShooting", false); // get out of shooting mode
+            playerControllerScript.Hitscan(false); // stop firing bullets
         }
-        
-        playerControllerScript.PlayerAlwaysUpright();
-      
-        gravityScipt.ApplyGravity();
-
 
         if (startAiming)
         {
-            ShootingScript.Hitscan(startShooting); // start firing
-            ShootingScript.ShootingMovement(move, startAiming); // enter shooting movement mode
-            
-            
-           
+            playerControllerScript.Hitscan(startShooting); // start firing
+            playerControllerScript.ShootingMovementAnimation(move, startAiming); // enter shooting movement mode
             if (gravityScipt.isPlayerGrounded)
             {
                 
@@ -142,31 +128,19 @@ public class InputManager : MonoBehaviour
             }
 
 
-
         }
-        
-       
-
-
-        if (TEMPcam <= 0) //hold C to lock the camera
-        //if (TEMPcam >0)  //hold C to unlock the camera
-        {
-           playerControllerScript.RotateCamera(lookAround);   // control the thirdperson camera
-           
-        }
-
-
-       
-
-
+ 
     }
 
     private void FixedUpdate()
     {
-        //GRAVITY FLIP
-        //playerControllerScript.GravityFlip(gravityFlipDirection, enableGravityFlip);
-        
-            gravityScipt.GravityFlip(gravityFlipDirection, enableGravityFlip, gravityFlipWheel);
+
+        playerControllerScript.playerFalling(move);
+        playerControllerScript.PlayerAlwaysUpright();
+        playerControllerScript.Movement(move, Jump, startSprinting, startCrouching, startAiming, crouchBoost);
+        gravityScipt.ApplyGravity();
+        playerControllerScript.RotateCamera(lookAround);
+        gravityScipt.GravityFlip(gravityFlipDirection, enableGravityFlip, gravityFlipWheel);
             if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
             {
                 enableGravityFlip = false;
@@ -176,11 +150,6 @@ public class InputManager : MonoBehaviour
         
 
     }
-
-
-
-    
-
 
 
     public IEnumerator GravityFlipCooldown() // fravity flip cooldown timer
