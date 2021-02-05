@@ -221,15 +221,8 @@ public class Gravity : MonoBehaviour
     // apply gravity
     public void ApplyGravity()
     {
-        
-       // RaycastHit hitinfo;
-        //Debug.DrawRay(gameObject.transform.position, -gameObject.transform.up * groundCheckDist, Color.white);
-       // if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, groundCheckDist, Walkable))
        
-        
-            isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, groundCheckDist, Walkable);
-       
-        
+        isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, groundCheckDist, Walkable);
 
         if (!isPlayerGrounded && !tempGravityDisabler && currentGravity <= gravity)
         {

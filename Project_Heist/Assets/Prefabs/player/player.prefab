@@ -12,10 +12,8 @@ GameObject:
   - component: {fileID: 8795989786645378348}
   - component: {fileID: 8795989786645378349}
   - component: {fileID: 8795989786645378350}
-  - component: {fileID: 8795989786645378351}
   - component: {fileID: 8795989786645378345}
   - component: {fileID: 8795989786645378346}
-  - component: {fileID: 1018610655}
   m_Layer: 10
   m_Name: player
   m_TagString: Player
@@ -85,8 +83,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 865b32a987a8e8843a0f761bbb1d877b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   playerAvatar: {fileID: 8561566961119785352}
+  bullets: {fileID: 7029963352216116124}
   CameraTarget: {fileID: 8795989787168312062}
+  mainCamera: {fileID: 3529490583373069886}
   cameraRotationSpeed: 50
   playerRotatingWithCameraSpeed: 10
   PlayerRecoverySpeed: 50
@@ -104,28 +105,11 @@ MonoBehaviour:
   groundCheckDist: 0.4
   MaxPlayerWalkSpeed: 5
   MaxPlayerRunSpeed: 10
-  jumpForce: 4000
+  MaxPlayerCrouchSpeed: 2
+  jumpForce: 1000
+  runToCroushSlideForce: 30
   fallCheckDistance: 5
   airSpeed: 10
---- !u!114 &8795989786645378351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8795989786645378336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 185bfe19ed5d8514abbbdb4c516f4db0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TPScam: {fileID: 3529490583373069886}
-  bullets: {fileID: 7029963352216116124}
-  cameraFollowTarget: {fileID: 8795989787168312062}
-  playerAvatar: {fileID: 8561566961119785352}
-  animator: {fileID: 0}
-  MovementForce: 5
-  playerRotatingSpeed: 300
 --- !u!114 &8795989786645378345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0cb852f98f52b47ade38a75ff5a224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 50
+  gravity: 200
   isPlayerGrounded: 1
   groundCheckDist: 0.2
   playerAvatar: {fileID: 8561566961119785352}
@@ -170,25 +154,6 @@ MonoBehaviour:
   canvas: {fileID: 0}
   hurtPrefab: {fileID: 0}
   decayFactor: 0.8
---- !u!114 &1018610655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8795989786645378336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73cd5e3dec415d240aae636642ceb75a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TPScam: {fileID: 3529490583373069886}
-  cameraFollowTarget: {fileID: 8795989787168312062}
-  playerAvatar: {fileID: 8561566961119785352}
-  animator: {fileID: 0}
-  MovementForce: 2
-  runToCroushSlideForce: 30
-  playerRotatingSpeed: 300
 --- !u!1 &8795989787168312062
 GameObject:
   m_ObjectHideFlags: 0

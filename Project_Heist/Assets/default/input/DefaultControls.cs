@@ -92,9 +92,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Jump"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""22b2bfc2-d3a2-44ae-837b-805d3dbaf006"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -456,7 +456,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""484e952e-0fef-4e16-a72d-9f18b8db066a"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": ""keyboard&mouse"",
                     ""action"": ""Jump"",
@@ -467,7 +467,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""7e2fc161-108e-4283-b146-7bffdf693003"",
                     ""path"": ""<XInputController>/buttonSouth"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": ""xBoxController"",
                     ""action"": ""Jump"",
