@@ -100,21 +100,22 @@ public class InputManager : MonoBehaviour
 
         if (!startAiming) //if player is not aiming
         {
-            if (!startCrouching)
-            {
-                playerControllerScript.MovementAnimation(move, Jump, startSprinting);
-              
-                crouchBoost = false;
-                
-            }
-            if (startCrouching)
-            {
-                playerControllerScript.CrouchMovementAnimation(move,startCrouching, crouchBoost);
-                crouchBoost = true;
-            }
+           
 
             playerControllerScript.animator.SetBool("StartShooting", false); // get out of shooting mode
             playerControllerScript.Hitscan(false); // stop firing bullets
+        }
+        if (!startCrouching)
+        {
+            playerControllerScript.MovementAnimation(move, Jump, startSprinting);
+
+            crouchBoost = false;
+
+        }
+        if (startCrouching)
+        {
+            playerControllerScript.CrouchMovementAnimation(move, startCrouching, crouchBoost, startAiming);
+            crouchBoost = true;
         }
 
         if (startAiming)

@@ -90,6 +90,7 @@ MonoBehaviour:
   mainCamera: {fileID: 3529490583373069886}
   cameraRotationSpeed: 50
   playerRotatingWithCameraSpeed: 10
+  maxCameraRotation: 60
   PlayerRecoverySpeed: 50
   SphereCastRadius: 0.3
   SphereCastDistance: 0.95

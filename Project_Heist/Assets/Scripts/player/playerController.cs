@@ -20,8 +20,10 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private float cameraRotationSpeed = 10;     // how fast does the camera rotate?
     [SerializeField]
-    private float playerRotatingWithCameraSpeed = 10;     // how fast does the camera rotate?
-
+    private float playerRotatingWithCameraSpeed = 10, maxCameraRotation = 60;     // how fast does the camera rotate?
+    
+    private Vector3 cameraRotation, cameraRotStore; // store camera rotation
+    private Quaternion cameraRotTracker = Quaternion.identity;
 
     [Header("player rotation recovery")]
     [SerializeField]
@@ -38,7 +40,7 @@ public class playerController : MonoBehaviour
     RaycastHit SphereCastInfo;
 
     // camera system
-    private Vector3 cameraRotation; // store camera rotation
+   
 
 
     // player rotation system
@@ -79,7 +81,7 @@ public class playerController : MonoBehaviour
     // player walk/run
     public void MovementAnimation(Vector2 direction, bool jump, bool startSprint)
     {
-      
+        animator.SetLayerWeight(1, 0);
         animator.SetBool("startCrouching", false);
         if (isPlayerGrounded)
         {
@@ -124,11 +126,18 @@ public class playerController : MonoBehaviour
         animator.SetBool("StartShooting", startAiming);
         animator.SetFloat("ShootX", movementInput.x);
         animator.SetFloat("ShootY", movementInput.y);
-
+        if (!isPlayerGrounded)
+        {
+            animator.SetLayerWeight(1, 1);
+        }
+        else
+        {
+            animator.SetLayerWeight(1, 0);
+        }
 
     }
 
-    public void CrouchMovementAnimation(Vector2 movementInput, bool startCrouching, bool boost)
+    public void CrouchMovementAnimation(Vector2 movementInput, bool startCrouching, bool boost, bool startAiming)
     {
         if (boost)
         {
@@ -140,6 +149,14 @@ public class playerController : MonoBehaviour
         animator.SetBool("startCrouching", startCrouching);
         animator.SetFloat("crouchX", movementInput.x);
         animator.SetFloat("crouchY", movementInput.y);
+        if (startAiming)
+        {
+            
+        }
+        else
+        {
+           
+        }
 
     }
 
@@ -180,30 +197,25 @@ public class playerController : MonoBehaviour
     //rotate the thirdperson camera
     public void RotateCamera(Vector2 lookDirection)
     {
-        //since camera is using cinemachine to follow the target. rotating the target rotates the camera
-        // rotate the camera target around its local y axis as a certain speed and direction per second
-        // horzontal rotation, in xz plane and around y axis
+
         CameraTarget.transform.rotation *= Quaternion.AngleAxis(lookDirection.x * cameraRotationSpeed * Time.deltaTime, Vector3.up);
-        // verticle rotation, in yz plane and around x axis
-        CameraTarget.transform.rotation *= Quaternion.AngleAxis(lookDirection.y * cameraRotationSpeed * Time.deltaTime, Vector3.right);
-        //camera rotation along x and y also causes some rotation in z axis
-        cameraRotation = CameraTarget.transform.localEulerAngles; // store current camera local rotation 
+        CameraTarget.transform.rotation *= Quaternion.AngleAxis(lookDirection.y * cameraRotationSpeed * Time.deltaTime, Vector3.right); // up dpwn
+      
+        Debug.Log(Vector3.Angle(CameraTarget.transform.forward,gameObject.transform.forward));
+        
+        if (Vector3.Angle(CameraTarget.transform.forward, gameObject.transform.forward) < maxCameraRotation )
+        {
+            
+            cameraRotation = CameraTarget.transform.localEulerAngles;
+        }
+        if (Vector3.Angle(CameraTarget.transform.forward, gameObject.transform.forward) >= maxCameraRotation)
+        {
+
+            cameraRotation.y = CameraTarget.transform.localEulerAngles.y;
+
+        }
+
         cameraRotation.z = 0; // eleminate the error in z rotation
-
-        //Debug.Log(cameraRotation.x);
-        // clamp camera rotation aorund x axis by desired amount
-        if (cameraRotation.x > 50 && cameraRotation.x < 55)
-        {
-            cameraRotation.x = 50;
-        }
-
-        if (cameraRotation.x < 290 && cameraRotation.x > 55) //cameraRotation.x < 330 && cameraRotation.x > 55
-        {
-            cameraRotation.x = 290;
-        }
-
-        // end clamp
-       // Debug.Log(cameraRotation.x);
         CameraTarget.transform.localEulerAngles = cameraRotation;   // reassign the rotation
 
 
