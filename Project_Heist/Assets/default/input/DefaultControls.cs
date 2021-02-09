@@ -52,9 +52,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Shooting"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""02a12cc9-df22-4f43-bed7-6357907197ba"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
@@ -70,6 +70,14 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""name"": ""Sprint"",
                     ""type"": ""PassThrough"",
                     ""id"": ""d89ddab0-aecd-4e34-aea2-74b3f79d2117"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""cover"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""c125ac06-2604-48db-ac66-2cea5dbcc170"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -412,7 +420,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""65fb865a-2e5b-4465-a786-c0a7b2ec450c"",
                     ""path"": ""<XInputController>/rightTrigger"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": ""xBoxController"",
                     ""action"": ""Shooting"",
@@ -423,7 +431,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""29c6c986-1bfd-4d27-923c-dc40568c6ea6"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": ""keyboard&mouse"",
                     ""action"": ""Shooting"",
@@ -456,7 +464,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""484e952e-0fef-4e16-a72d-9f18b8db066a"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": ""Press(behavior=2)"",
+                    ""interactions"": ""Tap"",
                     ""processors"": """",
                     ""groups"": ""keyboard&mouse"",
                     ""action"": ""Jump"",
@@ -539,6 +547,28 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""action"": ""crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cf95656f-85cd-40ae-8393-b490e1c924a5"",
+                    ""path"": ""<XInputController>/leftStickPress"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""xBoxController"",
+                    ""action"": ""cover"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e134b15f-3992-4647-b31b-fb13e9b92278"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": ""keyboard&mouse"",
+                    ""action"": ""cover"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -582,6 +612,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         m_Player_Shooting = m_Player.FindAction("Shooting", throwIfNotFound: true);
         m_Player_Aiming = m_Player.FindAction("Aiming", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_cover = m_Player.FindAction("cover", throwIfNotFound: true);
         m_Player_crouch = m_Player.FindAction("crouch", throwIfNotFound: true);
         m_Player_GravityFlipWheel = m_Player.FindAction("GravityFlipWheel", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
@@ -641,6 +672,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Shooting;
     private readonly InputAction m_Player_Aiming;
     private readonly InputAction m_Player_Sprint;
+    private readonly InputAction m_Player_cover;
     private readonly InputAction m_Player_crouch;
     private readonly InputAction m_Player_GravityFlipWheel;
     private readonly InputAction m_Player_Jump;
@@ -655,6 +687,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         public InputAction @Shooting => m_Wrapper.m_Player_Shooting;
         public InputAction @Aiming => m_Wrapper.m_Player_Aiming;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+        public InputAction @cover => m_Wrapper.m_Player_cover;
         public InputAction @crouch => m_Wrapper.m_Player_crouch;
         public InputAction @GravityFlipWheel => m_Wrapper.m_Player_GravityFlipWheel;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
@@ -688,6 +721,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Sprint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                 @Sprint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
                 @Sprint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
+                @cover.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCover;
+                @cover.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCover;
+                @cover.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCover;
                 @crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
@@ -722,6 +758,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
+                @cover.started += instance.OnCover;
+                @cover.performed += instance.OnCover;
+                @cover.canceled += instance.OnCover;
                 @crouch.started += instance.OnCrouch;
                 @crouch.performed += instance.OnCrouch;
                 @crouch.canceled += instance.OnCrouch;
@@ -762,6 +801,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         void OnShooting(InputAction.CallbackContext context);
         void OnAiming(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnCover(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnGravityFlipWheel(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);

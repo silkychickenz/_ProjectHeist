@@ -39,9 +39,9 @@
                 },
                 {
                     "name": "Shooting",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "02a12cc9-df22-4f43-bed7-6357907197ba",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 },
@@ -57,6 +57,14 @@
                     "name": "Sprint",
                     "type": "PassThrough",
                     "id": "d89ddab0-aecd-4e34-aea2-74b3f79d2117",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "cover",
+                    "type": "PassThrough",
+                    "id": "c125ac06-2604-48db-ac66-2cea5dbcc170",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -399,7 +407,7 @@
                     "name": "",
                     "id": "65fb865a-2e5b-4465-a786-c0a7b2ec450c",
                     "path": "<XInputController>/rightTrigger",
-                    "interactions": "Hold",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "xBoxController",
                     "action": "Shooting",
@@ -410,7 +418,7 @@
                     "name": "",
                     "id": "29c6c986-1bfd-4d27-923c-dc40568c6ea6",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "Hold",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "keyboard&mouse",
                     "action": "Shooting",
@@ -443,7 +451,7 @@
                     "name": "",
                     "id": "484e952e-0fef-4e16-a72d-9f18b8db066a",
                     "path": "<Keyboard>/space",
-                    "interactions": "Press(behavior=2)",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "keyboard&mouse",
                     "action": "Jump",
@@ -524,6 +532,28 @@
                     "processors": "",
                     "groups": "keyboard&mouse",
                     "action": "crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cf95656f-85cd-40ae-8393-b490e1c924a5",
+                    "path": "<XInputController>/leftStickPress",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "xBoxController",
+                    "action": "cover",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e134b15f-3992-4647-b31b-fb13e9b92278",
+                    "path": "<Keyboard>/c",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "keyboard&mouse",
+                    "action": "cover",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

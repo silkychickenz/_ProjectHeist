@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4745624971573092475}
   - component: {fileID: 4745624971573092472}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PlayerThirdPersonCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,14 +24,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4745624971573092473}
-  m_LocalRotation: {x: 0.14380938, y: -0.004145964, z: 0.00060440146, w: 0.98959655}
+  m_LocalRotation: {x: 0.14381087, y: -0.004145305, z: 0.0006024072, w: 0.9895963}
   m_LocalPosition: {x: 0, y: 1.8560001, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4745624972428364663}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 16.537, y: -0.48, z: 0}
 --- !u!114 &4745624971573092472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 4745624972428364664}
   - component: {fileID: 4745624972428364662}
   - component: {fileID: 4745624972428364665}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,8 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0, y: 0, z: 0}
-  ShoulderOffset: {x: 0, y: 0, z: 0}
-  VerticalArmLength: 0.3
+  ShoulderOffset: {x: 0.38, y: -0.13, z: 0.96}
+  VerticalArmLength: 0.33
   CameraSide: 1
   CameraDistance: 2
   CameraCollisionFilter:

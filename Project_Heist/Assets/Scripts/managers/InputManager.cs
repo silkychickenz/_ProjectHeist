@@ -1,7 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+
 using UnityEngine;
-using UnityEngine.InputSystem;
+//using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
@@ -9,8 +10,8 @@ public class InputManager : MonoBehaviour
 
     [Header("Get references")]
     [SerializeField]
-    private GameObject Player;
-
+    private GameObject Player,playerAvatar;
+    private Animator animator;
     //movement
     private playerController playerControllerScript;
     
@@ -29,18 +30,24 @@ public class InputManager : MonoBehaviour
     // shooting input
     private bool startAiming;
     private bool startShooting;
+    public bool canShoot = true;
     //gravity flip input
     private Vector2 gravityFlipDirection;
     public bool enableGravityFlip = true; // can you flip gravity?
     private bool gravityFlipWheel = false;
     // jump input
     private bool Jump = false;
+    
 
     [Header("Gravity")]
     [SerializeField]
-    private float GravityFlipCooldownTimer = 1; // gravity flip cooldown in seconds
+    private float GravityFlipCooldownTimer = 1, weaponROF = 1; // gravity flip cooldown in seconds
 
-    
+    // cover input
+    private bool takeCover = false;
+
+    private bool isCoverDetected;
+
 
 
     [SerializeField]
@@ -74,12 +81,15 @@ public class InputManager : MonoBehaviour
         // get shooting input
         Controls.Player.Aiming.performed += StartShooting => startAiming = true;
         Controls.Player.Aiming.canceled += StartShooting => startAiming = false;
-        Controls.Player.Shooting.performed += StartShooting => startShooting = true;
-        Controls.Player.Shooting.canceled += StartShooting => startShooting = false;
+        Controls.Player.Shooting.performed += StartShooting => startShooting = !startShooting;
+       
 
         // get jump input
         Controls.Player.Jump.performed += StartJumping => Jump = !Jump;
-       
+
+        // get jump input
+        Controls.Player.cover.performed += TakeCover => takeCover = !takeCover;
+        
 
         Application.targetFrameRate = SetFPS;
 
@@ -91,7 +101,8 @@ public class InputManager : MonoBehaviour
     void Start()
     {
         LockCursor();   // lock and hide the cursor
-        
+        canShoot = true;
+        animator = playerAvatar.GetComponent<Animator>();
     }
 
 
@@ -101,13 +112,12 @@ public class InputManager : MonoBehaviour
         if (!startAiming) //if player is not aiming
         {
            
-
             playerControllerScript.animator.SetBool("StartShooting", false); // get out of shooting mode
             playerControllerScript.Hitscan(false); // stop firing bullets
         }
         if (!startCrouching)
         {
-            playerControllerScript.MovementAnimation(move, Jump, startSprinting);
+            playerControllerScript.MovementAnimation(move, Jump, startSprinting, startAiming);
 
             crouchBoost = false;
 
@@ -120,30 +130,61 @@ public class InputManager : MonoBehaviour
 
         if (startAiming)
         {
-            playerControllerScript.Hitscan(startShooting); // start firing
-            playerControllerScript.ShootingMovementAnimation(move, startAiming); // enter shooting movement mode
+            
+            
+            playerControllerScript.ShootingMovementAnimation(move, startAiming, startShooting, canShoot); // enter shooting movement mode
             if (gravityScipt.isPlayerGrounded)
             {
                 
                 playerControllerScript.isPlayerGrounded = true;
             }
+            if (startShooting)
+            {
+                if (canShoot)
+                {
+                    playerControllerScript.Hitscan(startShooting); // start firing
 
+                    canShoot = false;
+                    StartCoroutine(WeaponROF());
+                }
+
+            }
+      
 
         }
- 
+
+       
+        
+       
+        playerControllerScript.CoverAnimations(takeCover);
+
+        
+
+
+
     }
 
     private void FixedUpdate()
     {
+        if (takeCover && !playerControllerScript.isCoverDetected)
+        {
+            playerControllerScript.CoverDetection();
+        }
+        if (!playerControllerScript.isCoverDetected)
+        {
+            takeCover = false;
+        }
 
         playerControllerScript.playerFalling(move);
         playerControllerScript.PlayerAlwaysUpright();
-        playerControllerScript.Movement(move, Jump, startSprinting, startCrouching, startAiming, crouchBoost);
+        playerControllerScript.Movement(move, Jump, startSprinting, startCrouching, startAiming, crouchBoost, takeCover);
+        Jump = false;
         gravityScipt.ApplyGravity();
         playerControllerScript.RotateCamera(lookAround);
         gravityScipt.GravityFlip(gravityFlipDirection, enableGravityFlip, gravityFlipWheel);
             if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
             {
+                
                 enableGravityFlip = false;
                 StartCoroutine(GravityFlipCooldown());
             }
@@ -157,6 +198,13 @@ public class InputManager : MonoBehaviour
     {
         yield return new WaitForSeconds(GravityFlipCooldownTimer);
         enableGravityFlip = true;
+    }
+
+    public IEnumerator WeaponROF() // fravity flip cooldown timer
+    {
+        yield return new WaitForSeconds(weaponROF);
+        animator.SetLayerWeight(3, 0);
+        canShoot = true;
     }
 
     public void LockCursor()
@@ -175,4 +223,6 @@ public class InputManager : MonoBehaviour
     {
         //Controls.Disable();
     }
+
+    
 }
