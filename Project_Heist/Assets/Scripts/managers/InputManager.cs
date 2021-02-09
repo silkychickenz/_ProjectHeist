@@ -105,6 +105,34 @@ public class InputManager : MonoBehaviour
         animator = playerAvatar.GetComponent<Animator>();
     }
 
+    private void FixedUpdate()
+    {
+        if (takeCover && !playerControllerScript.isCoverDetected)
+        {
+            playerControllerScript.CoverDetection();
+        }
+        if (!playerControllerScript.isCoverDetected)
+        {
+            takeCover = false;
+        }
+
+        playerControllerScript.playerFalling(move);
+        
+        playerControllerScript.Movement(move, Jump, startSprinting, startCrouching, startAiming, crouchBoost, takeCover);
+        Jump = false;
+        gravityScipt.ApplyGravity();
+       
+        gravityScipt.GravityFlip(gravityFlipDirection, enableGravityFlip, gravityFlipWheel);
+        if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
+        {
+
+            enableGravityFlip = false;
+            StartCoroutine(GravityFlipCooldown());
+        }
+
+
+
+    }
 
     void Update()
     {
@@ -164,33 +192,12 @@ public class InputManager : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
+   
+
+    private void LateUpdate()
     {
-        if (takeCover && !playerControllerScript.isCoverDetected)
-        {
-            playerControllerScript.CoverDetection();
-        }
-        if (!playerControllerScript.isCoverDetected)
-        {
-            takeCover = false;
-        }
-
-        playerControllerScript.playerFalling(move);
         playerControllerScript.PlayerAlwaysUpright();
-        playerControllerScript.Movement(move, Jump, startSprinting, startCrouching, startAiming, crouchBoost, takeCover);
-        Jump = false;
-        gravityScipt.ApplyGravity();
         playerControllerScript.RotateCamera(lookAround);
-        gravityScipt.GravityFlip(gravityFlipDirection, enableGravityFlip, gravityFlipWheel);
-            if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
-            {
-                
-                enableGravityFlip = false;
-                StartCoroutine(GravityFlipCooldown());
-            }
-        
-        
-
     }
 
 
