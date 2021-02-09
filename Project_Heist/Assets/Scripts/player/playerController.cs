@@ -378,12 +378,12 @@ public class playerController : MonoBehaviour
             // run towards cover
             if (Vector3.Distance(gameObject.transform.position, coverScanGroundinfo.point) > 0.3 && runningToCover)
             {
-                Debug.Log("stuck");
+               // Debug.Log("stuck");
                 transform.Translate((coverScanGroundinfo.point - gameObject.transform.position).normalized * MaxPlayerRunSpeed * Time.deltaTime, Space.World); ;
             }
             else
             {
-                Debug.Log(Vector3.Dot(gameObject.transform.right, coverScaninfo.normal));
+                //Debug.Log(Vector3.Dot(gameObject.transform.right, coverScaninfo.normal));
                 // rotate and take cover
                 if (Mathf.Abs(Vector3.Dot(gameObject.transform.right, coverScaninfo.normal)) > 0.05)
                 {
@@ -577,7 +577,7 @@ public class playerController : MonoBehaviour
                     runningToCover = true;
                     takeCoverOn = coverScaninfo.transform.gameObject;
 
-                    Debug.Log("dist " + coverScaninfo.distance);
+                   // Debug.Log("dist " + coverScaninfo.distance);
                 }
             }
             
