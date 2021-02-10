@@ -31,6 +31,7 @@ namespace EnemyAI
 		[Range(0, 360)] public float viewAngle;
 		[Tooltip("Radius of NPC perception area.")]
 		[Range(0, 25)] public float perceptionRadius;
+		public bool DebugMesseges = false;
 
 		[HideInInspector] public float nearRadius;                  // Radius of NPC near area.
 		[HideInInspector] public NavMeshAgent nav;                  // Reference to the NPC NavMesh agent.
@@ -46,7 +47,7 @@ namespace EnemyAI
 		[HideInInspector] public EnemyAnimation enemyAnimation;     // Reference to the enemy animation script.
 		[HideInInspector] public EnemyVariables variables;          // Reference to extra variables, common to all NPC categories.
 		[HideInInspector] public CoverLookup coverLookup;           // Reference to the Game Controller's cover lookup script.
-		[HideInInspector] public Vector3 personalTarget;            // The current personal target, if any.
+		[HideInInspector] public Vector3 personalTarget;            // The current personal target, if any.		
 
 		private int magBullets;                                     // Maximum bullet capacity of the weapon mag.
 		private bool aiActive;                                      // Is the NPC AI active?
@@ -165,7 +166,8 @@ namespace EnemyAI
 			if (nextState != remainState)
 			{
 				// DEBUG: show state transitions for NPC.
-				Debug.Log(transform.name + " :" + decision.name + " : " + currentState.name + "->" + nextState.name);
+				if(DebugMesseges)
+					Debug.Log(transform.name + " :" + decision.name + " : " + currentState.name + "->" + nextState.name);
 				currentState = nextState;
 			}
 		}

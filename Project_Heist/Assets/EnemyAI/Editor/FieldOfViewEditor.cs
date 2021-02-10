@@ -21,16 +21,16 @@ namespace EnemyAI
 				// Define FOV arc boundaries
 				Vector3 viewAngleA = DirFromAngle(fov.transform, -fov.viewAngle / 2, false);
 				Vector3 viewAngleB = DirFromAngle(fov.transform, fov.viewAngle / 2, false);
-				Vector3 viewAngleC = Quaternion.Euler(90, 0, 0) * viewAngleB;
-				Vector3 viewAngleD = Quaternion.Euler(90, 0, 0) * viewAngleA;
+				Vector3 viewAngleC = DirFromAngleZ(fov.transform, -fov.viewAngle / 2, false);
+				Vector3 viewAngleD = DirFromAngleZ(fov.transform, fov.viewAngle / 2, false); 
 				// Draw FOV area (arc x-z)
 				Handles.DrawWireArc(fov.transform.position, Vector3.up, viewAngleA, fov.viewAngle, fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleA * fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleB * fov.viewRadius);
 				//(arc x-y)
 				//Handles.DrawWireArc(fov.transform.position, Vector3.forward, viewAngleD, fov.viewAngle, fov.viewRadius);
-				//Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleC * fov.viewRadius);
-				//Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleD * fov.viewRadius);
+				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleC * fov.viewRadius);
+				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleD * fov.viewRadius);
 				// Draw line from NPC to target, if target in FOV
 				Handles.color = Color.yellow;
 				if (fov.targetInSight && fov.personalTarget != Vector3.zero)
@@ -47,6 +47,16 @@ namespace EnemyAI
 				angleInDegrees += transform.eulerAngles.y;
 			}
 			return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0, Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
+		}
+
+		// Get rotated direction vector, relative to global or NPC forward direction.
+		Vector3 DirFromAngleZ(Transform transform, float angleInDegrees, bool angleIsGlobal)
+		{
+			//if (!angleIsGlobal)
+			//{
+			//	angleInDegrees += transform.eulerAngles.y;
+			//}
+			return new Vector3(0, Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0);
 		}
 
 	}

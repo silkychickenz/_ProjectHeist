@@ -14,12 +14,12 @@ TagManager:
   - UI
   - 
   - 
-  - PostProcessing
-  - walkable
-  - Player
   - Cover
-  - 
-  - 
+  - Ignore Shot
+  - Cover Invisible
+  - Player
+  - Enemy
+  - Bound
   - 
   - 
   - 
