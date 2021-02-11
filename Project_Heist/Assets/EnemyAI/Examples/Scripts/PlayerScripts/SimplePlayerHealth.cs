@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // This class is created for the example scene. There is no support for this script.
 public class SimplePlayerHealth : HealthManager
@@ -8,8 +9,10 @@ public class SimplePlayerHealth : HealthManager
 	public float health = 100f;
 
 	public Transform canvas;
+	public Text healthDisplay;
 	public GameObject hurtPrefab;
 	public float decayFactor = 0.8f;
+
 
 	private HurtHUD hurtUI;
 
@@ -18,26 +21,23 @@ public class SimplePlayerHealth : HealthManager
 		AudioListener.pause = false;
 		hurtUI = this.gameObject.AddComponent<HurtHUD>();
 		hurtUI.Setup(canvas, hurtPrefab, decayFactor, this.transform);
+		healthDisplay.text = health.ToString();
 	}
 
 	public override void TakeDamage(Vector3 location, Vector3 direction, float damage, Collider bodyPart, GameObject origin)
 	{
 		health -= damage;
+		UpdateHealth();
 
 		if (hurtPrefab && canvas)
 			hurtUI.DrawHurtUI(origin.transform, origin.GetHashCode());
 	}
 
-	public void OnGUI()
-	{
+	public void UpdateHealth()
+    {
 		if (health > 0f)
 		{
-			GUIStyle textStyle = new GUIStyle
-			{
-				fontSize = 50
-			};
-			textStyle.normal.textColor = Color.white;
-			GUI.Label(new Rect(0, Screen.height - 60, 30, 30), health.ToString(), textStyle);
+			healthDisplay.text = health.ToString();
 		}
 		else if (!dead)
 		{
