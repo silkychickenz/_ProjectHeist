@@ -45,9 +45,12 @@ public class playerController : MonoBehaviour
     private LayerMask sphereCastDetectable;
     Gravity gravityScript;
     RaycastHit SphereCastInfo;
+    bool cleanUpX, cleanUpZ = true;
+
+   
 
     // camera system
-   
+
 
 
     // player rotation system
@@ -66,8 +69,6 @@ public class playerController : MonoBehaviour
     [SerializeField]
     private float MaxPlayerWalkSpeed = 5, MaxPlayerRunSpeed = 10, MaxPlayerCrouchSpeed = 2, jumpForce = 10, runToCroushSlideForce = 30;
     private float MovementForce = 0;
-    private Vector3 moveForceDirection;
-    float currentInPutDotProduct;
     Vector3 groundPlayerCross;
 
     [Header(" PLAYER FALLING")]
@@ -94,6 +95,19 @@ public class playerController : MonoBehaviour
     Vector3 cameraDefaultPos;
     Vector3 downRayCast;
 
+    [Header("Vaulting")]
+    [SerializeField]
+    private CapsuleCollider defaultPlayerCollider;
+    [SerializeField]
+    private BoxCollider playerVaultCollider;
+    [SerializeField]
+    private float vaultDetectionDist = 0.3f;
+    RaycastHit forwardVaultCheckRayInfo;
+    RaycastHit backVaultCheckRayInfo;
+    RaycastHit forwardVaultCheckRayInfoMid;
+    bool animateVault = false,animateHighVault = false, animateJump = false;
+    bool jump;
+   
 
 
 
@@ -102,14 +116,18 @@ public class playerController : MonoBehaviour
         animator = playerAvatar.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
         gravityScript = gameObject.GetComponent<Gravity>();
-        moveForceDirection = gameObject.transform.forward;
+       
         cameraDefaultPos = CameraTarget.transform.localPosition;
+        cleanUpX = true;
+        cleanUpZ = true;
+        playerVaultCollider.enabled = false;
+        defaultPlayerCollider.enabled = true;
     }
 
     // player walk/run
     public void MovementAnimation(Vector2 direction, bool jump, bool startSprint, bool startAiming)
     {
-
+        //restore camera zoom and distance when in cover
         if (t <= camDistMax && !startAiming)
         {
             // camera zoom out
@@ -137,12 +155,7 @@ public class playerController : MonoBehaviour
         animator.SetBool("startCrouching", false);
         if (isPlayerGrounded)
         {
-            if (jump == true)
-            {
-                animator.SetTrigger("Jump");
-                
-            }
-           
+   
             animator.SetFloat("moveX", direction.x);
             if (direction == Vector2.zero)
             {
@@ -165,10 +178,7 @@ public class playerController : MonoBehaviour
 
             }
         }
-        if (!isPlayerGrounded)
-        {
-            animator.ResetTrigger("Jump");
-        }
+        
 
 
     }
@@ -256,7 +266,7 @@ public class playerController : MonoBehaviour
 
     public void Movement(Vector2 direction, bool jump, bool startSprint, bool startCrouching, bool startAiming, bool crouchBoost, bool takeCover)
     {
-       // Debug.DrawRay(gameObject.transform.position, Vector3.Cross(inputDirection, SphereCastInfo.normal) * 4, Color.red);
+       // groundcheck
         isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, 0.2f, Walkable);
         if (takeCover)
         {
@@ -273,6 +283,8 @@ public class playerController : MonoBehaviour
         }
         inputDirection = (direction.y * gameObject.transform.right + direction.x * -gameObject.transform.forward);
         playerAvatar.transform.localPosition = Vector3.zero;
+
+        // set player speed
         if (isPlayerGrounded)
         {
             // if (crouchBoost)
@@ -319,16 +331,11 @@ public class playerController : MonoBehaviour
             groundPlayerCross = Vector3.Cross(inputDirection, SphereCastInfo.normal) * MovementForce * Time.deltaTime;
             transform.Translate(groundPlayerCross, Space.World);
 
-            if (jump == true)
-            {
-                
-                rb.AddForce(gameObject.transform.up * jumpForce * Time.deltaTime, ForceMode.Impulse);
-
-            }
+            
 
 
         }
-
+       
 
         //Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 10, Color.red);
         Debug.DrawRay(gameObject.transform.position, coverScaninfo.point - gameObject.transform.position, Color.black);
@@ -402,7 +409,7 @@ public class playerController : MonoBehaviour
             playerRotatingDirection = Mathf.Sign(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right));
 
             isCoverDetected = false;
-            if (Vector3.Angle(gameObject.transform.forward, CameraTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right)) > 0.08)
+            if (Vector3.Angle(gameObject.transform.forward, CameraTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right)) > 0.08) //0.08
             {
                 gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
                 CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
@@ -412,6 +419,134 @@ public class playerController : MonoBehaviour
         
     }
 
+    public void JumpAndVault( bool jumpInput, Vector2 direction, bool startSprint)
+    {
+        if (jumpInput == true && isPlayerGrounded)
+        {
+            jump = true;
+        }
+
+        if (jump == true )
+        {
+            // regular vault
+            if (forwardVaultCheckRayInfo.distance <= vaultDetectionDist && forwardVaultCheckRayInfo.distance >= 0.1 && forwardVaultCheckRayInfo.transform != null)
+            {
+                // only vault if upper ray has not detected anything
+                if (forwardVaultCheckRayInfoMid.transform == null)
+                {
+                    if (forwardVaultCheckRayInfo.distance <= 1.3f && !startSprint)
+                    {
+                        animateVault = true;
+                        defaultPlayerCollider.enabled = false;
+                        playerVaultCollider.enabled = true;
+                        jump = false;
+                    }
+                    else
+                    {
+                        animateVault = true;
+                        defaultPlayerCollider.enabled = false;
+                        playerVaultCollider.enabled = true;
+                        jump = false;
+                    }
+
+                }
+
+            }
+           // long jump
+           else if (direction.y == 1 && startSprint)
+           {
+                 rb.AddForce(gameObject.transform.up * jumpForce * Time.deltaTime, ForceMode.Impulse);
+                 rb.velocity += gameObject.transform.forward * (jumpForce + 100) * Time.deltaTime;
+                 animateJump = true;
+                 jump = false;
+
+            }
+            //regular jump
+            else
+            {
+                 rb.AddForce(gameObject.transform.up * jumpForce * Time.deltaTime, ForceMode.Impulse);
+                 rb.velocity += (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward) * jumpForce / 2 * Time.deltaTime;
+                 animateJump = true;
+                 jump = false;
+            }
+            // high vault
+            if (forwardVaultCheckRayInfoMid.distance <= vaultDetectionDist && forwardVaultCheckRayInfoMid.distance >= 0.05 && forwardVaultCheckRayInfoMid.transform != null)
+            {
+                if (forwardVaultCheckRayInfoMid.distance <= 1.3f)
+                {
+                    animateHighVault = true;
+                    defaultPlayerCollider.enabled = true;
+                    playerVaultCollider.enabled = false;
+                    rb.AddForce(gameObject.transform.up * 1500 * Time.deltaTime, ForceMode.Impulse);
+                    jump = false;
+                }
+                
+
+            }
+
+
+        }
+
+        Debug.DrawRay(gameObject.transform.position , gameObject.transform.forward * vaultDetectionDist, Color.red);
+        #region small vault raycast
+        // forward
+       
+        Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up * 0.9f), gameObject.transform.forward * (vaultDetectionDist), Color.blue);
+        Physics.Raycast(gameObject.transform.position + (gameObject.transform.up * 0.9f), gameObject.transform.forward, out forwardVaultCheckRayInfo, vaultDetectionDist, detectAsCover);
+
+        // forward
+       
+        Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up * 0.9f), -gameObject.transform.forward * vaultDetectionDist, Color.blue);
+        Physics.Raycast(gameObject.transform.position + (gameObject.transform.up * 0.9f), -gameObject.transform.forward, out backVaultCheckRayInfo, vaultDetectionDist, detectAsCover);
+
+
+        #endregion
+        #region mid vault raycast
+       
+        Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up * 1.6f), gameObject.transform.forward * (vaultDetectionDist), Color.blue);
+        Physics.Raycast(gameObject.transform.position + (gameObject.transform.up * 1.6f), gameObject.transform.forward, out forwardVaultCheckRayInfoMid, vaultDetectionDist, detectAsCover);
+
+        // forward
+       
+        Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up * 1.6f), -gameObject.transform.forward * vaultDetectionDist, Color.blue);
+        Debug.DrawRay((gameObject.transform.position + (-gameObject.transform.forward * 0.2f)) + (gameObject.transform.up * 0.3f), -gameObject.transform.up * 0.5f, Color.blue);
+        #endregion
+
+       
+        //check if player has cleard vault object and restore default collider
+        if (backVaultCheckRayInfo.distance > 0.1 && backVaultCheckRayInfo.transform != null)
+        {
+          
+            defaultPlayerCollider.enabled = true;
+            playerVaultCollider.enabled = false;
+        }
+ 
+
+    }
+
+    public void JumpAndVaultAnimation(bool jump)
+    {
+       
+        if (animateVault)
+        {
+            animator.SetTrigger("vaultTrig");
+            animateVault = false;
+        }
+       
+        if (animateHighVault)
+        {
+
+            animator.SetTrigger("HighVaultTrig");
+            animateHighVault = false;
+        }
+        if (animateJump)
+        {
+            animator.SetTrigger("Jump");
+            animateJump = false;
+        }
+
+
+    }
     public void RotateCamera(Vector2 lookDirection)
     {
 
@@ -441,57 +576,90 @@ public class playerController : MonoBehaviour
     // corect the player if there is anyrotation when grounded, make player always upright
     public void PlayerAlwaysUpright()
     {
+
        
-        
         Physics.SphereCast(playerMidPoint.transform.position, SphereCastRadius, -gameObject.transform.up,out SphereCastInfo, SphereCastDistance, sphereCastDetectable, QueryTriggerInteraction.UseGlobal );
         Debug.DrawRay(playerMidPoint.transform.position, -gameObject.transform.up * SphereCastDistance, Color.magenta);
 
-        
-
-         if(gravityScript.justFlippedGravity)
+        if (SphereCastInfo.transform != null && gravityScript.justFlippedGravity)
         {
 
-            // recover if there is rotation in players X axis
-            if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1)
+            if (SphereCastInfo.transform.tag != "slope")
             {
-                if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) < -0.01) //-0.01
+
+                // recover if there is rotation in players X axis
+                if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.01) // 0.1
                 {
-                    transform.Rotate(new Vector3(-PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
-                  //  moveForceDirection = Quaternion.AngleAxis(30 * Time.deltaTime, Vector3.right) * moveForceDirection;
+
+
+                    if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) < -0.05  ) //-0.01
+                    {
+                        transform.Rotate(new Vector3(-PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+                        
+
+                    }
+                    else if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) > 0.05 ) //0.01
+                    {
+                        transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+                       
+                    }
+                    // clean up
+                    else if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) <= 0.07 && Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) >= -0.07 && cleanUpX) //0.01
+                    {
+                       
+                        transform.localRotation = Quaternion.Euler(0, transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z);
+                        cleanUpX = false;
+
+                       // Debug.Log("DOT = " + Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) + "   " + transform.localRotation.eulerAngles + "  ANGLE " + Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal));
+                    }
+
                 }
-                else if (Vector3.Dot(gameObject.transform.forward, SphereCastInfo.normal) > 0.01) //0.01
+                else
                 {
-                    transform.Rotate(new Vector3(PlayerRecoverySpeed * Time.deltaTime, 0, 0), Space.Self);
+                    cleanUpX = true;
+                   
                 }
-                if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) < 0.6) //0.1
+
+
+                // recover if there is rotation in players Z axis
+                if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.01) //0.1
+                {
+                    if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) < -0.05) //-0.01
+                    {
+                        transform.Rotate(new Vector3(0, 0, PlayerRecoverySpeed * Time.deltaTime), Space.Self);
+                       
+                    }
+                    else if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) > 0.05) //0.01
+                    {
+                        transform.Rotate(new Vector3(0, 0, -PlayerRecoverySpeed * Time.deltaTime), Space.Self);
+                       
+                       
+
+                    }    
+                    else if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) <= 0.07 && Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) >= -0.07 && cleanUpZ) //0.01
+                    {
+                        
+                        transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, -90);
+                        cleanUpZ = false;
+
+                    }
+
+                }
+                else
+                {
+                    cleanUpZ = true;
+                   
+                }
+
+                if (!cleanUpZ && !cleanUpX && Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) < 3)
                 {
                     gravityScript.justFlippedGravity = false;
+                    Debug.Log(gameObject.transform.localRotation.eulerAngles);
                 }
+
             }
-
-
-            // recover if there is rotation in players Z axis
-            if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) >= 0.1) //0.1
-            {
-                if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) < -0.01) //-0.01
-                {
-                    transform.Rotate(new Vector3(0, 0, PlayerRecoverySpeed * Time.deltaTime), Space.Self);
-                }
-                else if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) > 0.01) //0.01
-                {
-                    transform.Rotate(new Vector3(0, 0, -PlayerRecoverySpeed * Time.deltaTime), Space.Self);
-                }
-
-                if (Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) < 0.6) //0.1
-                {
-                    gravityScript.justFlippedGravity = false;
-                }
-            }
-
-
-
         }
-        
+       
 
     }
 
@@ -499,31 +667,29 @@ public class playerController : MonoBehaviour
     {
         RaycastHit hitinfo;
         Debug.DrawRay(playerMidPoint.transform.position, -gameObject.transform.up * fallCheckDistance, Color.white);
-        if (Physics.SphereCast(playerMidPoint.transform.position, 0.2f,-gameObject.transform.up, out hitinfo, fallCheckDistance, Walkable))
-        // if (Physics.Raycast(gameObject.transform.position, -gameObject.transform.up, out hitinfo, fallCheckDistance, Walkable))
-        {
-            animator.SetBool("falling", false);
-        }
-        else
+        Physics.SphereCast(playerMidPoint.transform.position, 0.2f, -gameObject.transform.up, out hitinfo, Mathf.Infinity, Walkable);
+
+        if(hitinfo.distance >= fallCheckDistance)
         {
             animator.SetBool("falling", true);
-        }
-
-        if (!isPlayerGrounded)
-        {
             inputDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward);
             //rb.AddForce(inputDirection * airSpeed * Time.deltaTime);
             transform.Translate(inputDirection * airSpeed * Time.deltaTime, Space.World);
             Debug.DrawRay(transform.position, airInputDirection * 5, Color.red); // input direction
 
-            playerRotatingDirection = Mathf.Sign(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right));
-
-            if (Vector3.Angle(gameObject.transform.forward, CameraTarget.transform.forward) != 0 && Mathf.Abs(Vector3.Dot(CameraTarget.transform.forward, gameObject.transform.right)) > 0.1)
-            {
-                gameObject.transform.rotation *= Quaternion.AngleAxis(playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rptate the player in desired direction
-                CameraTarget.transform.rotation *= Quaternion.AngleAxis(-playerRotatingDirection * playerRotationSpeed * Time.deltaTime, Vector3.up); // rotate camera in opposite direction of player to compensate player rotation
-            }
         }
+        if (hitinfo.distance < fallCheckDistance && hitinfo.distance > 0.1f)
+        {
+            
+            inputDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward);
+            animator.SetBool("falling", false);
+            transform.Translate(inputDirection * (airSpeed/4) * Time.deltaTime, Space.World);
+           
+
+        }
+        
+           
+        
     }
 
     public void Hitscan(bool StartShootingParticle)

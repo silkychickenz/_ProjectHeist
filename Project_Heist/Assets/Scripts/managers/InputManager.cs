@@ -107,6 +107,8 @@ public class InputManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        
+       
         if (takeCover && !playerControllerScript.isCoverDetected)
         {
             playerControllerScript.CoverDetection();
@@ -116,9 +118,13 @@ public class InputManager : MonoBehaviour
             takeCover = false;
         }
 
-        playerControllerScript.playerFalling(move);
-        
+        playerControllerScript.playerFalling(move);  
         playerControllerScript.Movement(move, Jump, startSprinting, startCrouching, startAiming, crouchBoost, takeCover);
+        if (!startCrouching && !startAiming)
+        {
+            playerControllerScript.JumpAndVault(Jump, move, startSprinting);
+        }
+        
         Jump = false;
         gravityScipt.ApplyGravity();
        
@@ -136,7 +142,7 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-
+        playerControllerScript.JumpAndVaultAnimation(Jump);
         if (!startAiming) //if player is not aiming
         {
            
@@ -146,7 +152,7 @@ public class InputManager : MonoBehaviour
         if (!startCrouching)
         {
             playerControllerScript.MovementAnimation(move, Jump, startSprinting, startAiming);
-
+           
             crouchBoost = false;
 
         }
@@ -158,8 +164,8 @@ public class InputManager : MonoBehaviour
 
         if (startAiming)
         {
-            
-            
+
+          
             playerControllerScript.ShootingMovementAnimation(move, startAiming, startShooting, canShoot); // enter shooting movement mode
             if (gravityScipt.isPlayerGrounded)
             {

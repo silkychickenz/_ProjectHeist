@@ -43,6 +43,7 @@ public class Gravity : MonoBehaviour
     {
         animator = playerAvatar.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
+        justFlippedGravity = false;
     }
     public void GravityFlip(Vector2 direction, bool CanFlipGravity, bool gravityFlipWheel) // direction gets the input and CanFlipGravity gets the cooldown, 
     {
@@ -131,7 +132,7 @@ public class Gravity : MonoBehaviour
 
             if (Mathf.Abs(RotByDegrees) == 90 && flipForward) // rotate Forward
             {
-                Debug.Log(RotByDegrees);
+
                 transform.Rotate(new Vector3(RotByDegrees * flipRotationSpeed * Time.deltaTime, 0, 0), Space.Self);
                 
             }
