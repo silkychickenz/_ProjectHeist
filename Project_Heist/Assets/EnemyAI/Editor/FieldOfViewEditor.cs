@@ -28,7 +28,7 @@ namespace EnemyAI
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleA * fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleB * fov.viewRadius);
 				//(arc x-y)
-				//Handles.DrawWireArc(fov.transform.position, Vector3.forward, viewAngleD, fov.viewAngle, fov.viewRadius);
+				Handles.DrawWireArc(fov.transform.position, Vector3.up, -fov.transform.right, fov.viewAngle, fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleC * fov.viewRadius);
 				Handles.DrawLine(fov.transform.position, fov.transform.position + viewAngleD * fov.viewRadius);
 				// Draw line from NPC to target, if target in FOV
@@ -52,11 +52,11 @@ namespace EnemyAI
 		// Get rotated direction vector, relative to global or NPC forward direction.
 		Vector3 DirFromAngleZ(Transform transform, float angleInDegrees, bool angleIsGlobal)
 		{
-			//if (!angleIsGlobal)
-			//{
-			//	angleInDegrees += transform.eulerAngles.y;
-			//}
-			return new Vector3(0, Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), 0);
+            if (!angleIsGlobal)
+            {
+                angleInDegrees += transform.eulerAngles.y;
+            }
+            return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), Mathf.Cos(angleInDegrees * Mathf.Deg2Rad),0);
 		}
 
 	}

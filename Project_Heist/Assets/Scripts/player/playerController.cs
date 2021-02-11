@@ -39,9 +39,8 @@ public class playerController : MonoBehaviour
     [SerializeField]
     float SphereCastRadius = 2;
     [SerializeField]
-    float SphereCastDistance = 2f;
-    [SerializeField]
-    private GameObject playerMidPoint;
+    float SphereCastDistance = 2f;    
+    public GameObject playerMidPoint;
     [SerializeField]
     private LayerMask sphereCastDetectable;
     Gravity gravityScript;

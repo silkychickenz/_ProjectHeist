@@ -110,7 +110,7 @@ namespace EnemyAI
 		{
 			// Setup the references.
 			if (aimTarget == null)
-				aimTarget = GameObject.FindObjectOfType<playerController>().gameObject.transform;
+				aimTarget = GameObject.FindObjectOfType<playerController>().playerMidPoint.transform;
 			if (coverSpot == null)
 				coverSpot = new Dictionary<int, Vector3>();
 			coverSpot[this.GetHashCode()] = Vector3.positiveInfinity;
@@ -138,7 +138,7 @@ namespace EnemyAI
 				coverLookup.Setup(generalStats.coverMask);
 			}
 			// Ensure the target has a health manager component to receive shots.
-			Debug.Assert(aimTarget.GetComponent<HealthManager>(), "You must add a health manager to the target");
+			Debug.Assert(aimTarget.root.GetComponent<HealthManager>(), "You must add a health manager to the target");
 		}
 
 		public void Start()
@@ -192,7 +192,7 @@ namespace EnemyAI
 		// This is the message receiver for alert events triggered by nearby objects (ex.: other NPC alert about a noise).
 		public void AlertCallback(Vector3 target)
 		{
-			if (!aimTarget.GetComponent<HealthManager>().dead)
+			if (!aimTarget.root.GetComponent<HealthManager>().dead)
 			{
 				this.variables.hearAlert = true;
 				this.personalTarget = target;
