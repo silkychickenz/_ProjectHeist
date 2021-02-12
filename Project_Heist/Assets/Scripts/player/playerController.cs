@@ -345,14 +345,14 @@ public class playerController : MonoBehaviour
         if (takeCover && isCoverDetected)
         {
             //right
-            Debug.DrawRay(gameObject.transform.position, gameObject.transform.right * 0.25f, Color.red);
-            Debug.DrawRay(gameObject.transform.position + (gameObject.transform.right * 0.25f), gameObject.transform.forward * 1, Color.green);
-            Physics.Raycast(gameObject.transform.position + (gameObject.transform.right * 0.25f), gameObject.transform.forward, out rightCoverScaninfo, 1, detectAsCover); //right
+            Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up ), gameObject.transform.right * 0.25f, Color.red);
+            Debug.DrawRay((gameObject.transform.position + (gameObject.transform.up )) + (gameObject.transform.right * 0.25f), gameObject.transform.forward * 1, Color.green);
+            Physics.Raycast((gameObject.transform.position + gameObject.transform.up) + (gameObject.transform.right * 0.25f), gameObject.transform.forward, out rightCoverScaninfo, 1, detectAsCover); //right
 
             //left
-            Debug.DrawRay(gameObject.transform.position, -gameObject.transform.right * 0.25f, Color.red);
-            Debug.DrawRay(gameObject.transform.position + (-gameObject.transform.right * 0.25f), gameObject.transform.forward * 1, Color.green);
-            Physics.Raycast(gameObject.transform.position + (-gameObject.transform.right * 0.25f), gameObject.transform.forward, out leftCoverScaninfo, 1, detectAsCover);  //left
+            Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up ), -gameObject.transform.right * 0.25f, Color.red);
+            Debug.DrawRay((gameObject.transform.position + (gameObject.transform.up )) + (-gameObject.transform.right * 0.25f), gameObject.transform.forward * 1, Color.green);
+            Physics.Raycast((gameObject.transform.position + gameObject.transform.up) + (-gameObject.transform.right * 0.25f), gameObject.transform.forward, out leftCoverScaninfo, 1, detectAsCover);  //left
             if (rightCoverScaninfo.transform != null)
             {
                 canPeakCoverRight = false;
@@ -639,8 +639,40 @@ public class playerController : MonoBehaviour
                     }    
                     else if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) <= 0.07 && Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) >= -0.07 && cleanUpZ) //0.01
                     {
+                        Debug.Log(gameObject.transform.localRotation.eulerAngles);
                         
-                        transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, -90);
+
+                        if (gameObject.transform.eulerAngles.z <= 10)
+                        {
+                            gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 0);
+
+
+                        }
+
+                        else if ((gameObject.transform.eulerAngles.z) <= 100 && (gameObject.transform.eulerAngles.z) >= 80)
+                        {
+                            gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
+
+                        }
+
+                        else if ((gameObject.transform.eulerAngles.z) <= 190 && (gameObject.transform.eulerAngles.z) >= 170)
+                        {
+                            gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
+
+                        }
+
+                        else if ((gameObject.transform.eulerAngles.z) <= 280 && (gameObject.transform.eulerAngles.z) >= 260)
+                        {
+                            gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 270);
+
+                        }
+
+                        else if ((gameObject.transform.eulerAngles.z) <= 370 && (gameObject.transform.eulerAngles.z) >= 350)
+                        {
+                            gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 360);
+
+                        }
+
                         cleanUpZ = false;
 
                     }
@@ -655,7 +687,7 @@ public class playerController : MonoBehaviour
                 if (!cleanUpZ && !cleanUpX && Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) < 3)
                 {
                     gravityScript.justFlippedGravity = false;
-                    Debug.Log(gameObject.transform.localRotation.eulerAngles);
+
                 }
 
             }
@@ -679,12 +711,12 @@ public class playerController : MonoBehaviour
             Debug.DrawRay(transform.position, airInputDirection * 5, Color.red); // input direction
 
         }
-        if (hitinfo.distance < fallCheckDistance && hitinfo.distance > 0.1f)
+        if (hitinfo.distance < fallCheckDistance && !isPlayerGrounded)
         {
-            
+            Debug.Log(hitinfo.distance);
             inputDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward);
             animator.SetBool("falling", false);
-            transform.Translate(inputDirection * (airSpeed/4) * Time.deltaTime, Space.World);
+            transform.Translate(inputDirection * (airSpeed) * Time.deltaTime, Space.World);
            
 
         }
