@@ -85,7 +85,8 @@ public class InputManager : MonoBehaviour
        
 
         // get jump input
-        Controls.Player.Jump.performed += StartJumping => Jump = !Jump;
+        Controls.Player.Jump.performed += StartJumping => Jump = true;
+        Controls.Player.Jump.canceled += StartJumping => Jump = false;
 
         // get jump input
         Controls.Player.cover.performed += TakeCover => takeCover = !takeCover;
