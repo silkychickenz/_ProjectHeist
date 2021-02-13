@@ -143,7 +143,8 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        playerControllerScript.JumpAndVaultAnimation(Jump);
+       
+        playerControllerScript.JumpAndVaultAnimation();
         if (!startAiming) //if player is not aiming
         {
            
@@ -203,7 +204,7 @@ public class InputManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        playerControllerScript.PlayerAlwaysUpright();
+        playerControllerScript.PlayerAlwaysUpright(move);
         playerControllerScript.RotateCamera(lookAround);
     }
 

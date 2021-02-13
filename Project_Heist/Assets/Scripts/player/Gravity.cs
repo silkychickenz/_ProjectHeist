@@ -37,6 +37,11 @@ public class Gravity : MonoBehaviour
     private float RotByDegrees = 0;
     private bool Rotating = false;
     public bool justFlippedGravity;
+    [SerializeField]
+    float FlipTimeScale = 0.7f;
+
+
+
 
     public bool flipForward;
     void Start()
@@ -60,7 +65,7 @@ public class Gravity : MonoBehaviour
         {
            
            rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
-           
+            Time.timeScale = FlipTimeScale;
            animator.SetTrigger("Jump");
             Rotating = true;
             
@@ -210,6 +215,8 @@ public class Gravity : MonoBehaviour
                 justFlippedGravity = true;
                 flipForward = false;
                 rb.velocity = Vector3.zero;
+                Time.timeScale = 1;
+
 
             }
 
@@ -244,6 +251,8 @@ public class Gravity : MonoBehaviour
         }
         
     }
+
+    
 
 
 

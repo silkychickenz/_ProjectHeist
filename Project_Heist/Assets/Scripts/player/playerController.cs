@@ -284,7 +284,7 @@ public class playerController : MonoBehaviour
         }
         inputDirection = (direction.y * gameObject.transform.right + direction.x * -gameObject.transform.forward);
         playerAvatar.transform.localPosition = Vector3.zero;
-
+       
         // set player speed
         if (isPlayerGrounded)
         {
@@ -372,6 +372,11 @@ public class playerController : MonoBehaviour
             {
                 canPeakCoverLeft = true;
                 
+            }
+            if (!isCoverDetected)
+            {
+                canPeakCoverLeft = false;
+                canPeakCoverRight = false;
             }
 
             playerRotatingDirection = Mathf.Sign(Vector3.Dot(gameObject.transform.right, coverScaninfo.normal)); // is players back turned towards the wall
@@ -478,7 +483,7 @@ public class playerController : MonoBehaviour
                     animateHighVault = true;
                     defaultPlayerCollider.enabled = true;
                     playerVaultCollider.enabled = false;
-                    rb.AddForce(gameObject.transform.up * 1500 * Time.deltaTime, ForceMode.Impulse);
+                    rb.AddForce(gameObject.transform.up * 1400 * Time.deltaTime, ForceMode.Impulse);
                     jump = false;
                 }
                 
@@ -525,7 +530,7 @@ public class playerController : MonoBehaviour
 
     }
 
-    public void JumpAndVaultAnimation(bool jump)
+    public void JumpAndVaultAnimation()
     {
        
         if (animateVault)
@@ -575,7 +580,7 @@ public class playerController : MonoBehaviour
     }
 
     // corect the player if there is anyrotation when grounded, make player always upright
-    public void PlayerAlwaysUpright()
+    public void PlayerAlwaysUpright(Vector2 direction)
     {
 
        
@@ -584,7 +589,7 @@ public class playerController : MonoBehaviour
 
         if (SphereCastInfo.transform != null && gravityScript.justFlippedGravity)
         {
-
+           
             if (SphereCastInfo.transform.tag != "slope")
             {
 
@@ -711,13 +716,20 @@ public class playerController : MonoBehaviour
             Debug.DrawRay(transform.position, airInputDirection * 5, Color.red); // input direction
 
         }
-        if (hitinfo.distance < fallCheckDistance && !isPlayerGrounded)
+        if (hitinfo.distance < fallCheckDistance && !isPlayerGrounded )
         {
-            Debug.Log(hitinfo.distance);
+
             inputDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward);
             animator.SetBool("falling", false);
-            transform.Translate(inputDirection * (airSpeed) * Time.deltaTime, Space.World);
-           
+            
+            if (gravityScript.justFlippedGravity)
+            {
+                transform.Translate(inputDirection * (airSpeed) * Time.deltaTime, Space.World);
+            }
+            else
+            {
+                transform.Translate(inputDirection * (airSpeed / 4) * Time.deltaTime, Space.World);
+            }
 
         }
         
