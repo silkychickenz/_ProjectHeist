@@ -338,7 +338,11 @@ public class playerController : MonoBehaviour
 
         //Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 10, Color.red);
         Debug.DrawRay(gameObject.transform.position, coverScaninfo.point - gameObject.transform.position, Color.black);
-
+        if (!isCoverDetected)
+        {
+            canPeakCoverLeft = false;
+            canPeakCoverRight = false;
+        }
         // taking cover
         if (takeCover && isCoverDetected)
         {
