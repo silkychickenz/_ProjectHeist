@@ -11,8 +11,7 @@ public class playerController : MonoBehaviour
     private Rigidbody rb;
     [SerializeField]
     private GameObject playerAvatar;
-    [SerializeField]
-    ParticleSystem bullets;
+   
 
     [Header("Camera")]
     [SerializeField]
@@ -85,11 +84,10 @@ public class playerController : MonoBehaviour
     private float coverDetectionDist = 2;
     [SerializeField]
     private LayerMask detectAsCover;
-    private GameObject takeCoverOn;
+    //private GameObject takeCoverOn;
     RaycastHit coverScaninfo;
     RaycastHit coverScanGroundinfo;
-    private Vector3 playerToCover;
-    Vector3 playerToCoverCross;
+    
     bool runningToCover = false;
     bool canPeakCoverRight, canPeakCoverLeft;
     RaycastHit rightCoverScaninfo, leftCoverScaninfo;
@@ -743,9 +741,9 @@ public class playerController : MonoBehaviour
 
         if (StartShootingParticle)
         {
-            bullets.enableEmission = true;
+           
 
-            bullets.transform.rotation = CameraTarget.transform.rotation;
+           
 
             Ray HitscanRay = mainCamera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
             RaycastHit HitscanHitinfo;
@@ -761,11 +759,7 @@ public class playerController : MonoBehaviour
 
             }
         }
-        if (!StartShootingParticle)
-        {
-            bullets.enableEmission = false;
-
-        }
+        
 
        
 
@@ -785,7 +779,7 @@ public class playerController : MonoBehaviour
                 {
                     isCoverDetected = true;
                     runningToCover = true;
-                    takeCoverOn = coverScaninfo.transform.gameObject;
+                   // takeCoverOn = coverScaninfo.transform.gameObject;
 
                    // Debug.Log("dist " + coverScaninfo.distance);
                 }
