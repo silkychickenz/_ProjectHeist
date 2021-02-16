@@ -6,6 +6,8 @@ public class Door : MonoBehaviour
 {
     Animator m_animator;
     bool doorOpen;
+    public LayerMask opensTo;
+
     private void Start()
     {
         doorOpen = false;
@@ -14,7 +16,7 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-       if(col.gameObject.tag == "Player"|| col.gameObject.tag == "Enemy")
+       if(col.gameObject.layer == 10 )
         {
             Debug.Log(Vector3.Dot(col.gameObject.transform.up, this.gameObject.transform.up));
             if (Vector3.Dot(col.gameObject.transform.up, this.gameObject.transform.up) > 0.5)
