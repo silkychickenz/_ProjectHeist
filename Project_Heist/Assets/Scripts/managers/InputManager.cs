@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 using UnityEngine;
 //using UnityEngine.InputSystem;
 
@@ -108,7 +108,10 @@ public class InputManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        if (TEMPcam == 1)
+        {
+            SceneManager.LoadScene(0);
+        }
        
         if (takeCover && !playerControllerScript.isCoverDetected)
         {

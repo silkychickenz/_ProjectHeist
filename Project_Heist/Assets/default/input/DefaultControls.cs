@@ -287,7 +287,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""de93c3ba-0dad-4443-aade-e1afad549271"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""path"": ""<Keyboard>/p"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""keyboard&mouse"",
