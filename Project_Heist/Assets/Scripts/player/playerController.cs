@@ -47,7 +47,7 @@ public class playerController : MonoBehaviour
     RaycastHit SphereCastInfo;
     bool cleanUpX, cleanUpZ = true;
 
-   
+
 
     // camera system
 
@@ -106,9 +106,8 @@ public class playerController : MonoBehaviour
     RaycastHit forwardVaultCheckRayInfoMid;
     bool animateVault = false,animateHighVault = false, animateJump = false;
     bool jump;
-   
-
-
+    public GameObject muzzleFlashPrefab;
+    public GameObject gunMuzzle;
 
     void Start()
     {
@@ -745,9 +744,12 @@ public class playerController : MonoBehaviour
 
         if (StartShootingParticle)
         {
-           
 
-           
+            GameObject muzzleFlash = Instantiate<GameObject>(muzzleFlashPrefab, gunMuzzle.transform);
+            muzzleFlash.transform.localPosition = Vector3.zero;
+            muzzleFlash.transform.localEulerAngles = Vector3.back * 90f;
+            StartCoroutine(this.DestroyFlash(muzzleFlash));
+
 
             Ray HitscanRay = mainCamera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
             RaycastHit HitscanHitinfo;
@@ -767,6 +769,12 @@ public class playerController : MonoBehaviour
 
        
 
+    }
+
+    public IEnumerator DestroyFlash(GameObject flash)
+    {
+        yield return new WaitForSeconds(0.1f);
+        Destroy(flash);
     }
 
     public void CoverDetection()
