@@ -55,6 +55,7 @@ public class InputManager : MonoBehaviour
 
     //TEMP
     private float TEMPcam;
+    private float exit;
 
     private void Awake()
     {
@@ -96,7 +97,10 @@ public class InputManager : MonoBehaviour
 
         //TEMP
         Controls.Player.TEMPcameratoggle.performed += TEMPCam => TEMPcam = (TEMPCam.ReadValue<float>());
-        
+
+        //escape
+        Controls.Player.Exit.performed += Exit => exit = (Exit.ReadValue<float>());
+
     }
 
     void Start()
@@ -111,6 +115,11 @@ public class InputManager : MonoBehaviour
         if (TEMPcam == 1)
         {
             SceneManager.LoadScene(0);
+        }
+
+        if (exit == 1)
+        {
+            Application.Quit();
         }
        
         if (takeCover && !playerControllerScript.isCoverDetected)

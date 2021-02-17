@@ -105,6 +105,14 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""0c2a1532-5d3f-4ecb-ab61-498643bf217c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -569,6 +577,17 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                     ""action"": ""cover"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e1b0be6f-b0a8-49bd-a9c2-6ed87ddd3563"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""keyboard&mouse"",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -616,6 +635,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         m_Player_crouch = m_Player.FindAction("crouch", throwIfNotFound: true);
         m_Player_GravityFlipWheel = m_Player.FindAction("GravityFlipWheel", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Exit = m_Player.FindAction("Exit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -676,6 +696,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_crouch;
     private readonly InputAction m_Player_GravityFlipWheel;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Exit;
     public struct PlayerActions
     {
         private @DefaultControls m_Wrapper;
@@ -691,6 +712,7 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         public InputAction @crouch => m_Wrapper.m_Player_crouch;
         public InputAction @GravityFlipWheel => m_Wrapper.m_Player_GravityFlipWheel;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @Exit => m_Wrapper.m_Player_Exit;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -733,6 +755,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Exit.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExit;
+                @Exit.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExit;
+                @Exit.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnExit;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -770,6 +795,9 @@ public class @DefaultControls : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @Exit.started += instance.OnExit;
+                @Exit.performed += instance.OnExit;
+                @Exit.canceled += instance.OnExit;
             }
         }
     }
@@ -805,5 +833,6 @@ public class @DefaultControls : IInputActionCollection, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnGravityFlipWheel(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnExit(InputAction.CallbackContext context);
     }
 }
