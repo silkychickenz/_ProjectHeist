@@ -6,14 +6,15 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class shortcuts : MonoBehaviour
-{
+{ 
+    /*
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    [MenuItem("Extra Tools/Clear Console %q")] // CTRL + Q
+   // [MenuItem("Extra Tools/Clear Console %q")] // CTRL + Q
     private static void ClearConsole()
     {
         Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
@@ -21,4 +22,5 @@ public class shortcuts : MonoBehaviour
         MethodInfo method = type.GetMethod("Clear");
         method?.Invoke(new object(), null);
     }
+    */
 }

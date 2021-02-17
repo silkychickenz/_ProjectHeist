@@ -391,7 +391,7 @@ public class playerController : MonoBehaviour
             // run towards cover
             if (Vector3.Distance(gameObject.transform.position, coverScanGroundinfo.point) > 0.3 && runningToCover)
             {
-               // Debug.Log("stuck");
+                Debug.Log("stuck");
                 transform.Translate((coverScanGroundinfo.point - gameObject.transform.position).normalized * MaxPlayerRunSpeed * Time.deltaTime, Space.World); ;
             }
             else
