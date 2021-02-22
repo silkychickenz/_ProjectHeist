@@ -47,6 +47,7 @@ namespace EnemyAI
 		[HideInInspector] public EnemyVariables variables;          // Reference to extra variables, common to all NPC categories.
 		[HideInInspector] public CoverLookup coverLookup;           // Reference to the Game Controller's cover lookup script.
 		[HideInInspector] public Vector3 personalTarget;            // The current personal target, if any.
+		[HideInInspector] public EnemyGroups m_squad;
 
 		private int magBullets;                                     // Maximum bullet capacity of the weapon mag.
 		private bool aiActive;                                      // Is the NPC AI active?
@@ -54,6 +55,7 @@ namespace EnemyAI
 		private bool strafing;                                      // Is the NPC strafing?
 		private bool aiming;                                        // Is the NPC aiming?
 		private bool checkedOnLoop, blockedSight;                   // Blocked sight test related variables.
+
 
 		// Reset cover position.
 		private void OnDestroy()
@@ -198,7 +200,7 @@ namespace EnemyAI
 		}
 
 		// Verify if the spot is near any spot used by other NPCs. Default comparison distance is 1.
-		public bool IsNearOtherSpot(Vector3 spot, float margin = 1f)
+		public bool IsNearOtherSpot(Vector3 spot, float margin = 2f)
 		{
 			foreach (KeyValuePair<int, Vector3> usedSpot in coverSpot)
 			{
