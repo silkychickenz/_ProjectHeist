@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Prototype_Transparent
+  m_Name: Prototype_Blue_Transparent
   m_Shader: {fileID: 4800000, guid: c4edd00ff2db5b24391a4fcb1762e459, type: 3}
   m_ShaderKeywords: _DISABLE_SSR _DISABLE_SSR_TRANSPARENT _ENABLE_FOG_ON_TRANSPARENT
     _NORMALMAP_TANGENT_SPACE _SURFACE_TYPE_TRANSPARENT
@@ -253,7 +253,7 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 0.5019608}
+    - _BaseColor: {r: 0.48584908, g: 0.6640698, b: 1, a: 0.8}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
@@ -269,7 +269,7 @@ Material:
     - _UVDetailsMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMask: {r: 1, g: 0, b: 0, a: 0}
     - _UVMappingMaskEmissive: {r: 1, g: 0, b: 0, a: 0}
-    - _UnlitColor: {r: 1, g: 1, b: 1, a: 0.050980393}
+    - _UnlitColor: {r: 0.5, g: 0.66860217, b: 1, a: 0.2509804}
     - _UnlitColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2596365349264189234
