@@ -206,9 +206,9 @@ GameObject:
   - component: {fileID: 8795989786645378348}
   - component: {fileID: 8795989786645378350}
   - component: {fileID: 8795989786645378345}
+  - component: {fileID: 4335011936600126079}
   - component: {fileID: 8795989786645378349}
   - component: {fileID: 1018610654}
-  - component: {fileID: 4335011936600126079}
   m_Layer: 10
   m_Name: player
   m_TagString: Player
@@ -334,6 +334,24 @@ MonoBehaviour:
   justFlippedGravity: 0
   FlipTimeScale: 0.7
   flipForward: 0
+--- !u!114 &4335011936600126079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8795989786645378336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2e7439bc9b350747b1ff7cdd4c29535, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dead: 0
+  health: 100
+  canvas: {fileID: 4310117618266269458}
+  hurtPrefab: {fileID: 5542824109845126322, guid: 96c82f1df8075f24aa60ec228a6b40dc, type: 3}
+  healthDisplay: {fileID: 3659470609935957130}
+  decayFactor: 0.8
 --- !u!136 &8795989786645378349
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -361,24 +379,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.099999905, z: 1}
   m_Center: {x: 0, y: 1.08, z: 0.0026717186}
---- !u!114 &4335011936600126079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8795989786645378336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2e7439bc9b350747b1ff7cdd4c29535, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dead: 0
-  health: 100
-  canvas: {fileID: 4310117618266269458}
-  hurtPrefab: {fileID: 5542824109845126322, guid: 96c82f1df8075f24aa60ec228a6b40dc, type: 3}
-  healthDisplay: {fileID: 3659470609935957130}
-  decayFactor: 0.8
 --- !u!1 &8795989787168312062
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,7 +546,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5398380986615607948, guid: a63a8efff8c9e004584bc91d14b1ba18, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.9000015
+      value: -1.8999996
       objectReference: {fileID: 0}
     - target: {fileID: 5398380986615607948, guid: a63a8efff8c9e004584bc91d14b1ba18, type: 3}
       propertyPath: m_LocalRotation.w
@@ -641,7 +641,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4745624971573092475, guid: 3748eff7ba3474045a662159ae3fe6a3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.9000015
+      value: -1.8999996
       objectReference: {fileID: 0}
     - target: {fileID: 4745624971573092475, guid: 3748eff7ba3474045a662159ae3fe6a3, type: 3}
       propertyPath: m_LocalRotation.w

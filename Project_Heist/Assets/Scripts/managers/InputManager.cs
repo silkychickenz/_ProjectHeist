@@ -7,16 +7,17 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     private DefaultControls Controls;      // input asset
-
+    
     [Header("Get references")]
     [SerializeField]
     private GameObject Player,playerAvatar;
     private Animator animator;
     //movement
     private playerController playerControllerScript;
-    
-    private bool crouchBoost = true;
+    private PlayerSoundManager playerSoundManagerScript;
 
+
+    private bool crouchBoost = true;
     
     //gravity
     private Gravity gravityScipt;
@@ -62,10 +63,8 @@ public class InputManager : MonoBehaviour
         // get reference
         Controls = new DefaultControls();
         playerControllerScript = Player.GetComponent<playerController>();
-        
+        playerSoundManagerScript = Player.GetComponent<PlayerSoundManager>();
 
-
-       
         gravityScipt = Player.GetComponent<Gravity>();
 
 
@@ -108,6 +107,7 @@ public class InputManager : MonoBehaviour
         LockCursor();   // lock and hide the cursor
         canShoot = true;
         animator = playerAvatar.GetComponent<Animator>();
+       
     }
 
     private void FixedUpdate()
@@ -144,7 +144,7 @@ public class InputManager : MonoBehaviour
         gravityScipt.GravityFlip(gravityFlipDirection, enableGravityFlip, gravityFlipWheel);
         if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
         {
-
+           
             enableGravityFlip = false;
             StartCoroutine(GravityFlipCooldown());
         }
@@ -155,7 +155,7 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-       
+        playerSoundManagerScript.Sound(startSprinting, gravityFlipDirection, gravityFlipWheel);
         playerControllerScript.JumpAndVaultAnimation();
         if (!startAiming) //if player is not aiming
         {

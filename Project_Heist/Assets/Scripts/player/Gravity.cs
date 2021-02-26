@@ -39,7 +39,7 @@ public class Gravity : MonoBehaviour
     public bool justFlippedGravity;
     [SerializeField]
     float FlipTimeScale = 0.7f;
-
+    private PlayerSoundManager playerSoundManagerScript;
 
 
 
@@ -49,6 +49,7 @@ public class Gravity : MonoBehaviour
         animator = playerAvatar.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
         justFlippedGravity = false;
+        playerSoundManagerScript = gameObject.GetComponent<PlayerSoundManager>();
     }
     public void GravityFlip(Vector2 direction, bool CanFlipGravity, bool gravityFlipWheel) // direction gets the input and CanFlipGravity gets the cooldown, 
     {
@@ -65,9 +66,10 @@ public class Gravity : MonoBehaviour
         {
            
            rb.AddForce(GravityFlipStartForce * gameObject.transform.up, ForceMode.Impulse); // boost the player a little off the ground
-            Time.timeScale = FlipTimeScale;
+           Time.timeScale = FlipTimeScale;
+           
            animator.SetTrigger("Jump");
-            Rotating = true;
+           Rotating = true;
             
         }
        

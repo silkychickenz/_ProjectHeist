@@ -70,6 +70,7 @@ public class playerController : MonoBehaviour
     private float MaxPlayerWalkSpeed = 5, MaxPlayerRunSpeed = 10, MaxPlayerCrouchSpeed = 2, jumpForce = 10, runToCroushSlideForce = 30;
     private float MovementForce = 0;
     Vector3 groundPlayerCross;
+    private PlayerSoundManager playerSoundManagerScript;
 
     [Header(" PLAYER FALLING")]
     [SerializeField]
@@ -114,7 +115,7 @@ public class playerController : MonoBehaviour
         animator = playerAvatar.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
         gravityScript = gameObject.GetComponent<Gravity>();
-       
+        playerSoundManagerScript = gameObject.GetComponent<PlayerSoundManager>();
         cameraDefaultPos = CameraTarget.transform.localPosition;
         cleanUpX = true;
         cleanUpZ = true;
@@ -160,17 +161,18 @@ public class playerController : MonoBehaviour
                 animator.SetFloat("moveX", 0);
                 animator.SetFloat("moveY", 0);
                 direction = Vector2.zero;
+               
             }
             if (direction != Vector2.zero)
             {
-                if (startSprint && direction.x == 0 && direction.y > 0)
+                if (startSprint && direction.x == 0 && direction.y > 0) // start sprint
                 {
                     
                     animator.SetFloat("moveY", direction.y + 1);
                 }
                 else
                 {
-                  
+                    
                     animator.SetFloat("moveY", direction.y);
                 }
 
@@ -645,7 +647,7 @@ public class playerController : MonoBehaviour
                     }    
                     else if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) <= 0.07 && Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) >= -0.07 && cleanUpZ) //0.01
                     {
-                        Debug.Log(gameObject.transform.localRotation.eulerAngles);
+
                         
 
                         if (gameObject.transform.eulerAngles.z <= 10)
