@@ -10256,50 +10256,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1902204532}
-    - target: {fileID: 148245761923975510, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: 0.00000033346547
-      objectReference: {fileID: 0}
-    - target: {fileID: 148245761923975510, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: 0.40885356
-      objectReference: {fileID: 0}
-    - target: {fileID: 148245761923975510, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.z
-      value: -0.0000001540179
-      objectReference: {fileID: 0}
-    - target: {fileID: 148245762244240309, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: 0.00000077859033
-      objectReference: {fileID: 0}
-    - target: {fileID: 148245762244240309, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: 0.4088535
-      objectReference: {fileID: 0}
-    - target: {fileID: 148245762244240309, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.z
-      value: -0.00000031734825
-      objectReference: {fileID: 0}
-    - target: {fileID: 148245762913842272, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: -0.00039353038
-      objectReference: {fileID: 0}
-    - target: {fileID: 148245763202140824, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: -0.082863495
-      objectReference: {fileID: 0}
-    - target: {fileID: 148245763202140824, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.z
-      value: -0.0035669678
-      objectReference: {fileID: 0}
-    - target: {fileID: 148245763282241433, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: 0.08081372
-      objectReference: {fileID: 0}
-    - target: {fileID: 148245763282241433, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
-      propertyPath: m_ConnectedAnchor.z
-      value: -0.003566943
-      objectReference: {fileID: 0}
     - target: {fileID: 232111763261520168, guid: 95623d5b4acc1c84ba2722f94ef4c070, type: 3}
       propertyPath: m_Mesh
       value: 
