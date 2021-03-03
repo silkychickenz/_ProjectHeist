@@ -107,7 +107,7 @@ public class InputManager : MonoBehaviour
         LockCursor();   // lock and hide the cursor
         canShoot = true;
         animator = playerAvatar.GetComponent<Animator>();
-       
+        playerSoundManagerScript.BGMusic();
     }
 
     private void FixedUpdate()
@@ -155,7 +155,9 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        playerSoundManagerScript.Sound(startSprinting, gravityFlipDirection, gravityFlipWheel);
+       // playerSoundManagerScript.Sound(startSprinting);
+       // playerSoundManagerScript.BGMusic();
+        playerSoundManagerScript.GravityFlipSound(gravityFlipDirection, gravityFlipWheel);
         playerControllerScript.JumpAndVaultAnimation();
         if (!startAiming) //if player is not aiming
         {

@@ -14,6 +14,8 @@ public class PlayerSoundManager : MonoBehaviour
     public AudioSource FootstepsAudio;
     [SerializeField]
     public AudioSource GravityFlipAudio;
+    [SerializeField]
+    public AudioSource BGMusicSource;
     //[SerializeField]
     //public AudioSource Footsteps;
     // [SerializeField]
@@ -28,6 +30,7 @@ public class PlayerSoundManager : MonoBehaviour
         soundFlags = new Dictionary<string, bool>();
 
         soundFlags.Add("gravityFlip",true);
+       
     }
 
 
@@ -38,16 +41,19 @@ public class PlayerSoundManager : MonoBehaviour
         Shoot,
         Jump,
         GravityFlip,
+        BG_Music_loop,
+        BG_Music_UpBeat,
 
     }
    
     public PlayerAudioClips[] playerAudioClipsArray;
     bool looping = false;
-    public void Sound(bool startSprinting, Vector2 gravityFlipDirection, bool gravityFlipWheel)
+    #region footsteps 
+    public void Sound(bool startSprinting)
     {
 
 
-        #region footsteps 
+        
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("movement"))
         {
             if (animator.GetFloat("moveX") != 0 || animator.GetFloat("moveY") != 0)
@@ -84,21 +90,35 @@ public class PlayerSoundManager : MonoBehaviour
             previousSprintStatus = startSprinting;
         }
         
-        #endregion
+        
 
         #region gravity flip
-        if (gravityFlipWheel && gravityFlipDirection != Vector2.zero && soundFlags["gravityFlip"])
-        {
-
-           
-            PlaySoundOnce(GravityFlipAudio, PlayerSounds.GravityFlip, 0.1f, "gravityFlip");
-            soundFlags["gravityFlip"] = false;
-        }
+        
 
         #endregion
+
+
 
     }
 
+    public void BGMusic()
+    {
+        
+            PlaySoundLoop(BGMusicSource, PlayerSounds.BG_Music_UpBeat);
+            soundFlags["BG_MusicLoop"] = false;
+        
+    }
+    public void GravityFlipSound(Vector2 gravityFlipDirection, bool gravityFlipWheel)
+    {
+        if (gravityFlipWheel && gravityFlipDirection != Vector2.zero && soundFlags["gravityFlip"])
+        {
+
+
+            PlaySoundOnce(GravityFlipAudio, PlayerSounds.GravityFlip, 0.5f, "gravityFlip");
+            soundFlags["gravityFlip"] = false;
+        }
+    }
+    #endregion
     public void PlaySoundOnce(AudioSource audioSource,PlayerSounds sound, float volume, string key)
     {
         audioSource.PlayOneShot(GetAudioClip(sound), volume);
@@ -106,14 +126,14 @@ public class PlayerSoundManager : MonoBehaviour
     }
     public void PlaySoundLoop(AudioSource audioSource, PlayerSounds sound)
     {
-        if (!looping)
-        {
+       // if (!looping)
+        //{
             audioSource.clip = GetAudioClip(sound);
             audioSource.loop = true;
             audioSource.Play();
             looping = true;
             
-        }
+       // }
        
     }
     public void StopSound(AudioSource audioSource)
