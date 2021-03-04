@@ -137,7 +137,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: cover shooting
-  m_Speed: 1
+  m_Speed: 4
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -334314076420761831}
@@ -268,7 +268,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.18924761
   m_TransitionOffset: 0
   m_ExitTime: 0.75731957
-  m_HasExitTime: 0
+  m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -1072,9 +1072,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 1.214396
-  m_TransitionOffset: 0.00000065581054
-  m_ExitTime: 0.8532105
+  m_TransitionDuration: 0.533268
+  m_TransitionOffset: 0.0000006558106
+  m_ExitTime: 0.935274
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -2333,9 +2333,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.6852956
-  m_TransitionOffset: 0
-  m_ExitTime: 0.8821056
+  m_TransitionDuration: 0.34473133
+  m_TransitionOffset: 0.041031342
+  m_ExitTime: 0.9406552
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

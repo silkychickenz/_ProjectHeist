@@ -96,6 +96,8 @@ namespace EnemyAI
 		public void Kill()
 		{
 			// Destroy all other MonoBehaviour scripts attached to the NPC.
+			if (controller.m_squad)
+				controller.m_squad.RemoveSelf(this.controller);
 			foreach (MonoBehaviour mb in this.GetComponents<MonoBehaviour>())
 			{
 				if (this != mb)

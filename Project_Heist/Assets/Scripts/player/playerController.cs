@@ -11,8 +11,7 @@ public class playerController : MonoBehaviour
     private Rigidbody rb;
     [SerializeField]
     private GameObject playerAvatar;
-    [SerializeField]
-    ParticleSystem bullets;
+   
 
     [Header("Camera")]
     [SerializeField]
@@ -47,7 +46,7 @@ public class playerController : MonoBehaviour
     RaycastHit SphereCastInfo;
     bool cleanUpX, cleanUpZ = true;
 
-   
+
 
     // camera system
 
@@ -70,6 +69,7 @@ public class playerController : MonoBehaviour
     private float MaxPlayerWalkSpeed = 5, MaxPlayerRunSpeed = 10, MaxPlayerCrouchSpeed = 2, jumpForce = 10, runToCroushSlideForce = 30;
     private float MovementForce = 0;
     Vector3 groundPlayerCross;
+    private PlayerSoundManager playerSoundManagerScript;
 
     [Header(" PLAYER FALLING")]
     [SerializeField]
@@ -84,11 +84,10 @@ public class playerController : MonoBehaviour
     private float coverDetectionDist = 2;
     [SerializeField]
     private LayerMask detectAsCover;
-    private GameObject takeCoverOn;
+    //private GameObject takeCoverOn;
     RaycastHit coverScaninfo;
     RaycastHit coverScanGroundinfo;
-    private Vector3 playerToCover;
-    Vector3 playerToCoverCross;
+    
     bool runningToCover = false;
     bool canPeakCoverRight, canPeakCoverLeft;
     RaycastHit rightCoverScaninfo, leftCoverScaninfo;
@@ -107,16 +106,15 @@ public class playerController : MonoBehaviour
     RaycastHit forwardVaultCheckRayInfoMid;
     bool animateVault = false,animateHighVault = false, animateJump = false;
     bool jump;
-   
-
-
+    public GameObject muzzleFlashPrefab;
+    public GameObject gunMuzzle;
 
     void Start()
     {
         animator = playerAvatar.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
         gravityScript = gameObject.GetComponent<Gravity>();
-       
+        playerSoundManagerScript = gameObject.GetComponent<PlayerSoundManager>();
         cameraDefaultPos = CameraTarget.transform.localPosition;
         cleanUpX = true;
         cleanUpZ = true;
@@ -162,17 +160,18 @@ public class playerController : MonoBehaviour
                 animator.SetFloat("moveX", 0);
                 animator.SetFloat("moveY", 0);
                 direction = Vector2.zero;
+               
             }
             if (direction != Vector2.zero)
             {
-                if (startSprint && direction.x == 0 && direction.y > 0)
+                if (startSprint && direction.x == 0 && direction.y > 0) // start sprint
                 {
                     
                     animator.SetFloat("moveY", direction.y + 1);
                 }
                 else
                 {
-                  
+                    
                     animator.SetFloat("moveY", direction.y);
                 }
 
@@ -283,7 +282,7 @@ public class playerController : MonoBehaviour
         }
         inputDirection = (direction.y * gameObject.transform.right + direction.x * -gameObject.transform.forward);
         playerAvatar.transform.localPosition = Vector3.zero;
-
+       
         // set player speed
         if (isPlayerGrounded)
         {
@@ -339,19 +338,23 @@ public class playerController : MonoBehaviour
 
         //Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 10, Color.red);
         Debug.DrawRay(gameObject.transform.position, coverScaninfo.point - gameObject.transform.position, Color.black);
-
+        if (!isCoverDetected)
+        {
+            canPeakCoverLeft = false;
+            canPeakCoverRight = false;
+        }
         // taking cover
         if (takeCover && isCoverDetected)
         {
             //right
-            Debug.DrawRay(gameObject.transform.position, gameObject.transform.right * 0.25f, Color.red);
-            Debug.DrawRay(gameObject.transform.position + (gameObject.transform.right * 0.25f), gameObject.transform.forward * 1, Color.green);
-            Physics.Raycast(gameObject.transform.position + (gameObject.transform.right * 0.25f), gameObject.transform.forward, out rightCoverScaninfo, 1, detectAsCover); //right
+            Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up ), gameObject.transform.right * 0.25f, Color.red);
+            Debug.DrawRay((gameObject.transform.position + (gameObject.transform.up )) + (gameObject.transform.right * 0.25f), gameObject.transform.forward * 1, Color.green);
+            Physics.Raycast((gameObject.transform.position + gameObject.transform.up) + (gameObject.transform.right * 0.25f), gameObject.transform.forward, out rightCoverScaninfo, 1, detectAsCover); //right
 
             //left
-            Debug.DrawRay(gameObject.transform.position, -gameObject.transform.right * 0.25f, Color.red);
-            Debug.DrawRay(gameObject.transform.position + (-gameObject.transform.right * 0.25f), gameObject.transform.forward * 1, Color.green);
-            Physics.Raycast(gameObject.transform.position + (-gameObject.transform.right * 0.25f), gameObject.transform.forward, out leftCoverScaninfo, 1, detectAsCover);  //left
+            Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up ), -gameObject.transform.right * 0.25f, Color.red);
+            Debug.DrawRay((gameObject.transform.position + (gameObject.transform.up )) + (-gameObject.transform.right * 0.25f), gameObject.transform.forward * 1, Color.green);
+            Physics.Raycast((gameObject.transform.position + gameObject.transform.up) + (-gameObject.transform.right * 0.25f), gameObject.transform.forward, out leftCoverScaninfo, 1, detectAsCover);  //left
             if (rightCoverScaninfo.transform != null)
             {
                 canPeakCoverRight = false;
@@ -372,6 +375,11 @@ public class playerController : MonoBehaviour
                 canPeakCoverLeft = true;
                 
             }
+            if (!isCoverDetected)
+            {
+                canPeakCoverLeft = false;
+                canPeakCoverRight = false;
+            }
 
             playerRotatingDirection = Mathf.Sign(Vector3.Dot(gameObject.transform.right, coverScaninfo.normal)); // is players back turned towards the wall
 
@@ -384,7 +392,7 @@ public class playerController : MonoBehaviour
             // run towards cover
             if (Vector3.Distance(gameObject.transform.position, coverScanGroundinfo.point) > 0.3 && runningToCover)
             {
-               // Debug.Log("stuck");
+                Debug.Log("stuck");
                 transform.Translate((coverScanGroundinfo.point - gameObject.transform.position).normalized * MaxPlayerRunSpeed * Time.deltaTime, Space.World); ;
             }
             else
@@ -477,7 +485,7 @@ public class playerController : MonoBehaviour
                     animateHighVault = true;
                     defaultPlayerCollider.enabled = true;
                     playerVaultCollider.enabled = false;
-                    rb.AddForce(gameObject.transform.up * 1500 * Time.deltaTime, ForceMode.Impulse);
+                    rb.AddForce(gameObject.transform.up * 1400 * Time.deltaTime, ForceMode.Impulse);
                     jump = false;
                 }
                 
@@ -524,7 +532,7 @@ public class playerController : MonoBehaviour
 
     }
 
-    public void JumpAndVaultAnimation(bool jump)
+    public void JumpAndVaultAnimation()
     {
        
         if (animateVault)
@@ -574,7 +582,7 @@ public class playerController : MonoBehaviour
     }
 
     // corect the player if there is anyrotation when grounded, make player always upright
-    public void PlayerAlwaysUpright()
+    public void PlayerAlwaysUpright(Vector2 direction)
     {
 
        
@@ -583,7 +591,7 @@ public class playerController : MonoBehaviour
 
         if (SphereCastInfo.transform != null && gravityScript.justFlippedGravity)
         {
-
+           
             if (SphereCastInfo.transform.tag != "slope")
             {
 
@@ -638,8 +646,40 @@ public class playerController : MonoBehaviour
                     }    
                     else if (Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) <= 0.07 && Vector3.Dot(gameObject.transform.right, SphereCastInfo.normal) >= -0.07 && cleanUpZ) //0.01
                     {
+
                         
-                        transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, -90);
+
+                        if (gameObject.transform.eulerAngles.z <= 10)
+                        {
+                            gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 0);
+
+
+                        }
+
+                        else if ((gameObject.transform.eulerAngles.z) <= 100 && (gameObject.transform.eulerAngles.z) >= 80)
+                        {
+                            gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 90);
+
+                        }
+
+                        else if ((gameObject.transform.eulerAngles.z) <= 190 && (gameObject.transform.eulerAngles.z) >= 170)
+                        {
+                            gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 180);
+
+                        }
+
+                        else if ((gameObject.transform.eulerAngles.z) <= 280 && (gameObject.transform.eulerAngles.z) >= 260)
+                        {
+                            gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 270);
+
+                        }
+
+                        else if ((gameObject.transform.eulerAngles.z) <= 370 && (gameObject.transform.eulerAngles.z) >= 350)
+                        {
+                            gameObject.transform.eulerAngles = new Vector3(gameObject.transform.eulerAngles.x, gameObject.transform.eulerAngles.y, 360);
+
+                        }
+
                         cleanUpZ = false;
 
                     }
@@ -654,7 +694,7 @@ public class playerController : MonoBehaviour
                 if (!cleanUpZ && !cleanUpX && Vector3.Angle(gameObject.transform.up, SphereCastInfo.normal) < 3)
                 {
                     gravityScript.justFlippedGravity = false;
-                    Debug.Log(gameObject.transform.localRotation.eulerAngles);
+
                 }
 
             }
@@ -678,13 +718,20 @@ public class playerController : MonoBehaviour
             Debug.DrawRay(transform.position, airInputDirection * 5, Color.red); // input direction
 
         }
-        if (hitinfo.distance < fallCheckDistance && hitinfo.distance > 0.1f)
+        if (hitinfo.distance < fallCheckDistance && !isPlayerGrounded )
         {
-            
+
             inputDirection = (direction.x * gameObject.transform.right + direction.y * gameObject.transform.forward);
             animator.SetBool("falling", false);
-            transform.Translate(inputDirection * (airSpeed/4) * Time.deltaTime, Space.World);
-           
+            
+            if (gravityScript.justFlippedGravity)
+            {
+                transform.Translate(inputDirection * (airSpeed) * Time.deltaTime, Space.World);
+            }
+            else
+            {
+                transform.Translate(inputDirection * (airSpeed / 4) * Time.deltaTime, Space.World);
+            }
 
         }
         
@@ -698,9 +745,12 @@ public class playerController : MonoBehaviour
 
         if (StartShootingParticle)
         {
-            bullets.enableEmission = true;
 
-            bullets.transform.rotation = CameraTarget.transform.rotation;
+            GameObject muzzleFlash = Instantiate<GameObject>(muzzleFlashPrefab, gunMuzzle.transform);
+            muzzleFlash.transform.localPosition = Vector3.zero;
+            muzzleFlash.transform.localEulerAngles = Vector3.back * 90f;
+            StartCoroutine(this.DestroyFlash(muzzleFlash));
+
 
             Ray HitscanRay = mainCamera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
             RaycastHit HitscanHitinfo;
@@ -716,14 +766,16 @@ public class playerController : MonoBehaviour
 
             }
         }
-        if (!StartShootingParticle)
-        {
-            bullets.enableEmission = false;
-
-        }
+        
 
        
 
+    }
+
+    public IEnumerator DestroyFlash(GameObject flash)
+    {
+        yield return new WaitForSeconds(0.1f);
+        Destroy(flash);
     }
 
     public void CoverDetection()
@@ -740,7 +792,7 @@ public class playerController : MonoBehaviour
                 {
                     isCoverDetected = true;
                     runningToCover = true;
-                    takeCoverOn = coverScaninfo.transform.gameObject;
+                   // takeCoverOn = coverScaninfo.transform.gameObject;
 
                    // Debug.Log("dist " + coverScaninfo.distance);
                 }

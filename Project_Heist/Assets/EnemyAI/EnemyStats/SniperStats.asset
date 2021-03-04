@@ -15,13 +15,13 @@ MonoBehaviour:
   aimOffset: {x: -23, y: 24, z: 0}
   leftArmAim: {x: 0, y: 0, z: 0}
   leftArmGuard: {x: 0, y: 0, z: 0}
-  changeCoverChance: 90
+  changeCoverChance: 33
   weaponType: 2
   bulletDamage: 10
   shotSound: {fileID: 8300000, guid: 550d02157d7611d47b48f6ec57941b8f, type: 3}
   reloadSound: {fileID: 8300000, guid: 5445df1500da47941851cfbf3ac1953f, type: 3}
-  shotRateFactor: 3
-  shotErrorRate: 0.05
+  shotRateFactor: 0.5
+  shotErrorRate: 0.01
   muzzleFlash: {fileID: 1040379479616710939, guid: 56ce24c1ba722234395e08ec787ff14d, type: 3}
   shot: {fileID: 7050756295436598934, guid: 4beeec5288f782e4292564be660a53b5, type: 3}
   sparks: {fileID: 1582818038116428783, guid: 305202af1e9d5cf4999160be5e328ae8, type: 3}

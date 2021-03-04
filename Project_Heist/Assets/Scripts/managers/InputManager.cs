@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections;
-
+using UnityEngine.SceneManagement;
 using UnityEngine;
 //using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
     private DefaultControls Controls;      // input asset
-
+    
     [Header("Get references")]
     [SerializeField]
     private GameObject Player,playerAvatar;
     private Animator animator;
     //movement
     private playerController playerControllerScript;
-    
-    private bool crouchBoost = true;
+    private PlayerSoundManager playerSoundManagerScript;
 
+
+    private bool crouchBoost = true;
     
     //gravity
     private Gravity gravityScipt;
@@ -55,16 +56,15 @@ public class InputManager : MonoBehaviour
 
     //TEMP
     private float TEMPcam;
+    private float exit;
 
     private void Awake()
     {
         // get reference
         Controls = new DefaultControls();
         playerControllerScript = Player.GetComponent<playerController>();
-        
+        playerSoundManagerScript = Player.GetComponent<PlayerSoundManager>();
 
-
-       
         gravityScipt = Player.GetComponent<Gravity>();
 
 
@@ -96,7 +96,10 @@ public class InputManager : MonoBehaviour
 
         //TEMP
         Controls.Player.TEMPcameratoggle.performed += TEMPCam => TEMPcam = (TEMPCam.ReadValue<float>());
-        
+
+        //escape
+        Controls.Player.Exit.performed += Exit => exit = (Exit.ReadValue<float>());
+
     }
 
     void Start()
@@ -104,11 +107,20 @@ public class InputManager : MonoBehaviour
         LockCursor();   // lock and hide the cursor
         canShoot = true;
         animator = playerAvatar.GetComponent<Animator>();
+        playerSoundManagerScript.BGMusic();
     }
 
     private void FixedUpdate()
     {
-        
+        if (TEMPcam == 1)
+        {
+            SceneManager.LoadScene(0);
+        }
+
+        if (exit == 1)
+        {
+            Application.Quit();
+        }
        
         if (takeCover && !playerControllerScript.isCoverDetected)
         {
@@ -132,7 +144,7 @@ public class InputManager : MonoBehaviour
         gravityScipt.GravityFlip(gravityFlipDirection, enableGravityFlip, gravityFlipWheel);
         if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
         {
-
+           
             enableGravityFlip = false;
             StartCoroutine(GravityFlipCooldown());
         }
@@ -143,7 +155,10 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        playerControllerScript.JumpAndVaultAnimation(Jump);
+       // playerSoundManagerScript.Sound(startSprinting);
+       // playerSoundManagerScript.BGMusic();
+        playerSoundManagerScript.GravityFlipSound(gravityFlipDirection, gravityFlipWheel);
+        playerControllerScript.JumpAndVaultAnimation();
         if (!startAiming) //if player is not aiming
         {
            
@@ -203,7 +218,7 @@ public class InputManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        playerControllerScript.PlayerAlwaysUpright();
+        playerControllerScript.PlayerAlwaysUpright(move);
         playerControllerScript.RotateCamera(lookAround);
     }
 

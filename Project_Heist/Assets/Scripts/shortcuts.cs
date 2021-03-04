@@ -6,7 +6,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class shortcuts : MonoBehaviour
-{
+{ 
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -21,4 +22,5 @@ public class shortcuts : MonoBehaviour
         MethodInfo method = type.GetMethod("Clear");
         method?.Invoke(new object(), null);
     }
+    
 }

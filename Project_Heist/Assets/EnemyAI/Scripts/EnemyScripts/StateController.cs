@@ -31,7 +31,6 @@ namespace EnemyAI
 		[Range(0, 360)] public float viewAngle;
 		[Tooltip("Radius of NPC perception area.")]
 		[Range(0, 25)] public float perceptionRadius;
-		public bool DebugMesseges = false;
 
 		[HideInInspector] public float nearRadius;                  // Radius of NPC near area.
 		[HideInInspector] public NavMeshAgent nav;                  // Reference to the NPC NavMesh agent.
@@ -47,7 +46,8 @@ namespace EnemyAI
 		[HideInInspector] public EnemyAnimation enemyAnimation;     // Reference to the enemy animation script.
 		[HideInInspector] public EnemyVariables variables;          // Reference to extra variables, common to all NPC categories.
 		[HideInInspector] public CoverLookup coverLookup;           // Reference to the Game Controller's cover lookup script.
-		[HideInInspector] public Vector3 personalTarget;            // The current personal target, if any.		
+		[HideInInspector] public Vector3 personalTarget;            // The current personal target, if any.
+		[HideInInspector] public EnemyGroups m_squad;
 
 		private int magBullets;                                     // Maximum bullet capacity of the weapon mag.
 		private bool aiActive;                                      // Is the NPC AI active?
@@ -55,6 +55,7 @@ namespace EnemyAI
 		private bool strafing;                                      // Is the NPC strafing?
 		private bool aiming;                                        // Is the NPC aiming?
 		private bool checkedOnLoop, blockedSight;                   // Blocked sight test related variables.
+
 
 		// Reset cover position.
 		private void OnDestroy()
@@ -110,7 +111,7 @@ namespace EnemyAI
 		{
 			// Setup the references.
 			if (aimTarget == null)
-				aimTarget = GameObject.FindObjectOfType<playerController>().playerMidPoint.transform;
+				aimTarget = GameObject.FindObjectOfType<playerController>().gameObject.transform;
 			if (coverSpot == null)
 				coverSpot = new Dictionary<int, Vector3>();
 			coverSpot[this.GetHashCode()] = Vector3.positiveInfinity;
@@ -138,7 +139,7 @@ namespace EnemyAI
 				coverLookup.Setup(generalStats.coverMask);
 			}
 			// Ensure the target has a health manager component to receive shots.
-			Debug.Assert(aimTarget.root.GetComponent<HealthManager>(), "You must add a health manager to the target");
+			Debug.Assert(aimTarget.GetComponent<HealthManager>(), "You must add a health manager to the target");
 		}
 
 		public void Start()
@@ -166,8 +167,7 @@ namespace EnemyAI
 			if (nextState != remainState)
 			{
 				// DEBUG: show state transitions for NPC.
-				if(DebugMesseges)
-					Debug.Log(transform.name + " :" + decision.name + " : " + currentState.name + "->" + nextState.name);
+				Debug.Log(transform.name + " :" + decision.name + " : " + currentState.name + "->" + nextState.name);
 				currentState = nextState;
 			}
 		}
@@ -192,7 +192,7 @@ namespace EnemyAI
 		// This is the message receiver for alert events triggered by nearby objects (ex.: other NPC alert about a noise).
 		public void AlertCallback(Vector3 target)
 		{
-			if (!aimTarget.root.GetComponent<HealthManager>().dead)
+			if (!aimTarget.GetComponent<HealthManager>().dead)
 			{
 				this.variables.hearAlert = true;
 				this.personalTarget = target;
@@ -200,7 +200,7 @@ namespace EnemyAI
 		}
 
 		// Verify if the spot is near any spot used by other NPCs. Default comparison distance is 1.
-		public bool IsNearOtherSpot(Vector3 spot, float margin = 1f)
+		public bool IsNearOtherSpot(Vector3 spot, float margin = 2f)
 		{
 			foreach (KeyValuePair<int, Vector3> usedSpot in coverSpot)
 			{
