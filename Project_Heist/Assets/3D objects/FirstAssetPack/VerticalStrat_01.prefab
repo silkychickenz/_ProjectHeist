@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2773420107992137736}
   - component: {fileID: 1284354314000863149}
   - component: {fileID: 3906316566288137063}
-  - component: {fileID: 804066458871416896}
   m_Layer: 9
   m_Name: VerticalStrat_01
   m_TagString: Untagged
@@ -60,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3332536600217972216, guid: da1367c525a3ecf4689addeb4a02fbbc, type: 3}
+  - {fileID: 2100000, guid: 528bab4d959abd8438a427ca2334205f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,16 +81,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &804066458871416896
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3258066568793053874}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.9906175, y: 3.5036354, z: 2.0194707}
-  m_Center: {x: 1, y: 1.751678, z: 1.009449}
