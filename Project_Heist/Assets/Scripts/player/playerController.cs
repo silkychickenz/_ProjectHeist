@@ -150,7 +150,7 @@ public class playerController : MonoBehaviour
             CameraTarget.transform.localPosition = cameraDefaultPos;
         }
 
-        animator.SetLayerWeight(1, 0);
+        animator.SetLayerWeight(0, 0);
         animator.SetBool("startCrouching", false);
         if (isPlayerGrounded)
         {
@@ -204,7 +204,7 @@ public class playerController : MonoBehaviour
         }
         if (canShoot && startShooting)
         {
-            animator.SetLayerWeight(3, 1);
+            animator.SetLayerWeight(2, 1);
             animator.SetTrigger("recoil");
 
         }
@@ -219,11 +219,11 @@ public class playerController : MonoBehaviour
         
         if (!isPlayerGrounded)
         {
-            animator.SetLayerWeight(1, 1);
+            animator.SetLayerWeight(0, 1);
         }
         else
         {
-            animator.SetLayerWeight(1, 0);
+            animator.SetLayerWeight(0, 0);
         }
 
       
