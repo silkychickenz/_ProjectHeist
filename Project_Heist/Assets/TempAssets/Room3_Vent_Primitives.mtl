@@ -1,0 +1,8 @@
+newmtl DefaultHDMaterial
+Kd 0.7279412 0.7279412 0.7279412
+d 1
+
+newmtl env_walls
+Kd 0.7971699 0.8429838 1
+d 1
+
