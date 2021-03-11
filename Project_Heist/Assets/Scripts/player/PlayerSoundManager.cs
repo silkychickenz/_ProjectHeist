@@ -105,7 +105,7 @@ public class PlayerSoundManager : MonoBehaviour
     {
         
             PlaySoundLoop(BGMusicSource, PlayerSounds.BG_Music_UpBeat);
-            soundFlags["BG_MusicLoop"] = false;
+            //soundFlags["BG_MusicLoop"] = false;
         
     }
     public void GravityFlipSound(Vector2 gravityFlipDirection, bool gravityFlipWheel)
@@ -115,7 +115,7 @@ public class PlayerSoundManager : MonoBehaviour
 
 
             PlaySoundOnce(GravityFlipAudio, PlayerSounds.GravityFlip, 0.5f, "gravityFlip");
-            soundFlags["gravityFlip"] = false;
+            //soundFlags["gravityFlip"] = false;
         }
     }
     #endregion
