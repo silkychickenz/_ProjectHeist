@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 29049015951662061}
   - component: {fileID: 29049015951662057}
   - component: {fileID: 29049015951662062}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Pipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 29049016001240958}
   - component: {fileID: 29049016001240959}
   - component: {fileID: 29049016001240955}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Vent Boarder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -970,7 +970,7 @@ GameObject:
   - component: {fileID: 29049016002607734}
   - component: {fileID: 29049016002607730}
   - component: {fileID: 29049016002607731}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Pipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1299,7 +1299,7 @@ GameObject:
   - component: {fileID: 29049016130168582}
   - component: {fileID: 29049016130168578}
   - component: {fileID: 29049016130168579}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Pipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1712,10 +1712,10 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 29049017405903979}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 3, z: 3}
+  m_Size: {x: 0.3, y: 3.1, z: 3.1}
   m_Center: {x: 0.125, y: 1.5, z: -1.5}
 --- !u!54 &29049017405903978
 Rigidbody:
@@ -1762,7 +1762,7 @@ GameObject:
   - component: {fileID: 29049017533322864}
   - component: {fileID: 29049017533322876}
   - component: {fileID: 29049017533322877}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Pipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2091,7 +2091,7 @@ GameObject:
   - component: {fileID: 29049017541976602}
   - component: {fileID: 29049017541976582}
   - component: {fileID: 29049017541976583}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: Pipe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
