@@ -32,6 +32,10 @@ public class PatrolAction : Action
 		// Reached waypoint, wait for a moment before keep patrolling.
 		if (controller.nav.remainingDistance <= controller.nav.stoppingDistance && !controller.nav.pathPending)
 		{
+			if (Mathf.Abs(controller.transform.rotation.eulerAngles.y - controller.patrolWayPoints[controller.waypointIndex].rotation.eulerAngles.y)>=1) 
+				{ controller.transform.rotation = Quaternion.Slerp(controller.transform.rotation,
+				   Quaternion.Euler(controller.patrolWayPoints[controller.waypointIndex].rotation.eulerAngles),
+				   Time.deltaTime * 1f); }
 			controller.variables.patrolTimer += Time.deltaTime;
 
 			if (controller.variables.patrolTimer >= controller.generalStats.patrolWaitTime)
