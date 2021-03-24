@@ -70,7 +70,8 @@ public class playerController : MonoBehaviour
     private float MaxPlayerWalkSpeed = 5, MaxPlayerRunSpeed = 10, MaxPlayerCrouchSpeed = 2, jumpForce = 10, runToCroushSlideForce = 30;
     private float MovementForce = 0;
     Vector3 groundPlayerCross;
-    private PlayerSoundManager playerSoundManagerScript;
+    [SerializeField]
+    private float runJunpMultiplier = 0.5f;
 
     [Header(" PLAYER FALLING")]
     [SerializeField]
@@ -115,7 +116,7 @@ public class playerController : MonoBehaviour
         animator = playerAvatar.GetComponent<Animator>();
         rb = gameObject.GetComponent<Rigidbody>();
         gravityScript = gameObject.GetComponent<Gravity>();
-        playerSoundManagerScript = gameObject.GetComponent<PlayerSoundManager>();
+       
         cameraDefaultPos = CameraTarget.transform.localPosition;
         cleanUpX = true;
         cleanUpZ = true;
@@ -465,7 +466,7 @@ public class playerController : MonoBehaviour
            else if (direction.y == 1 && startSprint)
            {
                  rb.AddForce(gameObject.transform.up * jumpForce * Time.deltaTime, ForceMode.Impulse);
-                 rb.velocity += gameObject.transform.forward * (jumpForce + 100) * Time.deltaTime;
+                 rb.velocity += gameObject.transform.forward * (jumpForce * runJunpMultiplier) * Time.deltaTime;
                  animateJump = true;
                  jump = false;
 
