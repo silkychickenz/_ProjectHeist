@@ -2675,6 +2675,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: roof_Panel (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3766138649428245795, guid: 8cc7b11b6f912e64fa3e6a9148eb0d27, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b5984d19804f9446863c35484bbd161, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cc7b11b6f912e64fa3e6a9148eb0d27, type: 3}
 --- !u!1001 &926377078
@@ -3051,6 +3055,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: roof_Panel (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3766138649428245795, guid: 8cc7b11b6f912e64fa3e6a9148eb0d27, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b5984d19804f9446863c35484bbd161, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cc7b11b6f912e64fa3e6a9148eb0d27, type: 3}
 --- !u!1001 &1080895417
@@ -4676,6 +4684,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: roof_Panel (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3766138649428245795, guid: 8cc7b11b6f912e64fa3e6a9148eb0d27, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b5984d19804f9446863c35484bbd161, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cc7b11b6f912e64fa3e6a9148eb0d27, type: 3}
 --- !u!1 &1924317639
@@ -5345,6 +5357,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: roof_Panel
       objectReference: {fileID: 0}
+    - target: {fileID: 3766138649428245795, guid: 8cc7b11b6f912e64fa3e6a9148eb0d27, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b5984d19804f9446863c35484bbd161, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cc7b11b6f912e64fa3e6a9148eb0d27, type: 3}
 --- !u!1001 &420743947732649146
