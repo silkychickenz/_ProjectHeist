@@ -57,7 +57,7 @@ namespace EnemyAI
 			if (!dead && headshot && bodyPart.transform == anim.GetBoneTransform(HumanBodyBones.Head))
 			{
 				// Default damage multiplier is 10x.
-				damage *= 10;
+				damage *= 5;
 				// Call headshot HUD callback, if any.
 				GameObject.FindGameObjectWithTag("GameController").SendMessage("HeadShotCallback", SendMessageOptions.DontRequireReceiver);
 			}

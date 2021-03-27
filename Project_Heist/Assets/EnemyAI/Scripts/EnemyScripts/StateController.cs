@@ -49,12 +49,14 @@ namespace EnemyAI
 		[HideInInspector] public Vector3 personalTarget;            // The current personal target, if any.
 		[HideInInspector] public EnemyGroups m_squad;
 
+
 		private int magBullets;                                     // Maximum bullet capacity of the weapon mag.
 		private bool aiActive;                                      // Is the NPC AI active?
 		private static Dictionary<int, Vector3> coverSpot;          // The cover position for each NPC, if any.
 		private bool strafing;                                      // Is the NPC strafing?
 		private bool aiming;                                        // Is the NPC aiming?
 		private bool checkedOnLoop, blockedSight;                   // Blocked sight test related variables.
+
 
 
 		// Reset cover position.
@@ -146,6 +148,7 @@ namespace EnemyAI
 		{
 			// Trigger initial state enable function.
 			currentState.OnEnableActions(this);
+
 		}
 
 		void Update()
@@ -159,10 +162,12 @@ namespace EnemyAI
 			currentState.DoActions(this);
 			// Check current FSM state transition conditions.
 			currentState.CheckTransitions(this);
+
+
 		}
 
-		// Change the current FSM state (called externally).
-		public void TransitionToState(State nextState, Decision decision)
+        // Change the current FSM state (called externally).
+        public void TransitionToState(State nextState, Decision decision)
 		{
 			if (nextState != remainState)
 			{
@@ -209,6 +214,7 @@ namespace EnemyAI
 			}
 			return false;
 		}
+
 
 		// The common cast to target test, used by decisions that is based on NPC senses.
 		public bool BlockedSight()

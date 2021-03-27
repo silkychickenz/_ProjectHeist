@@ -9,17 +9,28 @@ namespace EnemyAI
     {
         public List<StateController> squad;
         public bool alarmOn;
-        public State FindCoverState;
-        public Decision FeelAlertDecision;
+        public State searchState;
+        public Decision hearDecision;
+        AudioSource audioSource;
 
+        private void Start()
+        {
+            audioSource = GetComponent<AudioSource>();
+            for(int i =0; i<squad.Count;i++)
+            {
+                squad[i].m_squad=this;
+            }
+        }
 
         public void SoundAlarm(Vector3 lastKnownLocation)
         {
             alarmOn = true;
             Debug.Log("AlarmOn");
-            for(int i = 0; i <= squad.Count; i++)
+            audioSource.Play();
+            for(int i = 0; i <= squad.Count-1; i++)
             {
-                squad[i].TransitionToState(FindCoverState, FeelAlertDecision);
+                squad[i].TransitionToState(searchState, hearDecision);
+                squad[i].personalTarget = lastKnownLocation;
             }
         }
 
