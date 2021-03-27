@@ -105,7 +105,7 @@ public class playerController : MonoBehaviour
     private float vaultDetectionDist = 0.3f;
     RaycastHit forwardVaultCheckRayInfo;
     RaycastHit backVaultCheckRayInfo;
-    RaycastHit forwardVaultCheckRayInfoMid;
+    RaycastHit forwardVaultCheckRayInfoMid, forwardVaultCheckRayInfoMax;
     bool animateVault = false,animateHighVault = false, animateJump = false;
     bool jump;
     public GameObject muzzleFlashPrefab;
@@ -482,7 +482,7 @@ public class playerController : MonoBehaviour
             // high vault
             if (forwardVaultCheckRayInfoMid.distance <= vaultDetectionDist && forwardVaultCheckRayInfoMid.distance >= 0.05 && forwardVaultCheckRayInfoMid.transform != null)
             {
-                if (forwardVaultCheckRayInfoMid.distance <= 1.3f)
+                if (forwardVaultCheckRayInfoMid.distance <= 1.3f && forwardVaultCheckRayInfoMax.collider == null)
                 {
                     animateHighVault = true;
                     defaultPlayerCollider.enabled = true;
@@ -490,7 +490,10 @@ public class playerController : MonoBehaviour
                     rb.AddForce(gameObject.transform.up * 1400 * Time.deltaTime, ForceMode.Impulse);
                     jump = false;
                 }
-                
+                if (forwardVaultCheckRayInfoMax.collider == null)
+                {
+                   // jump = false;
+                }
 
             }
 
@@ -521,8 +524,15 @@ public class playerController : MonoBehaviour
         Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up * 1.6f), -gameObject.transform.forward * vaultDetectionDist, Color.blue);
         Debug.DrawRay((gameObject.transform.position + (-gameObject.transform.forward * 0.2f)) + (gameObject.transform.up * 0.3f), -gameObject.transform.up * 0.5f, Color.blue);
         #endregion
+        #region head vault raycast
 
+        Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up * 2f), gameObject.transform.forward * (vaultDetectionDist), Color.red);
+        Physics.Raycast(gameObject.transform.position + (gameObject.transform.up * 2f), gameObject.transform.forward, out forwardVaultCheckRayInfoMax, vaultDetectionDist, detectAsCover);
+
+        Debug.DrawRay(gameObject.transform.position + (gameObject.transform.up * 2f), -gameObject.transform.forward * vaultDetectionDist, Color.red);
        
+        #endregion
+
         //check if player has cleard vault object and restore default collider
         if (backVaultCheckRayInfo.distance > 0.1 && backVaultCheckRayInfo.transform != null)
         {
