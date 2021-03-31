@@ -72,7 +72,7 @@ public class InputManager : MonoBehaviour
         Controls.Player.move.performed += moveDirection => move = (moveDirection.ReadValue<Vector2>());
         Controls.Player.Sprint.performed += sprintToggle => startSprinting = !startSprinting;
         Controls.Player.LookAround.performed += LookAround => lookAround = (LookAround.ReadValue<Vector2>());
-       // Controls.Player.crouch.performed += crouchToggle => startCrouching = !startCrouching;
+        Controls.Player.crouch.performed += crouchToggle => startCrouching = !startCrouching;
 
         // get gravity input
         Controls.Player.GravityFlipWheel.performed += GravityFlipWheelToggle => gravityFlipWheel = !gravityFlipWheel;

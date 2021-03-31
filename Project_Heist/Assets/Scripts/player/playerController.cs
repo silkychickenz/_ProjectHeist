@@ -267,6 +267,7 @@ public class playerController : MonoBehaviour
 
     public void Movement(Vector2 direction, bool jump, bool startSprint, bool startCrouching, bool startAiming, bool crouchBoost, bool takeCover)
     {
+       
        // groundcheck
         isPlayerGrounded = Physics.CheckSphere(gameObject.transform.position, 0.2f, Walkable);
         if (takeCover)
@@ -435,29 +436,27 @@ public class playerController : MonoBehaviour
         {
             jump = true;
         }
-
+        Debug.Log(rb.velocity);
         if (jump == true )
         {
             // regular vault
             if (forwardVaultCheckRayInfo.distance <= vaultDetectionDist && forwardVaultCheckRayInfo.distance >= 0.1 && forwardVaultCheckRayInfo.transform != null)
             {
-                // only vault if upper ray has not detected anything
-                if (forwardVaultCheckRayInfoMid.transform == null)
+                // only vault if upper ray has not detected anything and player is pressing forward
+                if (forwardVaultCheckRayInfoMid.transform == null && direction.y == 1)
                 {
-                    if (forwardVaultCheckRayInfo.distance <= 1.3f && !startSprint)
+               
+                    if (forwardVaultCheckRayInfo.distance <= 1.3f)
                     {
                         animateVault = true;
                         defaultPlayerCollider.enabled = false;
                         playerVaultCollider.enabled = true;
                         jump = false;
+                       
+
+
                     }
-                    else
-                    {
-                        animateVault = true;
-                        defaultPlayerCollider.enabled = false;
-                        playerVaultCollider.enabled = true;
-                        jump = false;
-                    }
+                   
 
                 }
 
@@ -539,6 +538,11 @@ public class playerController : MonoBehaviour
           
             defaultPlayerCollider.enabled = true;
             playerVaultCollider.enabled = false;
+        }
+
+        if (playerVaultCollider.transform.gameObject.layer == 11)
+        {
+          
         }
  
 
