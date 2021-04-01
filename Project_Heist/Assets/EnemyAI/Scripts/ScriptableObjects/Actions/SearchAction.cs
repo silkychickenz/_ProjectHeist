@@ -15,7 +15,9 @@ public class SearchAction : Action
 			// Set navigation parameters.
 			controller.nav.speed = controller.generalStats.chaseSpeed;
 			controller.nav.destination = controller.personalTarget;
+
 		}
+		Debug.DrawLine(controller.personalTarget, controller.personalTarget + Vector3.up,Color.green);
 	}
 	// The action on enable function, triggered once after a FSM state transition.
 	public override void OnEnableAction(StateController controller)

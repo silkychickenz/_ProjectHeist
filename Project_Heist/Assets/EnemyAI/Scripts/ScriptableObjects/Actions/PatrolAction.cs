@@ -19,6 +19,7 @@ public class PatrolAction : Action
 		controller.enemyAnimation.anim.SetBool("Crouch", false);
 		controller.personalTarget = Vector3.positiveInfinity;
 		controller.CoverSpot = Vector3.positiveInfinity;
+		controller.m_squad.TurnOffAlarm();
 	}
 	// NPC patrolling function.
 	private void Patrol(StateController controller)

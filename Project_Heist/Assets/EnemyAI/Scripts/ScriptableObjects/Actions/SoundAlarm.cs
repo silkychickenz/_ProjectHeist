@@ -12,9 +12,17 @@ public class SoundAlarm : Action
 
 	public override void OnEnableAction(StateController controller)
     {
-		if (controller.m_squad && !controller.m_squad.alarmOn)
+		if (controller.m_squad)
 		{
-			controller.m_squad.SoundAlarm(controller.personalTarget);
+			if (!controller.m_squad.alarmOn)
+			{
+				controller.m_squad.SoundAlarm(controller.personalTarget);
+			}
+            else
+            {
+				controller.m_squad.UpdateLastKnownLocation(controller.personalTarget);
+			}
 		}
+		
 	}
 }

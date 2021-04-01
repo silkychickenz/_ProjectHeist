@@ -44,13 +44,13 @@ namespace EnemyAI
 			return ret.ToArray();
 		}
 
-		// DEBUG: Draw all level cover spots.
-		//private void Update()
-		//{
-		//	foreach (Vector3[] spots in allCoverSpots)
-		//		foreach (Vector3 spot in spots)
-		//			Debug.DrawRay(spot, Vector3.up * 5, Color.yellow);
-		//}
+		//DEBUG: Draw all level cover spots.
+		private void Update()
+		{
+			foreach (Vector3[] spots in allCoverSpots)
+				foreach (Vector3 spot in spots)
+					Debug.DrawRay(spot, Vector3.up * 5, Color.yellow);
+		}
 
 		// Calculate the cover potential spots.
 		private Vector3[] GetSpots(GameObject go, LayerMask obstacleMask)
@@ -80,7 +80,11 @@ namespace EnemyAI
 				else if (Vector3.Equals(go.transform.localScale, Vector3.one))
 				{
 					deslocForward = go.transform.forward * col.bounds.extents.z;
+					deslocForward = Quaternion.AngleAxis(go.transform.rotation.eulerAngles.y, Vector3.up) * deslocForward;
+					deslocForward = Vector3.Scale(deslocForward, go.transform.localScale);
 					deslocRight = go.transform.right * col.bounds.extents.x;
+					deslocRight = Quaternion.AngleAxis(go.transform.rotation.eulerAngles.y, Vector3.up) * deslocRight;
+					deslocRight = Vector3.Scale(deslocRight, go.transform.localScale);
 				}
 
 				// Calculate spot points around the cover.

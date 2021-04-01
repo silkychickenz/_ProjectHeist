@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1328575574658045518}
   - component: {fileID: 1328575574658045519}
   - component: {fileID: 4479038462396024285}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Vertically Doors Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}

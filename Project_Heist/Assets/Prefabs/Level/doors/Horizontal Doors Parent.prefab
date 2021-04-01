@@ -1368,7 +1368,7 @@ GameObject:
   - component: {fileID: 8594394041518923914}
   - component: {fileID: 8594394041518923915}
   - component: {fileID: 8360233278524713841}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Horizontal Doors Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}

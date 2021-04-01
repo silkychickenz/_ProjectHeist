@@ -36,7 +36,7 @@ namespace EnemyAI
 		[HideInInspector] public NavMeshAgent nav;                  // Reference to the NPC NavMesh agent.
 		[HideInInspector] public int waypointIndex;                 // Reference to current waypoint.
 		[HideInInspector] public int maximumBurst = 7;              // The maximum burst size on a round.
-		[HideInInspector] public float blindEngageTime = 30f;       // Time to keep targeting last seen position after target leaves sight.
+		[HideInInspector] public float blindEngageTime = 5f;        // Time to keep targeting last seen position after target leaves sight.
 		[HideInInspector] public bool targetInSight;                // Is target on sight?
 		[HideInInspector] public bool focusSight;                   // Will focus on sight position?
 		[HideInInspector] public bool reloading;                    // Is the NPC reloading?
@@ -112,8 +112,7 @@ namespace EnemyAI
 		void Awake()
 		{
 			// Setup the references.
-			if (aimTarget == null)
-				aimTarget = GameObject.FindObjectOfType<playerController>().gameObject.transform;
+
 			if (coverSpot == null)
 				coverSpot = new Dictionary<int, Vector3>();
 			if (spotLight == null)
@@ -125,32 +124,19 @@ namespace EnemyAI
 			magBullets = bullets;
 			variables.shotsInRound = maximumBurst;
 			// Near sense radius is half of perception radius.
-			nearRadius = perceptionRadius / 2;
-			// Get/create Game Controller.
-			GameObject gameController = GameObject.FindGameObjectWithTag("GameController");
-			if (gameController == null)
-			{
-				gameController = new GameObject("GameController")
-				{
-					tag = "GameController"
-				};
-			}
-			// Attach cover lookup component to Game Controller and/or get reference.
-			coverLookup = gameController.GetComponent<CoverLookup>();
-			if (coverLookup == null)
-			{
-				coverLookup = gameController.AddComponent<CoverLookup>();
-				coverLookup.Setup(generalStats.coverMask);
-			}
+			nearRadius = perceptionRadius / 2;		
+			
 			// Ensure the target has a health manager component to receive shots.
 			Debug.Assert(aimTarget.GetComponent<HealthManager>(), "You must add a health manager to the target");
+			if (aimTarget == null)
+				aimTarget = m_squad.aimTarget;
 		}
 
 		public void Start()
 		{
 			// Trigger initial state enable function.
 			currentState.OnEnableActions(this);
-
+			
 		}
 
 		void Update()
@@ -174,7 +160,7 @@ namespace EnemyAI
 			if (nextState != remainState)
 			{
 				// DEBUG: show state transitions for NPC.
-				Debug.Log(transform.name + " :" + decision.name + " : " + currentState.name + "->" + nextState.name);
+				//Debug.Log(transform.name + " :" + decision.name + " : " + currentState.name + "->" + nextState.name);
 				currentState = nextState;
 			}
 		}
