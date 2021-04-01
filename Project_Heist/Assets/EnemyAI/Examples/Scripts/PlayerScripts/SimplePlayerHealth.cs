@@ -59,6 +59,6 @@ public class SimplePlayerHealth : HealthManager
 
 		yield return new WaitForSeconds(1);
 
-		SceneManager.LoadScene(0);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 }

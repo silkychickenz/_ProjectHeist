@@ -48,7 +48,7 @@ namespace EnemyAI
 		[HideInInspector] public CoverLookup coverLookup;           // Reference to the Game Controller's cover lookup script.
 		[HideInInspector] public Vector3 personalTarget;            // The current personal target, if any.
 		[HideInInspector] public EnemyGroups m_squad;
-
+		[HideInInspector] public Light spotLight;
 
 		private int magBullets;                                     // Maximum bullet capacity of the weapon mag.
 		private bool aiActive;                                      // Is the NPC AI active?
@@ -116,6 +116,8 @@ namespace EnemyAI
 				aimTarget = GameObject.FindObjectOfType<playerController>().gameObject.transform;
 			if (coverSpot == null)
 				coverSpot = new Dictionary<int, Vector3>();
+			if (spotLight == null)
+				spotLight = GetComponentInChildren<Light>();
 			coverSpot[this.GetHashCode()] = Vector3.positiveInfinity;
 			nav = GetComponent<NavMeshAgent>();
 			aiActive = true;
