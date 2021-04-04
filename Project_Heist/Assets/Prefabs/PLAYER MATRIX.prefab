@@ -2619,7 +2619,7 @@ GameObject:
   - component: {fileID: 6606096412035115973}
   m_Layer: 9
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: SmallCover
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2694,7 +2694,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2171714512847348133}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 73fc32ee8907a9d4eb54f1a89512d490, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -10660,7 +10660,7 @@ GameObject:
   - component: {fileID: 7084716823004617856}
   m_Layer: 9
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: BigCover
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12049,6 +12049,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2289856625461941043}
     m_Modifications:
+    - target: {fileID: 243644909162401136, guid: 8d9173730906dd84b8e70ee93ce211e6, type: 3}
+      propertyPath: m_Intensity
+      value: 11459.155
+      objectReference: {fileID: 0}
     - target: {fileID: 9062116650110433411, guid: 8d9173730906dd84b8e70ee93ce211e6, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: 0.00000077859033

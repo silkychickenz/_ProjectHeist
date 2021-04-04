@@ -122,7 +122,7 @@ public class InputManager : MonoBehaviour
             Application.Quit();
         }
        
-        if (takeCover && !playerControllerScript.isCoverDetected)
+        if (takeCover && !playerControllerScript.isCoverDetected && !startCrouching)
         {
             playerControllerScript.CoverDetection();
         }
@@ -133,7 +133,7 @@ public class InputManager : MonoBehaviour
 
         playerControllerScript.playerFalling(move);  
         playerControllerScript.Movement(move, Jump, startSprinting, startCrouching, startAiming, crouchBoost, takeCover);
-        if (!startCrouching && !startAiming)
+        if (!startCrouching && !startAiming && !takeCover)
         {
             playerControllerScript.JumpAndVault(Jump, move, startSprinting);
         }

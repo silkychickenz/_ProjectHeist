@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - slope
+  - BigCover
+  - SmallCover
   layers:
   - Default
   - TransparentFX

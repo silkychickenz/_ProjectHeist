@@ -387,7 +387,7 @@ public class playerController : MonoBehaviour
             playerRotatingDirection = Mathf.Sign(Vector3.Dot(gameObject.transform.right, coverScaninfo.normal)); // is players back turned towards the wall
 
             //has player has reached cover
-            if (Vector3.Distance(gameObject.transform.position, coverScanGroundinfo.point) <= 0.1  )
+            if (Vector3.Distance(gameObject.transform.position, coverScanGroundinfo.point) <= 0.2f  ) //0.1
             {
                 runningToCover = false;
             }
@@ -395,12 +395,12 @@ public class playerController : MonoBehaviour
             // run towards cover
             if (Vector3.Distance(gameObject.transform.position, coverScanGroundinfo.point) > 0.3 && runningToCover)
             {
-                Debug.Log("stuck");
+
                 transform.Translate((coverScanGroundinfo.point - gameObject.transform.position).normalized * MaxPlayerRunSpeed * Time.deltaTime, Space.World); ;
             }
             else
             {
-                //Debug.Log(Vector3.Dot(gameObject.transform.right, coverScaninfo.normal));
+                
                 // rotate and take cover
                 if (Mathf.Abs(Vector3.Dot(gameObject.transform.right, coverScaninfo.normal)) > 0.05)
                 {
@@ -436,7 +436,7 @@ public class playerController : MonoBehaviour
         {
             jump = true;
         }
-        Debug.Log(rb.velocity);
+
         if (jump == true )
         {
             // regular vault
@@ -803,14 +803,17 @@ public class playerController : MonoBehaviour
         {
             if (coverScaninfo.distance <= coverDetectionDist)
             {
-                downRayCast = coverScanRay.GetPoint(coverScaninfo.distance - 0.2f);
-                if (Physics.Raycast(coverScanRay.GetPoint(coverScaninfo.distance - 0.2f), -gameObject.transform.up, out coverScanGroundinfo, 2, detectAsCover))
+                downRayCast = coverScanRay.GetPoint(coverScaninfo.distance - 0.2f); // 0.2
+                if (Physics.Raycast(coverScanRay.GetPoint(coverScaninfo.distance - 0.2f), -gameObject.transform.up, out coverScanGroundinfo, 2, detectAsCover)) // 0.2
                 {
-                    isCoverDetected = true;
-                    runningToCover = true;
-                   // takeCoverOn = coverScaninfo.transform.gameObject;
+                    if (coverScaninfo.collider.tag == "SmallCover" || coverScaninfo.collider.tag == "BigCover")
+                    {
 
-                   // Debug.Log("dist " + coverScaninfo.distance);
+                        isCoverDetected = true;
+                        runningToCover = true;
+                    }
+                   
+                   
                 }
             }
             
@@ -835,8 +838,14 @@ public class playerController : MonoBehaviour
         }
         if (isCoverDetected && takeCover)
         {
+            animator.SetBool("startCrouching", false);
             if (Vector3.Distance(gameObject.transform.position, coverScanGroundinfo.point) < 0.5)
             {
+                if (coverScaninfo.collider.tag == "SmallCover")
+                {
+
+                    animator.SetBool("crouchCover", true);
+                }
                 animator.SetBool("takeCover", true);
                 
 
@@ -850,6 +859,7 @@ public class playerController : MonoBehaviour
         else
         {
             animator.SetBool("takeCover", false);
+            animator.SetBool("crouchCover", false);
         }
         
     }
