@@ -133,6 +133,7 @@ MonoBehaviour:
   GravityFlipCooldownTimer: 0.2
   weaponROF: 0.218
   SetFPS: 60
+  test: {fileID: 0}
 --- !u!114 &2942368305726888435
 MonoBehaviour:
   m_ObjectHideFlags: 0

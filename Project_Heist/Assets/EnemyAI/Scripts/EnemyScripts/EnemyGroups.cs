@@ -61,7 +61,7 @@ namespace EnemyAI
 
         public void BreakTimeStart() 
         {
-            Debug.Log(gameObject.transform.parent.name + " is taking a break");
+            //Debug.Log(gameObject.transform.parent.name + " is taking a break");
             foreach (StateController enemy in squad)
             {                
                 enemy.enabled = false;
@@ -72,7 +72,7 @@ namespace EnemyAI
 
         public void BreakTimeOver()
         {
-            Debug.Log(gameObject.transform.parent.name + " is off break");
+            //Debug.Log(gameObject.transform.parent.name + " is off break");
             foreach (StateController enemy in squad)
             {                
                 enemy.enabled = true;
@@ -83,7 +83,7 @@ namespace EnemyAI
         public void SoundAlarm(Vector3 lastKnownLocation)
         {
             alarmOn = true;
-            Debug.Log("AlarmOn");
+            //Debug.Log("AlarmOn");
             audioSource.Play();
             foreach (StateController enemy in squad)
             {
@@ -113,7 +113,7 @@ namespace EnemyAI
         public void TurnOffAlarm()
         {
             alarmOn = false;
-            Debug.Log("AlarmOff");
+           // Debug.Log("AlarmOff");
             foreach (StateController enemy in squad)
             {
                 enemy.TransitionToState(patrolState, hearDecision);

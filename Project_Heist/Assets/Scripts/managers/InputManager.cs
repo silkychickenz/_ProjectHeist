@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
     private Animator animator;
     //movement
     private playerController playerControllerScript;
+    private SimplePlayerHealth simplePlayerHealthScript;
     private PlayerSoundManager playerSoundManagerScript;
 
 
@@ -57,6 +58,7 @@ public class InputManager : MonoBehaviour
     //TEMP
     private float TEMPcam;
     private float exit;
+    public GameObject test ;
 
     private void Awake()
     {
@@ -64,7 +66,7 @@ public class InputManager : MonoBehaviour
         Controls = new DefaultControls();
         playerControllerScript = Player.GetComponent<playerController>();
         playerSoundManagerScript = Player.GetComponent<PlayerSoundManager>();
-
+        simplePlayerHealthScript = Player.GetComponent<SimplePlayerHealth>();
         gravityScipt = Player.GetComponent<Gravity>();
 
 
@@ -112,6 +114,7 @@ public class InputManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+       
         if (TEMPcam == 1)
         {
             SceneManager.LoadScene(0);
@@ -140,7 +143,7 @@ public class InputManager : MonoBehaviour
         
         Jump = false;
         gravityScipt.ApplyGravity();
-       
+        simplePlayerHealthScript.HealthRegen();
         gravityScipt.GravityFlip(gravityFlipDirection, enableGravityFlip, gravityFlipWheel);
         if (gravityFlipDirection != Vector2.zero && enableGravityFlip) //if there is gravity flip input and graty was freviously flipped
         {
@@ -155,8 +158,17 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-       // playerSoundManagerScript.Sound(startSprinting);
-       // playerSoundManagerScript.BGMusic();
+        // playerSoundManagerScript.Sound(startSprinting);
+        // playerSoundManagerScript.BGMusic();
+        Debug.Log(gravityFlipWheel);
+        if (gravityFlipWheel)
+        {
+            test.SetActive(true);
+        }
+        else
+        {
+            test.SetActive(false);
+        }
         playerSoundManagerScript.GravityFlipSound(gravityFlipDirection, gravityFlipWheel);
         playerControllerScript.JumpAndVaultAnimation();
         if (!startAiming) //if player is not aiming

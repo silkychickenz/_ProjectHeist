@@ -1561,6 +1561,8 @@ MonoBehaviour:
   hurtPrefab: {fileID: 5542824109845126322, guid: 96c82f1df8075f24aa60ec228a6b40dc, type: 3}
   healthDisplay: {fileID: 3659470609935957130}
   decayFactor: 0.8
+  HealthRegenStartTime: 2
+  healthRegenPerSec: 10
 --- !u!136 &8795989786645378349
 CapsuleCollider:
   m_ObjectHideFlags: 0
