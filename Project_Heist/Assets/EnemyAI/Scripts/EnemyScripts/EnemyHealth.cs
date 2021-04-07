@@ -108,7 +108,7 @@ namespace EnemyAI
 			anim.enabled = false;
 			Destroy(weapon.gameObject);
 			Destroy(hud.gameObject);
-			Destroy(controller.spotLight);
+			controller.spotLight.enabled = false;
 			dead = true;
 		}
 
