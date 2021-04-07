@@ -13,7 +13,7 @@ public class Destruction : HealthManager
     // Start is called before the first frame update
     void Start()
     {
-        m_rb = GetComponent<Rigidbody>();
+        //m_rb = GetComponent<Rigidbody>();
         m_collider = GetComponent<BoxCollider>();
         dropableObjects = GetComponentsInChildren<Rigidbody>();
     }
@@ -21,21 +21,21 @@ public class Destruction : HealthManager
     public override void TakeDamage(Vector3 location, Vector3 direction, float damage, Collider bodyPart, GameObject origin)
     {
         Debug.Log(damage);
-        health -= damage;
-        UpdateHealth();
-        Vector3 forceDirection = location - direction;
-        m_rb.AddForceAtPosition(direction.normalized * damage, location,ForceMode.Impulse);
+        health -= damage;        
+        Vector3 forceDirection = direction.normalized * 2;        
+        UpdateHealth(location,forceDirection);
     }
 
-    void UpdateHealth()
+    void UpdateHealth(Vector3 location, Vector3 forceDirection)
     {
         if (health <= 0)
         {
-            m_rb.isKinematic = false;
+            //m_rb.isKinematic = false;
             m_collider.enabled = false;
             foreach(Rigidbody rb in dropableObjects)
             {
                 rb.isKinematic = false;
+                rb.AddForceAtPosition(forceDirection, location, ForceMode.Impulse);
             }
             StartCoroutine("DisapearLater");
         }

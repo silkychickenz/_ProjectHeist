@@ -45,12 +45,12 @@ namespace EnemyAI
 		}
 
 		//DEBUG: Draw all level cover spots.
-		private void Update()
-		{
-			foreach (Vector3[] spots in allCoverSpots)
-				foreach (Vector3 spot in spots)
-					Debug.DrawRay(spot, Vector3.up * 5, Color.yellow);
-		}
+		//private void Update()
+		//{
+		//	foreach (Vector3[] spots in allCoverSpots)
+		//		foreach (Vector3 spot in spots)
+		//			Debug.DrawRay(spot, Vector3.up * 5, Color.yellow);
+		//}
 
 		// Calculate the cover potential spots.
 		private Vector3[] GetSpots(GameObject go, LayerMask obstacleMask)
