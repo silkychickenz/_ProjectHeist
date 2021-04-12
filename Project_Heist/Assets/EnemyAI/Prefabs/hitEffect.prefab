@@ -3877,17 +3877,17 @@ ParticleSystem:
     enabled: 1
     subEmitters:
     - serializedVersion: 3
-      emitter: {fileID: 0}
-      type: 0
-      properties: 4
-      emitProbability: 1
-    - serializedVersion: 3
       emitter: {fileID: 3124818074154599228}
       type: 0
       properties: 0
       emitProbability: 1
     - serializedVersion: 3
       emitter: {fileID: 3107622083258233948}
+      type: 0
+      properties: 4
+      emitProbability: 1
+    - serializedVersion: 3
+      emitter: {fileID: 0}
       type: 0
       properties: 4
       emitProbability: 1
@@ -14309,7 +14309,7 @@ ParticleSystemRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_RenderMode: 5
+  m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
   m_MaxParticleSize: 0.5
