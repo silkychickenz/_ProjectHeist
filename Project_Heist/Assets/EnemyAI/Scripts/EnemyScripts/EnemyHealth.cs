@@ -56,16 +56,20 @@ namespace EnemyAI
 			// Headshot multiplier. On default values, instantly kills NPC.
 			if (!dead && headshot && bodyPart.transform == anim.GetBoneTransform(HumanBodyBones.Head))
 			{
-				// Default damage multiplier is 5x.
-				damage *= 5;
+				// Default damage multiplier is 5x.				
+				health -= damage * 5;
+				// Create spouted blood particle on shot location.
+				Object.Instantiate<GameObject>(bloodSample, location, Quaternion.LookRotation(-direction), this.transform);
 				// Call headshot HUD callback, if any.
-				GameObject.FindGameObjectWithTag("GameController").SendMessage("HeadShotCallback", SendMessageOptions.DontRequireReceiver);
+				//GameObject.FindGameObjectWithTag("GameController").SendMessage("HeadShotCallback", SendMessageOptions.DontRequireReceiver);
 			}
-
-			// Create spouted blood particle on shot location.
-			Object.Instantiate<GameObject>(bloodSample, location, Quaternion.LookRotation(-direction), this.transform);
-			// Take damage received from current health.
-			health -= damage;
+            else
+            {
+				// Create spouted blood particle on shot location.
+				Object.Instantiate<GameObject>(bloodSample, location, Quaternion.LookRotation(-direction), this.transform);
+				// Take damage received from current health.
+				health -= damage;
+			}
 
 			// Is the NPC alive?
 			if (!dead)
