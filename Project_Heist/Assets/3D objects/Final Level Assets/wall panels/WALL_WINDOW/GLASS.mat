@@ -34,7 +34,6 @@ Material:
   - DistortionVectors
   - MOTIONVECTORS
   - TransparentDepthPrepass
-  - TransparentDepthPostpass
   - TransparentBackface
   - RayTracingPrepass
   m_SavedProperties:
@@ -247,7 +246,7 @@ Material:
     - _TransmissionEnable: 1
     - _TransparentBackfaceEnable: 0
     - _TransparentCullMode: 1
-    - _TransparentDepthPostpassEnable: 0
+    - _TransparentDepthPostpassEnable: 1
     - _TransparentDepthPrepassEnable: 0
     - _TransparentSortPriority: 0
     - _TransparentWritingMotionVec: 0
